@@ -5,6 +5,7 @@ import org.jfree.data.statistics.HistogramDataset;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.*;
 
 public class EDT {
 
@@ -13,7 +14,6 @@ public class EDT {
 		System.out.println("Helloooo");
 		
 		double[] vals = {
-
                 0.71477137, 0.55749811, 0.50809619, 0.47027228, 0.25281568,
                 0.66633175, 0.50676332, 0.6007552, 0.56892904, 0.49553407,
                 0.61093935, 0.65057417, 0.40095626, 0.45969447, 0.51087888,
@@ -43,5 +43,34 @@ public class EDT {
                 "y values", "x values", dataset);
 
         ChartUtils.saveChartAsPNG(new File("histogram.png"), histogram, 450, 400);
+        
+        try {
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			System.out.println("Driver O.K.");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        
+        String url = "jdbc:msql://localhost:3306/edt";
+        String user = "root";
+        String passwd = "";
+        
+        try {
+			Connection conn = DriverManager.getConnection(url, user, passwd);
+			conn.createStatement();
+			
+			System.out.println("Connexion effective !");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        
+        
+        
+        
 	}
 }
