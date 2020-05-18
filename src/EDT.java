@@ -11,6 +11,7 @@ public class EDT {
 
 	public static void main(String args[]) throws IOException
 	{
+
 		System.out.println("Helloooo");
 		
 		double[] vals = {
@@ -44,32 +45,47 @@ public class EDT {
 
         ChartUtils.saveChartAsPNG(new File("histogram.png"), histogram, 450, 400);
         
-        try {
-			Class.forName("com.mysql.jdbc.Driver");
-			
-			System.out.println("Driver O.K.");
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
         
-        
-        String url = "jdbc:msql://localhost:3306/edt";
+        String url = "jdbc:mysql://localhost:3306/edt";
         String user = "root";
         String passwd = "";
         
         try {
-			Connection conn = DriverManager.getConnection(url, user, passwd);
+    		Class.forName("com.mysql.jdbc.Driver");
+			
+			System.out.println("Driver O.K.");
+			
+			Connection conn = DriverManager.getConnection(url, "root", "");
 			conn.createStatement();
 			
 			System.out.println("Connexion effective !");
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
+
+		/*
+        try {
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // url de connexion "jdbc:mysql://localhost:3305/usernameECE"
+        String urlDatabase = "jdbc:mysql://localhost:3306/edt";
+       // String urlDatabase = "jdbc:mysql://localhost:3308/jps?characterEncoding=latin1";
+
+        //création d'une connexion JDBC à la base 
+        Connection conn = DriverManager.getConnection(urlDatabase, "root", "");
+
+        // création d'un ordre SQL (statement)
+        conn.createStatement();
+
+        System.out.println("Ca marche");
+        }
+        catch(Exception e)
+        {
+        e.printStackTrace(); }
         
-        
+        */
         
         
 	}

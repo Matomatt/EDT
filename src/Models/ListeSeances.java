@@ -8,7 +8,7 @@ public class ListeSeances {
 	
 	public ListeSeances()
 	{
-		
+		//Connection a la bdd et remplissage
 	}
 	
 	
