@@ -1,7 +1,11 @@
-package Models;
+package Seances;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import Donnees.Donnee;
 
 public class Seance {
 
@@ -12,12 +16,14 @@ public class Seance {
 	private Time fin;
 	private int etat;
 	private int ID_Cours;
+	private Donnee cours;
 	private int ID_Type;
-	private int ID_Groupe;
-	private int ID_Enseignant;
-	private int ID_Salle;
+	private Donnee type;
+	private List<Integer> IDs_Groupe = new ArrayList<Integer>();
+	private List<Integer> IDs_Enseignant = new ArrayList<Integer>();
+	private List<Integer> IDs_Salle = new ArrayList<Integer>();
 	
-	public Seance(int _ID, int _semaine, Date _date, Time _debut, Time _fin, int _etat, int _ID_Cours, int _ID_Type, int _ID_Groupe, int _ID_Enseignant, int _ID_Salle)
+	Seance(int _ID, int _semaine, Date _date, Time _debut, Time _fin, int _etat, int _ID_Cours, int _ID_Type)
 	{
 		ID = _ID;
 		semaine = _semaine;
@@ -27,22 +33,30 @@ public class Seance {
 		etat =_etat;
 		ID_Cours = _ID_Cours;
 		ID_Type =_ID_Type;
-		ID_Groupe =_ID_Groupe;
-		ID_Enseignant = _ID_Enseignant;
-		ID_Salle =_ID_Salle;
 	}
 
-	public int getID() { return ID; }
+	//public int getID() { return ID; }
 	public int getSemaine() { return semaine; }
 	public Date getDate() { return date; }
 	public Time getDebut() { return debut; }
 	public Time getFin() { return fin; }
 	public int getEtat() { return etat; }
-	public int getID_Cours() { return ID_Cours; }
-	public int getID_Type() { return ID_Type; }
+	int getID_Cours() { return ID_Cours; }
+	public Donnee getCours() { return cours; }
+	int getID_Type() { return ID_Type; }
+	public Donnee getType() { return type; }
+	
+	void setCours(Donnee cours) { this.cours = cours; }
+	void setType(Donnee type) { this.type = type; }
+	
+	/*
 	public int getID_Groupe() { return ID_Groupe; }
 	public int getID_Enseignant() { return ID_Enseignant; }
 	public int getID_Salle() { return ID_Salle; }
+	*/
+
+	
+
 	
 	
 }

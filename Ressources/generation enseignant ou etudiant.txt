@@ -1,0 +1,20 @@
+//INSERT INTO `enseignant` (`ID_Utilisateur`, `ID_Cours`) VALUES ('1', '1');
+        PrintWriter saveFile = new PrintWriter("./Ressources/query.txt", "UTF-8");
+        
+		for (int i = 1703; i < 3253; i++) {
+			Random random = new Random();
+			int index = 0;
+			do
+			{
+				index = random.nextInt(27)+1;
+			}while (index == 3 || index == 4);
+			
+			try {
+				saveFile.print(", ('"+i+"', '"+(i-1702)+"', '"+((i-1703)%55+1)+"')");
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		saveFile.close();

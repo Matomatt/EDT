@@ -3,6 +3,11 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.statistics.HistogramDataset;
 
+import Donnees.Donnee;
+import Utilisateurs.ConnectionViaUser;
+import Utilisateurs.User;
+import Utilitaires.UserNotFoundException;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -45,48 +50,18 @@ public class EDT {
 
         ChartUtils.saveChartAsPNG(new File("histogram.png"), histogram, 450, 400);
         
-        
-        String url = "jdbc:mysql://localhost:3306/edt";
-        String user = "root";
-        String passwd = "";
-        
+        User user = null;
         try {
-    		Class.forName("com.mysql.jdbc.Driver");
-			
-			System.out.println("Driver O.K.");
-			
-			Connection conn = DriverManager.getConnection(url, "root", "");
-			conn.createStatement();
-			
-			System.out.println("Connexion effective !");
-		} catch (SQLException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+        	user = new ConnectionViaUser("admin", "pw");
+
+			System.out.println(user.Type() + " " + user.Name() + " connected");
+		} catch (UserNotFoundException | ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+			return;
 		}
         
-
-		/*
-        try {
-        Class.forName("com.mysql.jdbc.Driver");
-
-        // url de connexion "jdbc:mysql://localhost:3305/usernameECE"
-        String urlDatabase = "jdbc:mysql://localhost:3306/edt";
-       // String urlDatabase = "jdbc:mysql://localhost:3308/jps?characterEncoding=latin1";
-
-        //création d'une connexion JDBC à la base 
-        Connection conn = DriverManager.getConnection(urlDatabase, "root", "");
-
-        // création d'un ordre SQL (statement)
-        conn.createStatement();
-
-        System.out.println("Ca marche");
-        }
-        catch(Exception e)
-        {
-        e.printStackTrace(); }
-        
-        */
-        
-        
+        for (Donnee d : user.ListePromotion().getAll()) {
+    		System.out.println(d);
+		}
 	}
 }
