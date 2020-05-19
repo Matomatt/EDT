@@ -5,10 +5,12 @@ import org.jfree.data.statistics.HistogramDataset;
 
 import Donnees.Donnee;
 import Groupes.Groupe;
+import Salles.Salle;
 import Seances.Seance;
 import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
+import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
 
 import java.io.File;
@@ -58,7 +60,7 @@ public class EDT {
         	user = new ConnectionViaUser("admin", "pw");
 
 			System.out.println(user.Type() + " " + user.Name() + " connected");
-		} catch (UserNotFoundException | ClassNotFoundException e) {
+		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
 			e.printStackTrace();
 			return;
 		}
@@ -75,9 +77,12 @@ public class EDT {
         	System.out.println(u);
         }
         
-        for (Groupe g : user.ListeGroupes().getAll())
-        {
+        for (Groupe g : user.ListeGroupes().getAll()) {
         	System.out.println(g);
+        }
+        
+        for (Salle s : user.ListeSalles().getAll()) {
+        	System.out.println(s);
         }
 	}
 }

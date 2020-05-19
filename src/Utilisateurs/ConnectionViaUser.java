@@ -6,6 +6,8 @@ import Donnees.ListeDonnees;
 import Donnees.ListeDonneesImpl;
 import Groupes.ListeGroupes;
 import Groupes.ListeGroupesImpl;
+import Salles.ListeSalles;
+import Salles.ListeSallesImpl;
 import Seances.ListeSeances;
 import Seances.ListeSeancesImpl;
 import Utilitaires.ConnectionErrorException;
@@ -39,6 +41,7 @@ public class ConnectionViaUser implements User {
 	private ListeSeances listeSeances = null;
 	private ListeUtilisateurs listeUtilisateurs = null;
 	private ListeGroupes listeGroupes = null;
+	private ListeSalles listeSalles = null;
 	
 	private ListeDonnees listeType_cours = null;
 	private ListeDonnees listeCours = null;
@@ -76,6 +79,8 @@ public class ConnectionViaUser implements User {
 		listeSeances = new ListeSeancesImpl(connection, listeCours, listeType_cours);
 		listeUtilisateurs = new ListeUtilisateursImpl(connection);
 		listeGroupes = new ListeGroupesImpl(connection, listePromo);
+		listeSalles = new ListeSallesImpl(connection, listeSite);
+		
 	}
 	
 	public String Name() { return name; }
@@ -87,6 +92,8 @@ public class ConnectionViaUser implements User {
 	public ListeUtilisateurs ListeUtilisateurs() { return listeUtilisateurs; }
 	@Override
 	public ListeGroupes ListeGroupes() { return listeGroupes; }
+	@Override
+	public ListeSalles ListeSalles() { return listeSalles; }
 	
 	@Override
 	public ListeDonnees ListeType_cours() { return listeType_cours; }
