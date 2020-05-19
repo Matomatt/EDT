@@ -4,8 +4,11 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.statistics.HistogramDataset;
 
 import Donnees.Donnee;
+import Groupes.Groupe;
+import Seances.Seance;
 import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
+import Utilisateurs.Utilisateur;
 import Utilitaires.UserNotFoundException;
 
 import java.io.File;
@@ -63,5 +66,18 @@ public class EDT {
         for (Donnee d : user.ListePromotion().getAll()) {
     		System.out.println(d);
 		}
+        
+        for (Seance s : user.ListeSeances().getAll()) {
+			System.out.println(s);
+		}
+        
+        for (Utilisateur u : user.ListeUtilisateurs().getAll()) {
+        	System.out.println(u);
+        }
+        
+        for (Groupe g : user.ListeGroupes().getAll())
+        {
+        	System.out.println(g);
+        }
 	}
 }

@@ -2,14 +2,12 @@ package Utilisateurs;
 
 
 import java.sql.*;
-import java.util.List;
-
-import Donnees.Donnee;
 import Donnees.ListeDonnees;
 import Donnees.ListeDonneesImpl;
+import Groupes.ListeGroupes;
+import Groupes.ListeGroupesImpl;
 import Seances.ListeSeances;
 import Seances.ListeSeancesImpl;
-import Seances.Seance;
 import Utilitaires.UserNotFoundException;
 
 public class ConnectionViaUser implements User {
@@ -34,6 +32,8 @@ public class ConnectionViaUser implements User {
 	private Statement statement = null;
 	
 	private ListeSeances listeSeances = null;
+	private ListeUtilisateurs listeUtilisateurs = null;
+	private ListeGroupes listeGroupes = null;
 	
 	private ListeDonnees listeType_cours = null;
 	private ListeDonnees listeCours = null;
@@ -63,20 +63,27 @@ public class ConnectionViaUser implements User {
 		if (!CheckLogin(login, password))
 			throw new UserNotFoundException("Login or password incorrect for user " + login);
 		
-		listeSeances = new ListeSeancesImpl(statement);
 		
 		listeType_cours = new ListeDonneesImpl(statement, "type_cours");
 		listeCours = new ListeDonneesImpl(statement, "cours");
 		listeSite = new ListeDonneesImpl(statement, "site");
 		listePromo = new ListeDonneesImpl(statement, "promotion");
 		
-		listeSeances.CompleterCours(listeCours);
-		listeSeances.CompleterTypes(listeType_cours);
+		listeSeances = new ListeSeancesImpl(statement, listeCours, listeType_cours);
+		listeUtilisateurs = new ListeUtilisateursImpl(statement);
+		listeGroupes = new ListeGroupesImpl(statement, listePromo);
 	}
 	
 	public String Name() { return name; }
 	public UserType Type() { return type; }
 
+	@Override
+	public ListeSeances ListeSeances() { return listeSeances; }
+	@Override
+	public ListeUtilisateurs ListeUtilisateurs() { return listeUtilisateurs; }
+	@Override
+	public ListeGroupes ListeGroupes() { return listeGroupes; }
+	
 	@Override
 	public ListeDonnees ListeType_cours() { return listeType_cours; }
 	@Override
@@ -110,6 +117,7 @@ public class ConnectionViaUser implements User {
 		
 		return true;
 	}
+
 	
 	/********
 	 * PACKAGE RESTRICTED METHODS

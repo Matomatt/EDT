@@ -13,34 +13,18 @@ public class ListeSeancesImpl implements ListeSeances {
 	
 	private Statement statement = null;
 	
-	public ListeSeancesImpl(Statement _statement) throws SQLException
+	public ListeSeancesImpl(Statement _statement, ListeDonnees cours, ListeDonnees type_cours) throws SQLException
 	{
 		statement = _statement;
 		
 		ResultSet result = statement.executeQuery("Select * from seance");
 		
 		while(result.next())
-			list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), result.getDate("Date"), result.getTime("Heure_Debut"), result.getTime("Heure_Fin"), result.getInt("Etat"), result.getInt("ID_Cours"), result.getInt("ID_Type")));
+			list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), result.getDate("Date"), result.getTime("Heure_Debut"), result.getTime("Heure_Fin"), result.getInt("Etat"), cours.GetByID(result.getInt("ID_Cours")), type_cours.GetByID(result.getInt("ID_Type"))));
 	}
 	
 	@Override
 	public List<Seance> getAll() {
 		return list;
-	}
-	
-	@Override
-	public void CompleterCours(ListeDonnees cours)
-	{
-		for (Seance seance : list) {
-			seance.setCours(cours.GetByID(seance.getID_Cours()));
-		}
-	}
-	
-	@Override
-	public void CompleterTypes(ListeDonnees types)
-	{
-		for (Seance seance : list) {
-			seance.setType(types.GetByID(seance.getID_Type()));
-		}
 	}
 }

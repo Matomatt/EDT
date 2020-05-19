@@ -15,15 +15,13 @@ public class Seance {
 	private Time debut;
 	private Time fin;
 	private int etat;
-	private int ID_Cours;
 	private Donnee cours;
-	private int ID_Type;
 	private Donnee type;
 	private List<Integer> IDs_Groupe = new ArrayList<Integer>();
 	private List<Integer> IDs_Enseignant = new ArrayList<Integer>();
 	private List<Integer> IDs_Salle = new ArrayList<Integer>();
 	
-	Seance(int _ID, int _semaine, Date _date, Time _debut, Time _fin, int _etat, int _ID_Cours, int _ID_Type)
+	Seance(int _ID, int _semaine, Date _date, Time _debut, Time _fin, int _etat, Donnee _cours, Donnee _type)
 	{
 		ID = _ID;
 		semaine = _semaine;
@@ -31,8 +29,8 @@ public class Seance {
 		debut = _debut;
 		fin =_fin;
 		etat =_etat;
-		ID_Cours = _ID_Cours;
-		ID_Type =_ID_Type;
+		cours = _cours;
+		type =_type;
 	}
 
 	//public int getID() { return ID; }
@@ -41,9 +39,7 @@ public class Seance {
 	public Time getDebut() { return debut; }
 	public Time getFin() { return fin; }
 	public int getEtat() { return etat; }
-	int getID_Cours() { return ID_Cours; }
 	public Donnee getCours() { return cours; }
-	int getID_Type() { return ID_Type; }
 	public Donnee getType() { return type; }
 	
 	void setCours(Donnee cours) { this.cours = cours; }
@@ -55,7 +51,10 @@ public class Seance {
 	public int getID_Salle() { return ID_Salle; }
 	*/
 
-	
+	@Override
+	public String toString() {
+		return semaine + ", " + date + ", " + debut + ", " + fin + ", " + etat + ", " + cours + ", " + type;
+	}
 
 	
 	
