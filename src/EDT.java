@@ -3,7 +3,11 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.statistics.HistogramDataset;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import Donnees.Donnee;
+import Filters.Filter;
+import Filters.Filter.Filters;
 import Groupes.Groupe;
 import Salles.Salle;
 import Seances.Seance;
@@ -84,5 +88,35 @@ public class EDT {
         for (Salle s : user.ListeSalles().getAll()) {
         	System.out.println(s);
         }
+        
+        //Ce fonctionnement pour remplir la liste est un peu fastidieux je le changerais surement mais la requete avec les filtres customs fonctionnent en tout cas
+        Filter[] filters = null;
+        
+        try {
+        	 Filter[] f = {new Filter(Filters.Nom, new String("Anglais")), new Filter(Filters.Nom, new String("Japonais"))};
+        	 filters = f;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+        System.out.println("Cours trouvés :");
+        for (Donnee c : user.ListeCours().getFilteredBy(filters))
+   		 	System.out.println(c);
+        
+        filters = null;
+        
+        try {
+        	 Filter[] f = {new Filter(Filters.Promotion, user.ListePromotion().GetByID(3)), new Filter(Filters.Promotion, user.ListePromotion().GetByID(2)), new Filter(Filters.Nom, new String("Groupe 01")), new Filter(Filters.Nom, new String("Groupe 04"))};//{new Filter(Filters.Nom, new String("Groupe 01"))};
+        	 filters = f;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+        System.out.println("Groupes trouvés :");
+        for (Groupe g : user.ListeGroupes().getFilteredBy(filters))
+   		 	System.out.println(g);
+        
+        System.out.println("\n\n\ndone");
+       
 	}
 }

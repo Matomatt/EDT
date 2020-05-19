@@ -13,7 +13,7 @@ public class Donnee {
 		ID = _ID;
 	}
 	
-	int getID() { return ID; }
+	public int getID() { return ID; }
 	
 	/**************
 	 * PUBLIC METHODS

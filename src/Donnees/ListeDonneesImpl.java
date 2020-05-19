@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Filters.Filter;
+import Filters.Filter.Filters;
+
 public class ListeDonneesImpl implements ListeDonnees {
 	Connection connection = null;
 	String tableName = "";
@@ -35,6 +38,43 @@ public class ListeDonneesImpl implements ListeDonnees {
 		
 		return list;
 	}
+	
+	@Override
+	public List<Donnee> getFilteredBy(Filter[] filters) 
+	{
+		if (filters == null)
+			return null;
+		
+		int nbFilterNoms = 0;
+		String whereQuery = "";
+		
+		for (Filter filter : filters) {
+			if (filter.Type() == Filters.Nom)
+			{
+				whereQuery += ((nbFilterNoms==0)?" Where ":" OR ") + "Nom='" + filter.Value().toString() + "'";
+				nbFilterNoms ++;
+			}
+		}
+		
+		List<Donnee> list = new ArrayList<Donnee>();
+		ResultSet result;
+		
+		try 
+		{
+			result = connection.createStatement().executeQuery("Select * from " + tableName + whereQuery);
+			
+			while(result.next())
+				list.add(new Donnee(result.getInt("ID"), result.getString("Nom")));
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
+		
+		return list;
+	}
+	
 
 	@Override
 	public boolean Update(Donnee d) {
@@ -68,5 +108,7 @@ public class ListeDonneesImpl implements ListeDonnees {
 		
 		return donnee;
 	}
+
+	
 
 }
