@@ -8,10 +8,15 @@ import Groupes.ListeGroupes;
 import Groupes.ListeGroupesImpl;
 import Seances.ListeSeances;
 import Seances.ListeSeancesImpl;
+import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
 
 public class ConnectionViaUser implements User {
 
+	private String url = "jdbc:mysql://localhost:3306/edt?autoReconnect=true&useSSL=false";
+	private String user = "root";
+	private String passwd = "";
+    
 	enum UserType { Etudiant, Enseignant, Referant_pedagogique, Admin, none; 
 					public String toString()
 					{
@@ -29,7 +34,7 @@ public class ConnectionViaUser implements User {
 	private int ID = 0;
 	private UserType type = UserType.none;
 	
-	private Statement statement = null;
+	private Connection connection = null;
 	
 	private ListeSeances listeSeances = null;
 	private ListeUtilisateurs listeUtilisateurs = null;
@@ -44,19 +49,18 @@ public class ConnectionViaUser implements User {
 	 * PUBLIC METHODS
 	 */
 	
-	public ConnectionViaUser(String login, String password) throws UserNotFoundException, SQLException, ClassNotFoundException
+	public ConnectionViaUser(String login, String password) throws UserNotFoundException, ClassNotFoundException, ConnectionErrorException
 	{
-		String url = "jdbc:mysql://localhost:3306/edt?autoReconnect=true&useSSL=false";
-        String user = "root";
-        String passwd = "";
-        
 		Class.forName("com.mysql.jdbc.Driver");
 		
 		System.out.println("Driver O.K.");
-		
-		
-		Connection conn = DriverManager.getConnection(url, user, passwd);
-		statement = conn.createStatement();
+
+		try {
+			connection = DriverManager.getConnection(url, user, passwd);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ConnectionErrorException("There was an error trying to connect to the database");
+		}
 		
 		System.out.println("Connexion effective !");
         
@@ -64,19 +68,19 @@ public class ConnectionViaUser implements User {
 			throw new UserNotFoundException("Login or password incorrect for user " + login);
 		
 		
-		listeType_cours = new ListeDonneesImpl(statement, "type_cours");
-		listeCours = new ListeDonneesImpl(statement, "cours");
-		listeSite = new ListeDonneesImpl(statement, "site");
-		listePromo = new ListeDonneesImpl(statement, "promotion");
+		listeType_cours = new ListeDonneesImpl(connection, "type_cours");
+		listeCours = new ListeDonneesImpl(connection, "cours");
+		listeSite = new ListeDonneesImpl(connection, "site");
+		listePromo = new ListeDonneesImpl(connection, "promotion");
 		
-		listeSeances = new ListeSeancesImpl(statement, listeCours, listeType_cours);
-		listeUtilisateurs = new ListeUtilisateursImpl(statement);
-		listeGroupes = new ListeGroupesImpl(statement, listePromo);
+		listeSeances = new ListeSeancesImpl(connection, listeCours, listeType_cours);
+		listeUtilisateurs = new ListeUtilisateursImpl(connection);
+		listeGroupes = new ListeGroupesImpl(connection, listePromo);
 	}
 	
 	public String Name() { return name; }
 	public UserType Type() { return type; }
-
+	
 	@Override
 	public ListeSeances ListeSeances() { return listeSeances; }
 	@Override
@@ -98,26 +102,35 @@ public class ConnectionViaUser implements User {
 	 * PRIVATE METHODS
 	 */
 	
-	private boolean CheckLogin(String login, String password) throws SQLException
+	private boolean CheckLogin(String login, String password) throws ConnectionErrorException
 	{
-		ResultSet result = statement.executeQuery("Select ID, Nom, Prenom, Droit from utilisateur where Email='" + login + "' AND Password='" + password +"'");
-		if (!result.next())
-			return false;
 		
-		ID = result.getInt("ID");
-		name = result.getString("Prenom") + " " + result.getString("Nom");
-		
-		switch (result.getInt("Droit"))
-		{
-			case 1: type = UserType.Admin; break;
-			case 2: type = UserType.Referant_pedagogique; break;
-			case 3: type = UserType.Enseignant; break;
-			case 4: type = UserType.Etudiant; break;
+		ResultSet result;
+		try {
+			result = connection.createStatement().executeQuery("Select ID, Nom, Prenom, Droit from utilisateur where Email='" + login + "' AND Password='" + password +"'");
+			
+			if (!result.next())
+				return false;
+			
+			ID = result.getInt("ID");
+			name = result.getString("Prenom") + " " + result.getString("Nom");
+			
+			switch (result.getInt("Droit"))
+			{
+				case 1: type = UserType.Admin; break;
+				case 2: type = UserType.Referant_pedagogique; break;
+				case 3: type = UserType.Enseignant; break;
+				case 4: type = UserType.Etudiant; break;
+			}
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw new ConnectionErrorException("Error when trying to identify user.");
 		}
 		
 		return true;
 	}
-
+	
 	
 	/********
 	 * PACKAGE RESTRICTED METHODS

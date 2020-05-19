@@ -1,5 +1,7 @@
 package Salles;
 
-public interface ListeSalles {
+import java.util.List;
 
+public interface ListeSalles {
+	public List<Salle> getAll();
 }

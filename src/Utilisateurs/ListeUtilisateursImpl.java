@@ -1,29 +1,36 @@
 package Utilisateurs;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import Seances.Seance;
-
 public class ListeUtilisateursImpl implements ListeUtilisateurs {
-	private List<Utilisateur> list = new ArrayList<Utilisateur>();
+	Connection connection = null;
 	
-	Statement statement = null;
-	
-	public ListeUtilisateursImpl(Statement _statement) throws SQLException
+	public ListeUtilisateursImpl(Connection conn)
 	{
-		statement = _statement;
-		
-		ResultSet result = statement.executeQuery("Select * from utilisateur");
-		
-		while(result.next())
-			list.add(new Utilisateur(result.getInt("ID"), result.getString("Email"), result.getString("Nom"), result.getString("Prenom"), result.getInt("Droit")));
-
+		connection = conn;
 	}
+	
 	@Override
-	public List<Utilisateur> getAll() { return list; }
+	public List<Utilisateur> getAll()
+	{
+		List<Utilisateur> list = new ArrayList<Utilisateur>();
+		
+		ResultSet result;
+		try {
+			result = connection.createStatement().executeQuery("Select * from utilisateur");
+			
+			while(result.next())
+				list.add(new Utilisateur(result.getInt("ID"), result.getString("Email"), result.getString("Nom"), result.getString("Prenom"), result.getInt("Droit")));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return list;
+	}
 
 }

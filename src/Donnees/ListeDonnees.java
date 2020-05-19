@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface ListeDonnees {
 	public List<Donnee> getAll();
-	public void Update(Donnee d) throws SQLException;
+	public boolean Update(Donnee d) throws SQLException;
 	public Donnee GetByID(int ID);
 }

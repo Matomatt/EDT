@@ -1,28 +1,40 @@
 package Groupes;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import Donnees.ListeDonnees;
 
 public class ListeGroupesImpl implements ListeGroupes {
-	private List<Groupe> list = new ArrayList<Groupe>();
-
-	private Statement statement = null;
 	
-	public ListeGroupesImpl(Statement _statement, ListeDonnees promotions) throws SQLException
+	private Connection connection = null;
+	private ListeDonnees promotions = null;
+	
+	public ListeGroupesImpl(Connection conn, ListeDonnees _promotions)
 	{
-		statement = _statement;
-		
-		ResultSet result = statement.executeQuery("Select * from groupe");
-		
-		while(result.next())
-			list.add(new Groupe(result.getInt("ID"), result.getString("Nom"), promotions.GetByID(result.getInt("ID_Promotion"))));
+		connection = conn;
+		promotions = _promotions;
 	}
 	
 	@Override
-	public List<Groupe> getAll() { return list; }
+	public List<Groupe> getAll()
+	{ 
+		List<Groupe> list = new ArrayList<Groupe>();
+		
+		ResultSet result;
+		try {
+			result = connection.createStatement().executeQuery("Select * from groupe");
+			
+			while(result.next())
+				list.add(new Groupe(result.getInt("ID"), result.getString("Nom"), promotions.GetByID(result.getInt("ID_Promotion"))));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return list; 
+	}
 }

@@ -58,7 +58,7 @@ public class EDT {
         	user = new ConnectionViaUser("admin", "pw");
 
 			System.out.println(user.Type() + " " + user.Name() + " connected");
-		} catch (UserNotFoundException | ClassNotFoundException | SQLException e) {
+		} catch (UserNotFoundException | ClassNotFoundException e) {
 			e.printStackTrace();
 			return;
 		}
