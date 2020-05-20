@@ -77,7 +77,8 @@ public class ListeDonneesImpl implements ListeDonnees {
 	
 
 	@Override
-	public boolean Update(Donnee d) {
+	public boolean Update(Donnee d) 
+	{
 		try {
 			connection.createStatement().executeUpdate("Update " + tableName + " Set Nom='" + d.getValue() + "' Where ID=" + d.getID());
 		} catch (SQLException e) {

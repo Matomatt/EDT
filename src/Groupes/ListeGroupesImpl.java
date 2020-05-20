@@ -76,4 +76,17 @@ public class ListeGroupesImpl implements ListeGroupes {
 		//System.out.println(whereQuery);
 		return ExecuteQuery("Select * from groupe" + whereQuery);
 	}
+
+	@Override
+	public boolean Update(Groupe groupe) 
+	{
+		try {
+			connection.createStatement().executeUpdate("Update groupe Set Nom='" + groupe.getName() + "', ID_Promotion="+ groupe.getPromotion().getID() +" Where ID=" + groupe.getID());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
 }

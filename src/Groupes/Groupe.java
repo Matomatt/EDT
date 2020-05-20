@@ -18,6 +18,7 @@ public class Groupe {
 		setPromotion(_promotion);
 	}
 	
+	public int getID() { return ID; }
 	public String getName() { return name; }
 	public Donnee getPromotion() { return promotion; }
 
@@ -28,5 +29,7 @@ public class Groupe {
 	public String toString() {
 		return name + " promo " + promotion;
 	}
+
+	
 
 }
