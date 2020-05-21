@@ -7,12 +7,18 @@ public class Groupe {
 	private String name = "";
 	private Donnee promotion = null;
 	
-	public Groupe(int _ID, String _name, Donnee _promotion) {
+	Groupe(int _ID, String _name, Donnee _promotion) {
 		ID = _ID;
 		setName(_name);
 		setPromotion(_promotion);
 	}
 
+	public Groupe(String _name, Donnee _promotion) {
+		setName(_name);
+		setPromotion(_promotion);
+	}
+	
+	public int getID() { return ID; }
 	public String getName() { return name; }
 	public Donnee getPromotion() { return promotion; }
 
@@ -23,5 +29,7 @@ public class Groupe {
 	public String toString() {
 		return name + " promo " + promotion;
 	}
+
+	
 
 }

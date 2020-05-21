@@ -13,11 +13,15 @@ public class Donnee {
 		ID = _ID;
 	}
 	
-	int getID() { return ID; }
+	public int getID() { return ID; }
 	
 	/**************
 	 * PUBLIC METHODS
 	 */
+	
+	public Donnee(String val) {
+		value = val;
+	}
 	
 	public String getValue() { return value; }
 

@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Filters.Filter;
+import Filters.Filter.Filters;
+
 public class ListeDonneesImpl implements ListeDonnees {
 	Connection connection = null;
 	String tableName = "";
@@ -15,14 +18,14 @@ public class ListeDonneesImpl implements ListeDonnees {
 		tableName = _tableName;
 	}
 	
-	@Override
-	public List<Donnee> getAll() {
+	public List<Donnee> ExecuteQuery(String query)
+	{
 		List<Donnee> list = new ArrayList<Donnee>();
 		ResultSet result;
 		
 		try 
 		{
-			result = connection.createStatement().executeQuery("Select * from " + tableName);
+			result = connection.createStatement().executeQuery(query);
 			
 			while(result.next())
 				list.add(new Donnee(result.getInt("ID"), result.getString("Nom")));
@@ -35,9 +38,36 @@ public class ListeDonneesImpl implements ListeDonnees {
 		
 		return list;
 	}
+	
+	@Override
+	public List<Donnee> getAll() {
+		return ExecuteQuery("Select * from " + tableName);
+	}
+	
+	@Override
+	public List<Donnee> getFilteredBy(Filter[] filters) 
+	{
+		if (filters == null)
+			return null;
+		
+		int nbFilterNoms = 0;
+		String whereQuery = "";
+		
+		for (Filter filter : filters) {
+			if (filter.Type() == Filters.Nom)
+			{
+				whereQuery += ((nbFilterNoms==0)?" Where ":" OR ") + "Nom='" + filter.Value().toString() + "'";
+				nbFilterNoms ++;
+			}
+		}
+		
+		return ExecuteQuery("Select * from " + tableName + whereQuery);
+	}
+	
 
 	@Override
-	public boolean Update(Donnee d) {
+	public boolean Update(Donnee d) 
+	{
 		try {
 			connection.createStatement().executeUpdate("Update " + tableName + " Set Nom='" + d.getValue() + "' Where ID=" + d.getID());
 		} catch (SQLException e) {
@@ -68,5 +98,18 @@ public class ListeDonneesImpl implements ListeDonnees {
 		
 		return donnee;
 	}
+
+	@Override
+	public Donnee getByNom(String nom) {
+		try {
+			return ExecuteQuery("Select * from " + tableName + " Where Nom='"+nom+"'").get(0);
+		}
+		catch (Exception e) {
+			return null;
+		}
+		
+	}
+
+	
 
 }
