@@ -24,7 +24,7 @@ public class ConnectionViaUser implements User {
 						{
 						case Etudiant : return "Etudiant";
 						case Enseignant : return "Enseignant";
-						case Referant_pedagogique : return "Référant pédagogique";
+						case Referant_pedagogique : return "RÃ©fÃ©rant pÃ©dagogique";
 						case Admin : return "Admin";
 						}
 						return "none";
