@@ -14,8 +14,7 @@ import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
-import sun.tools.jar.resources.jar;
-
+import View.Test;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
@@ -38,17 +37,29 @@ public class EDT {
 			return;
 		}
         
-        for (Utilisateur enseignant : user.ListeUtilisateurs().getEnseignants()) {
-			System.out.println(enseignant);
-			for (Seance seance : user.ListeSeances().getByUtilisateur(enseignant)) {
-				System.out.println(seance);
-			}
-			
-			System.out.println("------------\n");
-		}
+        
+        
+        try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
+            }
+        }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        new Test(user).setVisible(true);
         
         //RemplirSeances(user);
-        
         //Tests(user);
        //TestsHistogram();
 	}
@@ -220,9 +231,14 @@ public class EDT {
 							Donnee cours = listeCours.get(random.nextInt(listeCours.size()));
 							Donnee type_cours = listeTypeCours.get(random.nextInt(listeTypeCours.size()));
 							List<Utilisateur> listeEnseignants = user.ListeUtilisateurs().getEnseignantsByCours(cours);
-							Utilisateur enseignant = user.ListeUtilisateurs().getReferents().get(random.nextInt(user.ListeUtilisateurs().getReferents().size()));
-							if (listeEnseignants.size()>0)
-								 enseignant = listeEnseignants.get(random.nextInt(listeEnseignants.size()));
+							Utilisateur enseignant;
+							do {
+								if (listeEnseignants.size()>0)
+									 enseignant = listeEnseignants.get(random.nextInt(listeEnseignants.size()));
+								else
+									enseignant = user.ListeUtilisateurs().getReferents().get(random.nextInt(user.ListeUtilisateurs().getReferents().size()));
+							} while (user.ListeSeances().utilisateurLibre(enseignant, heureDebut, heureFin, date));
+							
 							
 							Salle salle;
 							do {
@@ -248,5 +264,22 @@ public class EDT {
         	}//Groupe
         	countp++;
 		}//Promo
+        
+        /*
+           for (Utilisateur enseignant : user.ListeUtilisateurs().getEnseignants()) {
+			System.out.println(enseignant);
+			Seance lastSeance = null;
+			for (Seance seance : user.ListeSeances().getByUtilisateur(enseignant)) {
+				if (lastSeance==null)
+					lastSeance = seance;
+				else if (lastSeance.getDate().equals(seance.getDate()) && lastSeance.getDebut().equals(seance.getDebut()) && lastSeance.getFin().equals(lastSeance.getFin()))
+					user.ListeSeances().Delete(seance);
+				else
+					lastSeance = seance;
+			}
+			
+			System.out.println("------------\n");
+		}
+         */
 	}
 }

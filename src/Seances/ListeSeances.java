@@ -21,4 +21,5 @@ public interface ListeSeances {
 	public boolean promoLibre(Donnee promotion, Time heureDebut, Time heureFin, Date date);
 	public boolean groupeLibre(Groupe groupe, Time heureDebut, Time heureFin, Date date);
 	public boolean utilisateurLibre(Utilisateur utilisateur, Time heureDebut, Time heureFin, Date date);
+	public void Delete(Seance seance);
 }
