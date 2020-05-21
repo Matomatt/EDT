@@ -9,10 +9,12 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import Donnees.Donnee;
 import Donnees.ListeDonnees;
 import Groupes.Groupe;
 import Salles.ListeSalles;
 import Salles.Salle;
+import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 
 public class ListeSeancesImpl implements ListeSeances {
@@ -20,14 +22,12 @@ public class ListeSeancesImpl implements ListeSeances {
 	private Connection connection = null;
 	private ListeDonnees cours = null;
 	private ListeDonnees type_cours = null;
-	private ListeSalles salles = null;
 	
-	public ListeSeancesImpl(Connection conn, ListeDonnees _cours, ListeDonnees _type_cours, ListeSalles _salles)
+	public ListeSeancesImpl(Connection conn, ListeDonnees _cours, ListeDonnees _type_cours)
 	{
 		connection = conn;
 		cours = _cours;
 		type_cours = _type_cours;
-		salles = _salles;
 	}
 	
 	private List<Seance> ExecuteQuery(String query)
@@ -36,7 +36,7 @@ public class ListeSeancesImpl implements ListeSeances {
 		
 		ResultSet result;
 		try {
-			result = connection.createStatement().executeQuery(query);
+			result = connection.createStatement().executeQuery(query + " ORDER BY Date ASC, Heure_Debut ASC");
 			
 			while(result.next())
 				list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), result.getDate("Date"), result.getTime("Heure_Debut"), result.getTime("Heure_Fin"), result.getInt("Etat"), cours.GetByID(result.getInt("ID_Cours")), type_cours.GetByID(result.getInt("ID_Type"))));
@@ -57,6 +57,24 @@ public class ListeSeancesImpl implements ListeSeances {
 	@Override
 	public List<Seance> getBySalle(Salle salle) {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_salles Where ID_Salle="+salle.getID()+")");
+	}
+	
+	@Override
+	public List<Seance> getByPromo(Donnee promotion) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+"))");
+	}
+	
+	@Override
+	public List<Seance> getByGroupe(Groupe groupe) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe="+groupe.getID()+")");
+	}
+	
+	@Override
+	public List<Seance> getByUtilisateur(Utilisateur utilisateur) {
+		if (utilisateur.getType() == User.UserType.Etudiant)
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+"))");
+		else
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+")");
 	}
 	
 	@Override
@@ -102,5 +120,33 @@ public class ListeSeancesImpl implements ListeSeances {
 		return true;
 	}
 
+	@Override
+	public boolean promoLibre(Donnee promotion, Time heureDebut, Time heureFin, Date date) {
+		for (Seance seance : getByPromo(promotion)) {
+			//System.out.println(date + "==" + seance.getDate());
+			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
+				return false;
+		}
+		return true;
+	}
 	
+	@Override
+	public boolean groupeLibre(Groupe groupe, Time heureDebut, Time heureFin, Date date) {
+		for (Seance seance : getByGroupe(groupe)) {
+			//System.out.println(date + "==" + seance.getDate());
+			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean utilisateurLibre(Utilisateur utilisateur, Time heureDebut, Time heureFin, Date date) {
+		for (Seance seance : getByUtilisateur(utilisateur)) {
+			//System.out.println(date + "==" + seance.getDate());
+			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
+				return false;
+		}
+		return true;
+	}
 }

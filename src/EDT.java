@@ -38,6 +38,14 @@ public class EDT {
 			return;
 		}
         
+        for (Utilisateur enseignant : user.ListeUtilisateurs().getEnseignants()) {
+			System.out.println(enseignant);
+			for (Seance seance : user.ListeSeances().getByUtilisateur(enseignant)) {
+				System.out.println(seance);
+			}
+			
+			System.out.println("------------\n");
+		}
         
         //RemplirSeances(user);
         
@@ -168,8 +176,12 @@ public class EDT {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private static void RemplirSeances(User user)
 	{
+		if (true)
+			return;
+		
 		List<Donnee> listeCours = user.ListeCours().getAll();
         List<Donnee> listeTypeCours = user.ListeType_cours().getAll();
         List<Salle> listeSalles = user.ListeSalles().getAll();

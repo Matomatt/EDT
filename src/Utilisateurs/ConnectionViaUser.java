@@ -18,28 +18,15 @@ public class ConnectionViaUser implements User {
 	private String url = "jdbc:mysql://localhost:3306/edt?autoReconnect=true&useSSL=false";
 	private String user = "root";
 	private String passwd = "";
-    
-	enum UserType { Etudiant, Enseignant, Referent_pedagogique, Admin, none; 
-					public String toString()
-					{
-						switch (this)
-						{
-						case Etudiant : return "Etudiant";
-						case Enseignant : return "Enseignant";
-						case Referent_pedagogique : return "Référant pédagogique";
-						case Admin : return "Admin";
-						default: return "none";
-						}
-					}; };
 	
 	private int ID = 0;
 	
 	private Connection connection = null;
 	
 	private ListeSalles listeSalles = null;
-	private ListeSeances listeSeances = null;
 	private ListeGroupes listeGroupes = null;
 	private ListeUtilisateurs listeUtilisateurs = null;
+	private ListeSeances listeSeances = null;
 	
 	private ListeDonnees listeType_cours = null;
 	private ListeDonnees listeCours = null;
@@ -75,9 +62,9 @@ public class ConnectionViaUser implements User {
 		listePromo = new ListeDonneesImpl(connection, "promotion");
 		
 		listeSalles = new ListeSallesImpl(connection, listeSite);
-		listeSeances = new ListeSeancesImpl(connection, listeCours, listeType_cours, listeSalles);
 		listeGroupes = new ListeGroupesImpl(connection, listePromo);
 		listeUtilisateurs = new ListeUtilisateursImpl(connection, listeCours, listeGroupes);
+		listeSeances = new ListeSeancesImpl(connection, listeCours, listeType_cours);
 		
 	}
 	
