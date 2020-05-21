@@ -1,6 +1,7 @@
 package Seances;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -90,10 +91,12 @@ public class ListeSeancesImpl implements ListeSeances {
 	}
 
 	@Override
-	public boolean salleLibre(Salle salle, Time heureDebut, Time heureFin) 
+	public boolean salleLibre(Salle salle, Time heureDebut, Time heureFin, Date date) 
 	{
+		
 		for (Seance seance : getBySalle(salle)) {
-			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)))
+			//System.out.println(date + "==" + seance.getDate());
+			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
 				return false;
 		}
 		return true;
