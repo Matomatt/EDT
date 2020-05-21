@@ -5,7 +5,7 @@
  */
 package View;
 
-import View.EDTListe;
+import View.EDT_Liste;
 import java.awt.Color;
 import javax.swing.JFrame;
 import java.sql.Connection;
@@ -100,8 +100,7 @@ public class Login_frame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        EDTListe planning = new EDTListe();
-        planning.setVisible(true);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
