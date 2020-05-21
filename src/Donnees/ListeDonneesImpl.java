@@ -18,14 +18,14 @@ public class ListeDonneesImpl implements ListeDonnees {
 		tableName = _tableName;
 	}
 	
-	@Override
-	public List<Donnee> getAll() {
+	public List<Donnee> ExecuteQuery(String query)
+	{
 		List<Donnee> list = new ArrayList<Donnee>();
 		ResultSet result;
 		
 		try 
 		{
-			result = connection.createStatement().executeQuery("Select * from " + tableName);
+			result = connection.createStatement().executeQuery(query);
 			
 			while(result.next())
 				list.add(new Donnee(result.getInt("ID"), result.getString("Nom")));
@@ -37,6 +37,11 @@ public class ListeDonneesImpl implements ListeDonnees {
 		}
 		
 		return list;
+	}
+	
+	@Override
+	public List<Donnee> getAll() {
+		return ExecuteQuery("Select * from " + tableName);
 	}
 	
 	@Override
@@ -56,23 +61,7 @@ public class ListeDonneesImpl implements ListeDonnees {
 			}
 		}
 		
-		List<Donnee> list = new ArrayList<Donnee>();
-		ResultSet result;
-		
-		try 
-		{
-			result = connection.createStatement().executeQuery("Select * from " + tableName + whereQuery);
-			
-			while(result.next())
-				list.add(new Donnee(result.getInt("ID"), result.getString("Nom")));
-		} 
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-			return null;
-		}
-		
-		return list;
+		return ExecuteQuery("Select * from " + tableName + whereQuery);
 	}
 	
 
@@ -108,6 +97,17 @@ public class ListeDonneesImpl implements ListeDonnees {
 		}
 		
 		return donnee;
+	}
+
+	@Override
+	public Donnee getByNom(String nom) {
+		try {
+			return ExecuteQuery("Select * from " + tableName + " Where Nom='"+nom+"'").get(0);
+		}
+		catch (Exception e) {
+			return null;
+		}
+		
 	}
 
 	

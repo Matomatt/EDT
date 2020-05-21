@@ -21,8 +21,7 @@ public class Salle {
 		setSite(_site);
 	}
 
-	int getID() { return ID; }
-	
+	public int getID() { return ID; }
 	public String getNom() { return nom; }
 	public int getCapacite() { return capacite; }
 	public Donnee getSite() { return site; }

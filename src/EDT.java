@@ -14,23 +14,32 @@ import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
+import sun.tools.jar.resources.jar;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 public class EDT {
 
+	
 	public static void main(String args[])
 	{
         User user = null;
         try {
         	user = new ConnectionViaUser("admin", "pw");
 
-			System.out.println(user.Type() + " " + user.Name() + " connected");
+			System.out.println(user.getUtilisateurConnecte() + " connected");
 		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
 			e.printStackTrace();
 			return;
 		}
+        
+        
+        //RemplirSeances(user);
         
         //Tests(user);
        //TestsHistogram();
@@ -47,6 +56,18 @@ public class EDT {
 		}
         
         for (Utilisateur u : user.ListeUtilisateurs().getAll()) {
+        	System.out.println(u);
+        }
+        
+        try { //Le try catch si le nom du cours n'existe pas dans la BDD
+			for (Utilisateur u : user.ListeUtilisateurs().getEnseignantsByCours(user.ListeCours().getByNom("Géométrie"))) {
+	        	System.out.println(u);
+	        }
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+        
+        for (Utilisateur u : user.ListeUtilisateurs().getEnseignantsByCours(user.ListeCours().getByNom("Probabilités et statistiques"))) {
         	System.out.println(u);
         }
         
@@ -68,7 +89,7 @@ public class EDT {
 			e.printStackTrace();
 		}
         
-        System.out.println("Cours trouv�s :");
+        System.out.println("Cours trouvés :");
         for (Donnee c : user.ListeCours().getFilteredBy(filters))
         {
         	System.out.println(c+" ");
@@ -90,7 +111,7 @@ public class EDT {
 			e.printStackTrace();
 		}
         
-        System.out.println("Groupes trouv�s :");
+        System.out.println("Groupes trouvés :");
         for (Groupe g : user.ListeGroupes().getFilteredBy(filters))
         {
         	System.out.println(g);
@@ -145,5 +166,76 @@ public class EDT {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private static void RemplirSeances(User user)
+	{
+		List<Donnee> listeCours = user.ListeCours().getAll();
+        List<Donnee> listeTypeCours = user.ListeType_cours().getAll();
+        List<Salle> listeSalles = user.ListeSalles().getAll();
+        
+        Date currentTime = new Date();
+        int countp = 0; int countg = 0;
+        List<Donnee> promotDonnees = user.ListePromotion().getAll();
+        for (Donnee promo : promotDonnees)
+        {
+        	if (promo.getID() != 1)
+        	{
+        		List<Groupe> promotionGroupes = user.ListeGroupes().getByPromotion(promo);
+            	for(Groupe groupe : promotionGroupes)
+            	{
+            		for (int s = 0; s < 9; s++) 
+    	        	{
+    					for (int i = 0; i < 5; i++) 
+    		    		{
+    						java.sql.Date date = new java.sql.Date(currentTime.getTime()-3*24*3600*1000+i*24*3600*1000+s*7*24*3600*1000); //Lundi 18/05/2020 c'est la semaine 21
+    						
+    		    			Random random = new Random();
+    		    			int r = random.nextInt(7);
+    		    			
+    						for (int j = 0; j < r; j++) 
+    						{
+    							float h; int m;
+    							h = j*1.75f+8.5f + (j>1?1.75f:0);
+    							m = (int) ((h-(int)h)*60);
+    							@SuppressWarnings("deprecation")
+    							Time heureDebut = new Time((int) h,m,0);
+    							h += 1.5f;
+    							m = (int) ((h-(int)h)*60);
+    							@SuppressWarnings("deprecation")
+    							Time heureFin = new Time((int) h,m,0);
+    							
+    							Donnee cours = listeCours.get(random.nextInt(listeCours.size()));
+    							Donnee type_cours = listeTypeCours.get(random.nextInt(listeTypeCours.size()));
+    							List<Utilisateur> listeEnseignants = user.ListeUtilisateurs().getEnseignantsByCours(cours);
+    							Utilisateur enseignant = user.ListeUtilisateurs().getReferents().get(random.nextInt(user.ListeUtilisateurs().getReferents().size()));
+    							if (listeEnseignants.size()>0)
+    								 enseignant = listeEnseignants.get(random.nextInt(listeEnseignants.size()));
+    							
+    							Salle salle;
+    							do {
+    								salle = listeSalles.get(random.nextInt(listeSalles.size()));
+    							} while (!user.ListeSeances().salleLibre(salle, heureDebut, heureFin));
+    							
+    							Seance toAddSeance = new Seance(21+s, date, heureDebut, heureFin, 2, cours, type_cours, groupe, enseignant, salle);
+    							user.ListeSeances().addSeance(toAddSeance);
+    							//System.out.println(toAdd);
+    							//System.out.println(salle + "(" + heureDebut + ", " + heureFin + ")");
+    							//System.out.println(cours + " : " + enseignant);
+    							//System.out.println(cours + " | " + type_cours);
+    							//System.out.println(d1 + " / " + date + " : " + heureDebut + " - " + heureFin);
+    						}//Heure
+    						float progress = (countp*promotionGroupes.size()*9*5) + countp*9*5 + s*5 + i;
+    						float goal = (promotDonnees.size()*promotionGroupes.size()*9*5);
+    						
+    						System.out.println(100*progress/goal+"%");
+    					}//Jour
+    				}//Semaine
+            		countg++;
+            	}//Groupe
+            	
+        	}
+        	countp++;
+		}//Promo
 	}
 }

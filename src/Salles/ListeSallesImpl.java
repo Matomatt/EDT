@@ -3,10 +3,13 @@ package Salles;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import Donnees.ListeDonnees;
+import Seances.ListeSeances;
+import Seances.Seance;
 
 public class ListeSallesImpl implements ListeSalles
 {
@@ -18,13 +21,12 @@ public class ListeSallesImpl implements ListeSalles
 		sites = _sites;
 	}
 	
-	@Override
-	public List<Salle> getAll()
+	private List<Salle> ExecuteQuery(String query)
 	{
 		List<Salle> list = new ArrayList<Salle>();
 		
 		try {
-			ResultSet result = connection.createStatement().executeQuery("Select * from salle");
+			ResultSet result = connection.createStatement().executeQuery(query);
 			
 			while(result.next())
 				list.add(new Salle(result.getInt("ID"), result.getString("Nom"), result.getInt("Capacite"), sites.GetByID(result.getInt("ID_Site")) ));
@@ -34,6 +36,11 @@ public class ListeSallesImpl implements ListeSalles
 		}
 				
 		return list;
+	}
+	@Override
+	public List<Salle> getAll()
+	{
+		return ExecuteQuery("Select * from salle");
 	}
 	
 }

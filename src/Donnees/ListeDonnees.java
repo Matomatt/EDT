@@ -10,4 +10,5 @@ public interface ListeDonnees {
 	
 	public boolean Update(Donnee d);
 	public Donnee GetByID(int ID);
+	public Donnee getByNom(String nom);
 }

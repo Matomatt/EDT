@@ -19,29 +19,27 @@ public class ConnectionViaUser implements User {
 	private String user = "root";
 	private String passwd = "";
     
-	enum UserType { Etudiant, Enseignant, Referant_pedagogique, Admin, none; 
+	enum UserType { Etudiant, Enseignant, Referent_pedagogique, Admin, none; 
 					public String toString()
 					{
 						switch (this)
 						{
 						case Etudiant : return "Etudiant";
 						case Enseignant : return "Enseignant";
-						case Referant_pedagogique : return "Référant pédagogique";
+						case Referent_pedagogique : return "Référant pédagogique";
 						case Admin : return "Admin";
+						default: return "none";
 						}
-						return "none";
 					}; };
 	
-	private String name = "";
 	private int ID = 0;
-	private UserType type = UserType.none;
 	
 	private Connection connection = null;
 	
-	private ListeSeances listeSeances = null;
-	private ListeUtilisateurs listeUtilisateurs = null;
-	private ListeGroupes listeGroupes = null;
 	private ListeSalles listeSalles = null;
+	private ListeSeances listeSeances = null;
+	private ListeGroupes listeGroupes = null;
+	private ListeUtilisateurs listeUtilisateurs = null;
 	
 	private ListeDonnees listeType_cours = null;
 	private ListeDonnees listeCours = null;
@@ -76,16 +74,15 @@ public class ConnectionViaUser implements User {
 		listeSite = new ListeDonneesImpl(connection, "site");
 		listePromo = new ListeDonneesImpl(connection, "promotion");
 		
-		listeSeances = new ListeSeancesImpl(connection, listeCours, listeType_cours);
-		listeUtilisateurs = new ListeUtilisateursImpl(connection);
-		listeGroupes = new ListeGroupesImpl(connection, listePromo);
 		listeSalles = new ListeSallesImpl(connection, listeSite);
+		listeSeances = new ListeSeancesImpl(connection, listeCours, listeType_cours, listeSalles);
+		listeGroupes = new ListeGroupesImpl(connection, listePromo);
+		listeUtilisateurs = new ListeUtilisateursImpl(connection, listeCours, listeGroupes);
 		
 	}
 	
-	public String Name() { return name; }
-	public UserType Type() { return type; }
-	
+	@Override
+	public Utilisateur getUtilisateurConnecte() { return listeUtilisateurs.getByID(ID); }
 	@Override
 	public ListeSeances ListeSeances() { return listeSeances; }
 	@Override
@@ -120,15 +117,6 @@ public class ConnectionViaUser implements User {
 				return false;
 			
 			ID = result.getInt("ID");
-			name = result.getString("Prenom") + " " + result.getString("Nom");
-			
-			switch (result.getInt("Droit"))
-			{
-				case 1: type = UserType.Admin; break;
-				case 2: type = UserType.Referant_pedagogique; break;
-				case 3: type = UserType.Enseignant; break;
-				case 4: type = UserType.Etudiant; break;
-			}
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();

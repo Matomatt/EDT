@@ -45,6 +45,11 @@ public class ListeGroupesImpl implements ListeGroupes {
 	{ 
 		return ExecuteQuery("Select * from groupe");
 	}
+	
+	@Override
+	public List<Groupe> getByPromotion(Donnee promotion) {
+		return ExecuteQuery("Select * from groupe Where ID_Promotion="+promotion.getID());
+	}
 
 	@Override
 	public List<Groupe> getFilteredBy(Filter[] filters)
@@ -88,5 +93,26 @@ public class ListeGroupesImpl implements ListeGroupes {
 		}
 		
 		return true;
+	}
+
+	@Override
+	public Groupe getByID(int ID) {
+		Groupe groupe = null;
+		ResultSet result;
+		
+		try 
+		{
+			result = connection.createStatement().executeQuery("Select * from groupe where ID=" + ID);
+			
+			if(result.next())
+				groupe = new Groupe(result.getInt("ID"), result.getString("Nom"), promotions.GetByID(result.getInt("ID_Promotion")));
+		} 
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
+		
+		return groupe;
 	}
 }
