@@ -31,6 +31,8 @@ public class EDT_fond extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jButton4 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jComboBox2 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         Desk = new javax.swing.JDesktopPane();
@@ -50,8 +52,13 @@ public class EDT_fond extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 45, 150, 59));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/images/btnRecap.png"))); // NOI18N
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 45, 150, 60));
+        jButton2.setText("Récapitulatif");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(262, 45, 150, 59));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Grille", "Liste" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -60,6 +67,22 @@ public class EDT_fond extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 90, 30));
+
+        jButton4.setText("Modifier");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(415, 45, 150, 60));
+
+        jButton3.setText("Reporting");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(565, 45, 150, 60));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Saisie du nom", "Saisie de la promo", "Saisie de la salle" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
@@ -100,6 +123,33 @@ public class EDT_fond extends javax.swing.JFrame {
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.Desk.removeAll();
+        this.Desk.repaint();
+        
+        Modif_Admin maj = new Modif_Admin();
+        this.Desk.add(maj);
+        maj.show();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.Desk.removeAll();
+        this.Desk.repaint();
+        
+        Recap rec = new Recap();
+        this.Desk.add(rec);
+        rec.show();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.Desk.removeAll();
+        this.Desk.repaint();
+        
+        Reporting rep = new Reporting();
+        this.Desk.add(rep);
+        rep.show();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -142,6 +192,8 @@ public class EDT_fond extends javax.swing.JFrame {
     private javax.swing.JDesktopPane Desk;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel2;
