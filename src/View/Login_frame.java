@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package View;
 
 import java.awt.Color;
-import java.awt.LayoutManager;
-
 import javax.swing.JFrame;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -99,17 +98,15 @@ public class Login_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_champ_mdpActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
+        
+ 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
                 // TODO add your handling code here:
     }//GEN-LAST:event_jButton1MouseClicked
 
-
-     /* @param args the command line arguments
-     */
+     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

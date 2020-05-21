@@ -14,6 +14,7 @@ import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
+import View.EDT_fond;
 import View.Test;
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,8 @@ public class EDT {
 	
 	public static void main(String args[])
 	{
+        EDT_fond page = new EDT_fond();
+        page.setVisible(true);
         User user = null;
         try {
         	user = new ConnectionViaUser("admin", "pw");
