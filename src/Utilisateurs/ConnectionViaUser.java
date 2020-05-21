@@ -64,7 +64,7 @@ public class ConnectionViaUser implements User {
 		listeSalles = new ListeSallesImpl(connection, listeSite);
 		listeGroupes = new ListeGroupesImpl(connection, listePromo);
 		listeUtilisateurs = new ListeUtilisateursImpl(connection, listeCours, listeGroupes);
-		listeSeances = new ListeSeancesImpl(connection, listeCours, listeType_cours);
+		listeSeances = new ListeSeancesImpl(connection, listeCours, listeType_cours, listeGroupes, listeUtilisateurs, listeSalles);
 		
 	}
 	

@@ -10,6 +10,7 @@ import Donnees.Donnee;
 import Donnees.ListeDonnees;
 import Filters.Filter;
 import Filters.Filter.Filters;
+import Seances.Seance;
 
 public class ListeGroupesImpl implements ListeGroupes {
 	
@@ -114,5 +115,15 @@ public class ListeGroupesImpl implements ListeGroupes {
 		}
 		
 		return groupe;
+	}
+
+	@Override
+	public List<Groupe> getBySeance(Seance seance) {
+		return getBySeanceID(seance.getID());
+	}
+
+	@Override
+	public List<Groupe> getBySeanceID(int ID) {
+		return ExecuteQuery("Select * From groupe Where ID IN (Select ID_Groupe From seance_groupes Where ID_Seance="+ID+")");
 	}
 }

@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package View;
 
 import View.EDTListe;
 import java.awt.Color;
-import java.awt.LayoutManager;
-
 import javax.swing.JFrame;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -109,9 +108,7 @@ public class Login_frame extends javax.swing.JFrame {
                 // TODO add your handling code here:
     }//GEN-LAST:event_jButton1MouseClicked
 
-
-     /* @param args the command line arguments
-     */
+     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

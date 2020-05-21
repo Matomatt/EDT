@@ -24,7 +24,7 @@ public class Seance {
 	private List<Utilisateur> enseignants = new ArrayList<Utilisateur>();
 	private List<Salle> salles = new ArrayList<Salle>();
 	
-	Seance(int _ID, int _semaine, Date _date, Time _debut, Time _fin, int _etat, Donnee _cours, Donnee _type)
+	Seance(int _ID, int _semaine, Date _date, Time _debut, Time _fin, int _etat, Donnee _cours, Donnee _type, List<Groupe> _groupes, List<Utilisateur> _enseignants, List<Salle> _salles)
 	{
 		ID = _ID;
 		semaine = _semaine;
@@ -34,6 +34,9 @@ public class Seance {
 		etat =_etat;
 		cours = _cours;
 		type =_type;
+		groupes = _groupes;
+		enseignants = _enseignants;
+		salles = _salles;
 	}
 	
 	public Seance(int _semaine, Date _date, Time _debut, Time _fin, int _etat, Donnee _cours, Donnee _type)
@@ -64,7 +67,7 @@ public class Seance {
 		salles.add(salle);
 	}
 
-	//public int getID() { return ID; }
+	public int getID() { return ID; }
 	public int getSemaine() { return semaine; }
 	public Date getDate() { return date; }
 	public Time getDebut() { return debut; }
@@ -79,11 +82,6 @@ public class Seance {
 	void setCours(Donnee cours) { this.cours = cours; }
 	void setType(Donnee type) { this.type = type; }
 	
-	/*
-	public int getID_Groupe() { return ID_Groupe; }
-	public int getID_Enseignant() { return ID_Enseignant; }
-	public int getID_Salle() { return ID_Salle; }
-	*/
 
 	@Override
 	public String toString() {
@@ -101,7 +99,5 @@ public class Seance {
 		}
 		return toReturnString;
 	}
-
-	
 	
 }

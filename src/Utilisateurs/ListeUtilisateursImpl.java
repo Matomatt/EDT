@@ -9,6 +9,7 @@ import java.util.List;
 import Donnees.Donnee;
 import Donnees.ListeDonnees;
 import Groupes.ListeGroupes;
+import Seances.Seance;
 
 public class ListeUtilisateursImpl implements ListeUtilisateurs {
 	Connection connection = null;
@@ -98,6 +99,16 @@ public class ListeUtilisateursImpl implements ListeUtilisateurs {
 	@Override
 	public List<Utilisateur> getReferents() {
 		return ExecuteQuery("Select * From utilisateur Where Droit=2");
+	}
+
+	@Override
+	public List<Utilisateur> getEnseignantsBySeance(Seance seance) {
+		return getEnseignantsBySeanceID(seance.getID());
+	}
+
+	@Override
+	public List<Utilisateur> getEnseignantsBySeanceID(int ID) {
+		return ExecuteQuery("Select * From utilisateur Where ID IN (Select ID_Enseignant From seance_enseigants Where ID_Seance="+ID+")");
 	}
 
 }

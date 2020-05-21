@@ -42,5 +42,15 @@ public class ListeSallesImpl implements ListeSalles
 	{
 		return ExecuteQuery("Select * from salle");
 	}
+
+	@Override
+	public List<Salle> getBySeance(Seance seance) {
+		return getBySeanceID(seance.getID());
+	}
+
+	@Override
+	public List<Salle> getBySeanceID(int ID) {
+		return ExecuteQuery("Select * From salle Where ID IN (Select ID_Salle From seance_salles Where ID_Seance="+ID+")");
+	}
 	
 }

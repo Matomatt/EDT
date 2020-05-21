@@ -12,8 +12,10 @@ import java.util.List;
 import Donnees.Donnee;
 import Donnees.ListeDonnees;
 import Groupes.Groupe;
+import Groupes.ListeGroupes;
 import Salles.ListeSalles;
 import Salles.Salle;
+import Utilisateurs.ListeUtilisateurs;
 import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 
@@ -22,12 +24,18 @@ public class ListeSeancesImpl implements ListeSeances {
 	private Connection connection = null;
 	private ListeDonnees cours = null;
 	private ListeDonnees type_cours = null;
+	private ListeGroupes groupes = null;
+	private ListeUtilisateurs utilisateurs = null;
+	private ListeSalles salles = null;
 	
-	public ListeSeancesImpl(Connection conn, ListeDonnees _cours, ListeDonnees _type_cours)
+	public ListeSeancesImpl(Connection conn, ListeDonnees _cours, ListeDonnees _type_cours, ListeGroupes _groupes, ListeUtilisateurs _utilisateurs, ListeSalles _salles)
 	{
 		connection = conn;
 		cours = _cours;
 		type_cours = _type_cours;
+		groupes = _groupes;
+		utilisateurs = _utilisateurs;
+		salles = _salles;
 	}
 	
 	private List<Seance> ExecuteQuery(String query)
@@ -39,7 +47,11 @@ public class ListeSeancesImpl implements ListeSeances {
 			result = connection.createStatement().executeQuery(query + " ORDER BY Date ASC, Heure_Debut ASC");
 			
 			while(result.next())
-				list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), result.getDate("Date"), result.getTime("Heure_Debut"), result.getTime("Heure_Fin"), result.getInt("Etat"), cours.GetByID(result.getInt("ID_Cours")), type_cours.GetByID(result.getInt("ID_Type"))));
+			{
+				list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), result.getDate("Date"), result.getTime("Heure_Debut"), result.getTime("Heure_Fin"), 
+						result.getInt("Etat"), cours.GetByID(result.getInt("ID_Cours")), type_cours.GetByID(result.getInt("ID_Type")),
+						groupes.getBySeanceID(result.getInt("ID")), utilisateurs.getEnseignantsBySeanceID(result.getInt("ID")), salles.getBySeanceID(result.getInt("ID"))));
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -148,5 +160,25 @@ public class ListeSeancesImpl implements ListeSeances {
 				return false;
 		}
 		return true;
+	}
+
+	@Override
+	public void Delete(Seance seance) {
+		try {
+			connection.createStatement().executeUpdate("DELETE From seance Where ID="+seance.getID());
+								
+			for (Groupe groupe : seance.getGroupes()) {
+				connection.createStatement().executeUpdate("DELETE From `seance_groupes` Where ID_Groupe="+groupe.getID()+" AND ID_Seance="+seance.getID());
+			}
+			for (Utilisateur enseignant : seance.getEnseignants()) {
+				connection.createStatement().executeUpdate("DELETE From `seance_enseigants` Where ID_Enseignant="+enseignant.getID()+" AND ID_Seance="+seance.getID());
+			}
+			for (Salle salle : seance.getSalles()) {
+				connection.createStatement().executeUpdate("DELETE From `seance_salles` Where ID_Salle="+salle.getID()+" AND ID_Seance="+seance.getID());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
