@@ -28,6 +28,11 @@ public class EDT {
 	
 	public static void main(String args[])
 	{
+            
+        Login_frame page = new Login_frame();
+        page.setVisible(true);
+        
+        
         User user = null;
         try {
         	user = new ConnectionViaUser("admin", "pw");
