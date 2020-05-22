@@ -5,21 +5,30 @@
  */
 package View;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-/**
- *
- * @author Célia BOCHER
- */
-public class LoginPanel extends javax.swing.JPanel {
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class LoginPanel extends JPanel {
     
 	private static final long serialVersionUID = -7196042227727118997L;
 	
-	private javax.swing.JTextField champ_email;
-    private javax.swing.JPasswordField champ_mdp;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+	private JTextField champ_email;
+    private JPasswordField champ_mdp;
+    private JButton jButton1;
+    private JLabel jLabel1;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
     
     
     public LoginPanel() {
@@ -34,16 +43,18 @@ public class LoginPanel extends javax.swing.JPanel {
 
     private void initComponents() 
     {
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        champ_email = new javax.swing.JTextField();
-        champ_mdp = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new JLabel();
+        jLabel3 = new JLabel();
+        champ_email = new JTextField();
+        champ_mdp = new JPasswordField();
+        jButton1 = new JButton();
+        jLabel1 = new JLabel();
 
        
 
         jLabel2.setText("Adresse e-mail :");
+        // Ca : getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 110, 100, -1));
+        //Devient :
         jLabel2.setBounds(200, 110, 100, 20);
         this.add(jLabel2);
         
@@ -52,11 +63,11 @@ public class LoginPanel extends javax.swing.JPanel {
         jLabel3.setBounds(207, 180, 85, 20);
         this.add(jLabel3);
 
-        champ_email.setBackground(new java.awt.Color(143, 202, 214));
+        champ_email.setBackground(new Color(143, 202, 214));
         champ_email.setToolTipText("");
-        champ_email.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)));
-        champ_email.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        champ_email.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 102)));
+        champ_email.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 champ_emailActionPerformed(evt);
             }
         });
@@ -64,9 +75,9 @@ public class LoginPanel extends javax.swing.JPanel {
         this.add(champ_email);
 
         champ_mdp.setBackground(new java.awt.Color(143, 202, 214));
-        champ_mdp.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)));
-        champ_mdp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        champ_mdp.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 102)));
+        champ_mdp.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 champ_mdpActionPerformed(evt);
             }
         });
@@ -74,39 +85,39 @@ public class LoginPanel extends javax.swing.JPanel {
         this.add(champ_mdp);
 
         jButton1.setText("Se connecter");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jButton1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
                 jButton1MouseClicked(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
         jButton1.setBounds(185, 270, 130, 40);
         this.add(jButton1);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/images/login.png"))); // NOI18N
+        jLabel1.setIcon(new ImageIcon(getClass().getResource("/View/images/login.png")));
         jLabel1.setBounds(0, 0, 500, 500);
         this.add(jLabel1);
     }
 
-    private void champ_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_champ_emailActionPerformed
+    private void champ_emailActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_champ_emailActionPerformed
+    }
 
-    private void champ_mdpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_champ_mdpActionPerformed
+    private void champ_mdpActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
 
-    }//GEN-LAST:event_champ_mdpActionPerformed
+    }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-                // TODO add your handling code here:
+    private void jButton1MouseClicked(MouseEvent evt) {
+           
     }
 }

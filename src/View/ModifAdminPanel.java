@@ -1,6 +1,15 @@
 package View;
 
-public class ModifAdminPanel extends javax.swing.JPanel 
+import javax.swing.AbstractListModel;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+
+public class ModifAdminPanel extends JPanel 
 {
 	private static final long serialVersionUID = 3736956335101565252L;
 
@@ -13,31 +22,31 @@ public class ModifAdminPanel extends javax.swing.JPanel
 	
     @SuppressWarnings("serial")
 	private void initComponents() {
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        jList8 = new javax.swing.JList<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jList4 = new javax.swing.JList<>();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jList5 = new javax.swing.JList<>();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        jList6 = new javax.swing.JList<>();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        jList7 = new javax.swing.JList<>();
-        jToolBar1 = new javax.swing.JToolBar();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        jTabbedPane1 = new JTabbedPane();
+        jScrollPane8 = new JScrollPane();
+        jList8 = new JList<>();
+        jScrollPane1 = new JScrollPane();
+        jList1 = new JList<>();
+        jScrollPane2 = new JScrollPane();
+        jList2 = new JList<>();
+        jScrollPane3 = new JScrollPane();
+        jList3 = new JList<>();
+        jScrollPane4 = new JScrollPane();
+        jList4 = new JList<>();
+        jScrollPane5 = new JScrollPane();
+        jList5 = new JList<>();
+        jScrollPane6 = new JScrollPane();
+        jList6 = new JList<>();
+        jScrollPane7 = new JScrollPane();
+        jList7 = new JList<>();
+        jToolBar1 = new JToolBar();
+        jButton4 = new JButton();
+        jButton5 = new JButton();
+        jButton6 = new JButton();
 
         setBorder(null);
 
-        jList8.setModel(new javax.swing.AbstractListModel<String>() {
+        jList8.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -46,7 +55,7 @@ public class ModifAdminPanel extends javax.swing.JPanel
 
         jTabbedPane1.addTab("Séances", jScrollPane8);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        jList1.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -55,7 +64,7 @@ public class ModifAdminPanel extends javax.swing.JPanel
 
         jTabbedPane1.addTab("Referants", jScrollPane1);
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+        jList2.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -64,7 +73,7 @@ public class ModifAdminPanel extends javax.swing.JPanel
 
         jTabbedPane1.addTab("Enseignants", jScrollPane2);
 
-        jList3.setModel(new javax.swing.AbstractListModel<String>() {
+        jList3.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -73,7 +82,7 @@ public class ModifAdminPanel extends javax.swing.JPanel
 
         jTabbedPane1.addTab("Etudiants", jScrollPane3);
 
-        jList4.setModel(new javax.swing.AbstractListModel<String>() {
+        jList4.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -82,7 +91,7 @@ public class ModifAdminPanel extends javax.swing.JPanel
 
         jTabbedPane1.addTab("Salles", jScrollPane4);
 
-        jList5.setModel(new javax.swing.AbstractListModel<String>() {
+        jList5.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -91,7 +100,7 @@ public class ModifAdminPanel extends javax.swing.JPanel
 
         jTabbedPane1.addTab("Groupes", jScrollPane5);
 
-        jList6.setModel(new javax.swing.AbstractListModel<String>() {
+        jList6.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -100,7 +109,7 @@ public class ModifAdminPanel extends javax.swing.JPanel
 
         jTabbedPane1.addTab("Promotions", jScrollPane6);
 
-        jList7.setModel(new javax.swing.AbstractListModel<String>() {
+        jList7.setModel(new AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -115,20 +124,20 @@ public class ModifAdminPanel extends javax.swing.JPanel
 
         jButton4.setText("Ajouter");
         jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton4.setHorizontalTextPosition(SwingConstants.CENTER);
+        jButton4.setVerticalTextPosition(SwingConstants.BOTTOM);
         jToolBar1.add(jButton4);
 
         jButton5.setText("Supprimer");
         jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton5.setHorizontalTextPosition(SwingConstants.CENTER);
+        jButton5.setVerticalTextPosition(SwingConstants.BOTTOM);
         jToolBar1.add(jButton5);
 
         jButton6.setText("Modifier");
         jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton6.setHorizontalTextPosition(SwingConstants.CENTER);
+        jButton6.setVerticalTextPosition(SwingConstants.BOTTOM);
         jToolBar1.add(jButton6);
 
         this.add(jToolBar1, java.awt.BorderLayout.PAGE_START);
@@ -136,26 +145,26 @@ public class ModifAdminPanel extends javax.swing.JPanel
         validate();
     }
     
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JList<String> jList3;
-    private javax.swing.JList<String> jList4;
-    private javax.swing.JList<String> jList5;
-    private javax.swing.JList<String> jList6;
-    private javax.swing.JList<String> jList7;
-    private javax.swing.JList<String> jList8;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JToolBar jToolBar1;
+    private JButton jButton4;
+    private JButton jButton5;
+    private JButton jButton6;
+    private JList<String> jList1;
+    private JList<String> jList2;
+    private JList<String> jList3;
+    private JList<String> jList4;
+    private JList<String> jList5;
+    private JList<String> jList6;
+    private JList<String> jList7;
+    private JList<String> jList8;
+    private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane2;
+    private JScrollPane jScrollPane3;
+    private JScrollPane jScrollPane4;
+    private JScrollPane jScrollPane5;
+    private JScrollPane jScrollPane6;
+    private JScrollPane jScrollPane7;
+    private JScrollPane jScrollPane8;
+    private JTabbedPane jTabbedPane1;
+    private JToolBar jToolBar1;
 }
 
