@@ -37,6 +37,14 @@ public class ConnectionViaUser implements User {
 	 * PUBLIC METHODS
 	 */
 	
+        /****
+         * Se connecte a un utilisateur et génère toutes les interfaces d'accès a la bdd
+         * @param login
+         * @param password
+         * @throws UserNotFoundException
+         * @throws ClassNotFoundException
+         * @throws ConnectionErrorException
+         */
 	public ConnectionViaUser(String login, String password) throws UserNotFoundException, ClassNotFoundException, ConnectionErrorException
 	{
 		Class.forName("com.mysql.jdbc.Driver");

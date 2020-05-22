@@ -97,7 +97,8 @@ public class EDT_fond extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 44, 1170, 61));
 
         Desk.setBackground(new java.awt.Color(255, 255, 255));
-        getContentPane().add(Desk, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 1060, 520));
+        Desk.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(Desk, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 1060, 560));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

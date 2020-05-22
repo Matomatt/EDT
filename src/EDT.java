@@ -28,8 +28,6 @@ public class EDT {
 	
 	public static void main(String args[])
 	{
-        EDT_fond page = new EDT_fond();
-        page.setVisible(true);
         User user = null;
         try {
         	user = new ConnectionViaUser("admin", "pw");
@@ -60,7 +58,10 @@ public class EDT {
         }
         //</editor-fold>
 
-        new Test(user).setVisible(true);
+        EDT_fond page = new EDT_fond();
+        page.setVisible(true);
+        
+        //new Test(user).setVisible(true);
         
         //RemplirSeances(user);
         //Tests(user);
