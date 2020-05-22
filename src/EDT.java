@@ -14,6 +14,7 @@ import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
+import View.BaseWindow;
 import View.EDT_fond;
 import View.Test;
 import java.io.File;
@@ -58,9 +59,11 @@ public class EDT {
         }
         //</editor-fold>
 
-        EDT_fond page = new EDT_fond();
-        page.setVisible(true);
+        //EDT_fond page = new EDT_fond();
+        //page.setVisible(true);
         
+        BaseWindow baseWindow = new BaseWindow();
+        //baseWindow.Launch();
         //new Test(user).setVisible(true);
         
         //RemplirSeances(user);
