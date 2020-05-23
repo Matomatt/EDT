@@ -60,7 +60,7 @@ public class BaseWindow extends JFrame implements ActionListener{
 	GridBagConstraints c = new GridBagConstraints();
         
 	
-	public BaseWindow() {
+	public BaseWindow(){
 		this.setLayout(new GridBagLayout());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
