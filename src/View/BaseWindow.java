@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Seances.Seance;
 import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
 import Utilitaires.ConnectionErrorException;
@@ -15,6 +16,8 @@ import Utilitaires.UserNotFoundException;
 
 public class BaseWindow extends JFrame {
 
+	private static final long serialVersionUID = 3528066671950303397L;
+	
 	JPanel mainWindow;
 	User user = null;
 	
@@ -62,6 +65,8 @@ public class BaseWindow extends JFrame {
 		button = new JButton("Button 3");
 		c.gridx = 2;
 		this.add(button, c);
+		
+		//Automatiquement sur edt
     }
 
 	public void SwitchPage(JPanel newPage)
@@ -77,13 +82,21 @@ public class BaseWindow extends JFrame {
 		try {
 			System.out.println(login + " " + password);
 			user = new ConnectionViaUser(login, password);
-			SwitchPage(new ModifAdminPanel(user));
-			addComponentsToPane();
-			System.out.println(user.getUtilisateurConnecte());
-			return true;
 		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
 			return false;
 		}
 		
+		for (Seance s : user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), "2020-05-26")) {
+			System.out.println(s);
+		}
+		
+		SwitchPage(new ModifAdminPanel(user));
+		addComponentsToPane();
+		validate();
+		System.out.println(user.getUtilisateurConnecte());
+		
+		
+		
+		return true;
 	}
 }

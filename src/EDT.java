@@ -3,6 +3,8 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.statistics.HistogramDataset;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import Donnees.Donnee;
 import Filters.Filter;
 import Filters.Filter.Filters;
@@ -20,6 +22,7 @@ import View.Test;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -29,43 +32,7 @@ public class EDT {
 	
 	public static void main(String args[])
 	{
-		/*
-        User user = null;
-        try {
-        	user = new ConnectionViaUser("admin", "pw");
-
-			System.out.println(user.getUtilisateurConnecte() + " connected");
-		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
-			e.printStackTrace();
-			return;
-		}
-        */
-        
-        
-        try {
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
-            }
-        }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        //EDT_fond page = new EDT_fond();
-        //page.setVisible(true);
-        
         BaseWindow baseWindow = new BaseWindow();
-        //baseWindow.Launch();
-        //new Test(user).setVisible(true);
         
         //RemplirSeances(user);
         //Tests(user);

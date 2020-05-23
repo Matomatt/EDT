@@ -40,6 +40,8 @@ public class ListeSeancesImpl implements ListeSeances {
 	
 	private List<Seance> ExecuteQuery(String query)
 	{
+		System.out.println(query);
+		
 		List<Seance> list = new ArrayList<Seance>();
 		
 		ResultSet result;
@@ -87,6 +89,16 @@ public class ListeSeancesImpl implements ListeSeances {
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+"))");
 		else
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+")");
+	}
+	
+	@Override
+	public List<Seance> getByUtilisateurAtDate(Utilisateur utilisateur, String date) {
+		if (java.sql.Date.valueOf(date) == null)
+			return null;
+		if (utilisateur.getType() == User.UserType.Etudiant)
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+")) AND Date='"+date+"'");
+		else
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+") AND Date='"+date+"'");
 	}
 	
 	@Override
@@ -181,4 +193,6 @@ public class ListeSeancesImpl implements ListeSeances {
 			e.printStackTrace();
 		}
 	}
+
+	
 }
