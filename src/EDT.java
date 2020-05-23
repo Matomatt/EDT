@@ -29,6 +29,7 @@ public class EDT {
 	
 	public static void main(String args[])
 	{
+		/*
         User user = null;
         try {
         	user = new ConnectionViaUser("admin", "pw");
@@ -38,7 +39,7 @@ public class EDT {
 			e.printStackTrace();
 			return;
 		}
-        
+        */
         
         
         try {

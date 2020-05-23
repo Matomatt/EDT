@@ -53,13 +53,12 @@ public class ConnectionViaUser implements User {
 
 		try {
 			connection = DriverManager.getConnection(url, user, passwd);
+			System.out.println("Connected to the database (user not verified yet)...");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ConnectionErrorException("There was an error trying to connect to the database");
 		}
 		
-		System.out.println("Connexion effective !");
-        
 		if (!CheckLogin(login, password))
 			throw new UserNotFoundException("Login or password incorrect for user " + login);
 		

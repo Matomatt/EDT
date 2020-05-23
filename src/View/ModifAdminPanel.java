@@ -1,5 +1,9 @@
 package View;
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -14,6 +18,7 @@ public class ModifAdminPanel extends JPanel
 	private static final long serialVersionUID = 3736956335101565252L;
 
 	public ModifAdminPanel() {
+		this.setLayout(new GridBagLayout());
         initComponents();
         this.setVisible(true);
         
@@ -22,6 +27,8 @@ public class ModifAdminPanel extends JPanel
 	
     @SuppressWarnings("serial")
 	private void initComponents() {
+    	GridBagConstraints c = new GridBagConstraints();
+    	
         jTabbedPane1 = new JTabbedPane();
         jScrollPane8 = new JScrollPane();
         jList8 = new JList<>();
@@ -118,7 +125,13 @@ public class ModifAdminPanel extends JPanel
 
         jTabbedPane1.addTab("Cours", jScrollPane7);
 
-        this.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		c.gridx = 0;
+		c.gridy = 1;
+        this.add(jTabbedPane1, c);
+        
 
         jToolBar1.setRollover(true);
 
@@ -140,7 +153,12 @@ public class ModifAdminPanel extends JPanel
         jButton6.setVerticalTextPosition(SwingConstants.BOTTOM);
         jToolBar1.add(jButton6);
 
-        this.add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+        c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 1.0;
+		c.weighty = 0.0;
+		c.gridx = 0;
+		c.gridy = 0;
+        this.add(jToolBar1, c);
 
         validate();
     }
