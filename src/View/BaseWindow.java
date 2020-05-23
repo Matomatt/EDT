@@ -64,13 +64,20 @@ public class BaseWindow extends JFrame {
 		this.add(button, c);
     }
 
+	public void SwitchPage(JPanel newPage)
+	{
+		this.remove(mainWindow);
+		mainWindow = newPage;
+		this.add(mainWindow, c);
+	}
+	
 	public boolean Connect(String login, String password) {
+		login = "admin";
+		password = "pw";
 		try {
 			System.out.println(login + " " + password);
 			user = new ConnectionViaUser(login, password);
-			this.remove(mainWindow);
-			mainWindow = new ModifAdminPanel();
-			this.add(mainWindow, c);
+			SwitchPage(new ModifAdminPanel(user));
 			addComponentsToPane();
 			System.out.println(user.getUtilisateurConnecte());
 			return true;

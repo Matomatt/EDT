@@ -1,6 +1,5 @@
 package View;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -13,13 +12,21 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
+import Utilisateurs.User;
+
 public class ModifAdminPanel extends JPanel 
 {
 	private static final long serialVersionUID = 3736956335101565252L;
+	User user = null;
 
-	public ModifAdminPanel() {
+	public ModifAdminPanel(User _user) {
+		user = _user;
 		this.setLayout(new GridBagLayout());
+		
+		
         initComponents();
+        
+        
         this.setVisible(true);
         
         validate();
