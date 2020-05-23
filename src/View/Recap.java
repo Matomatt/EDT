@@ -5,6 +5,8 @@
  */
 package View;
 
+import Utilisateurs.User;
+
 /**
  *
  * @author Célia BOCHER
@@ -16,6 +18,10 @@ public class Recap extends javax.swing.JInternalFrame {
      */
     public Recap() {
         initComponents();
+    }
+
+    Recap(User user) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
