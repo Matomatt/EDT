@@ -22,10 +22,8 @@ public class ModifAdminPanel extends JPanel
 	public ModifAdminPanel(User _user) {
 		user = _user;
 		this.setLayout(new GridBagLayout());
-		
-		
+
         initComponents();
-        
         
         this.setVisible(true);
         
