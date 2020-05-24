@@ -168,6 +168,7 @@ try {
             SwitchPage(new EdtGrillePanel(user));
             }
             
+            
             if(evt.getSource()==button11){
             SwitchPage(new EDT_ListePanel(user));
             }
