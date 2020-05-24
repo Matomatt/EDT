@@ -99,5 +99,6 @@ public class Seance {
 		}
 		return toReturnString;
 	}
+        
 	
 }
