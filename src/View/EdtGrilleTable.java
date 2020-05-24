@@ -36,7 +36,7 @@ public final class EdtGrilleTable extends AbstractTableModel {
     
     
     User user = null;
-    private final String[] columns = { "", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    private final String[] columns = { "", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 
         private final String[][] data = {
         {"8:30 - 10:00", "", "", "", "", "", ""},
@@ -91,7 +91,7 @@ public final class EdtGrilleTable extends AbstractTableModel {
     
     @Override
     public boolean isCellEditable(int row, int col){ 
-    return true; 
+    return false; 
 } 
     
    
@@ -100,7 +100,6 @@ public final class EdtGrilleTable extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             data[rowIndex][columnIndex]= (String)aValue;
             fireTableCellUpdated(rowIndex, columnIndex);
-            System.out.print(rowIndex + " et " + columnIndex);
         }
 
     /**
