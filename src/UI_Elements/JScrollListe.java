@@ -1,5 +1,6 @@
 package UI_Elements;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,10 +29,13 @@ public class JScrollListe extends JScrollPane
 	private List<Object> originalList;
 	private DefaultListModel<Object> model = new DefaultListModel<Object>();
 	
+	private String nameString = "";
+	private Class<? extends Object> objectClass = null;
+	
 	public JScrollListe(ListeSeances listeSeances) {
-		List<Seance> listSeances = listeSeances.getByWeek(25);
+		List<Seance> listSeances = listeSeances.getByWeek(Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date())));
 		originalList = listSeances.stream().map(x -> (Object)x).collect(Collectors.toList());
-		Init();		
+		Init();
     }
 	
 	public JScrollListe(ListeUtilisateurs listeUtilisateurs, UserType userType) 
@@ -64,6 +68,7 @@ public class JScrollListe extends JScrollPane
 	}
 
 	public JScrollListe(ListeDonnees listeDonnees, String string) {
+		nameString = string;
 		List<Donnee> listDonnees = listeDonnees.getAll();
 		originalList = listDonnees.stream().map(x -> (Object)x).collect(Collectors.toList());
 		Init();	
@@ -71,9 +76,12 @@ public class JScrollListe extends JScrollPane
 	
 	private void Init()
 	{
+		if (originalList.size()>0)
+			objectClass = originalList.get(0).getClass();
 		Filter("");
 		list.setModel(model);
 		this.setViewportView(list);
+		this.setBackground(new java.awt.Color(255, 255, 255));
 	}
 	
 	public void Filter(String filter)
@@ -90,6 +98,47 @@ public class JScrollListe extends JScrollPane
 					model.removeElement(object);
 			}
 		}
+		
+		this.revalidate();
+	}
+
+	public void changeWeek(ListeSeances listeSeances ,Integer value) {
+		originalList.removeAll(originalList);
+		model.removeAllElements();
+		List<Seance> listSeances = listeSeances.getByWeek(value);
+		originalList = listSeances.stream().map(x -> (Object)x).collect(Collectors.toList());
+		Init();
+		validate();
+		repaint();
+	}
+
+	public Class<? extends Object> getObjectClass() {
+		return objectClass;
+	}
+
+	public void Delete(Object o) {
+		System.out.println(o.toString());
+		if (originalList.contains(o))
+			originalList.remove(o);
+		if(model.contains(o))
+			model.removeElement(o);
+		
+		this.revalidate();
+	}
+
+	public String getNameString() {
+		return nameString;
+	}
+	
+	public JList<Object> getJList(){
+		return list;
+	}
+
+	public void addObject(Object o) {
+		if (!originalList.contains(o))
+			originalList.add(o);
+		if(!model.contains(o))
+			model.addElement(o);
 		
 		this.revalidate();
 	}

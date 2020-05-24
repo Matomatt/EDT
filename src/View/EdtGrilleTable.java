@@ -107,16 +107,16 @@ public final class EdtGrilleTable extends AbstractTableModel {
      * @param _user
      * @throws java.text.ParseException
      */
-    public EdtGrilleTable(User _user) throws ParseException {
+    public EdtGrilleTable(User _user) {
         user = _user;
-	definir_cours();  
+        definir_cours();  
     }
     
   
 
 
 
-    public void definir_cours() throws ParseException
+    public void definir_cours()
     {
             
         String pattern = "dd-MM-yyyy";
@@ -138,7 +138,13 @@ public final class EdtGrilleTable extends AbstractTableModel {
               
              
         String strDate = dateFormat.format(s.getDate()); 
-        date = simpleDateFormat.parse(strDate);
+        try {
+			date = simpleDateFormat.parse(strDate);
+		} catch (ParseException e) {
+			// Si strDate est pas valide on prends une valeur par défaut
+			date = new Date();
+			e.printStackTrace();
+		}
         System.out.println( date);
         System.out.println("strdate :" + strDate);
         System.out.println("day of the week is  : "+date.getDay()); 

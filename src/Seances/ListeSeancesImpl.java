@@ -45,17 +45,28 @@ public class ListeSeancesImpl implements ListeSeances {
 		ResultSet result;
 		try {
 			result = connection.createStatement().executeQuery(query + " ORDER BY Date ASC, Heure_Debut ASC");
-			
-			while(result.next())
-			{
-				list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), result.getDate("Date"), result.getTime("Heure_Debut"), result.getTime("Heure_Fin"), 
-						result.getInt("Etat"), cours.GetByID(result.getInt("ID_Cours")), type_cours.GetByID(result.getInt("ID_Type")),
-						groupes.getBySeanceID(result.getInt("ID")), utilisateurs.getEnseignantsBySeanceID(result.getInt("ID")), salles.getBySeanceID(result.getInt("ID"))));
-			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
+		}
+		
+		try {
+			while(result.next())
+			{
+				try {
+					list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), result.getDate("Date"), result.getTime("Heure_Debut"), result.getTime("Heure_Fin"), 
+							result.getInt("Etat"), cours.GetByID(result.getInt("ID_Cours")), type_cours.GetByID(result.getInt("ID_Type")),
+							groupes.getBySeanceID(result.getInt("ID")), utilisateurs.getEnseignantsBySeanceID(result.getInt("ID")), salles.getBySeanceID(result.getInt("ID"))));
+				}
+				catch(Exception e) { 
+					System.out.println("Erreur avec les dates, set at default");
+					list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), new Date(0), new Time(0), new Time(0),
+							result.getInt("Etat"), cours.GetByID(result.getInt("ID_Cours")), type_cours.GetByID(result.getInt("ID_Type")),
+							groupes.getBySeanceID(result.getInt("ID")), utilisateurs.getEnseignantsBySeanceID(result.getInt("ID")), salles.getBySeanceID(result.getInt("ID"))));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
 		return list;
@@ -134,6 +145,8 @@ public class ListeSeancesImpl implements ListeSeances {
 			for (Salle salle : seance.getSalles()) {
 				connection.createStatement().executeUpdate("INSERT INTO `seance_salles` (`ID_Seance`, `ID_Salle`) VALUES ('"+newID+"', '"+salle.getID()+"');");
 			}
+			
+			seance.setID(newID);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

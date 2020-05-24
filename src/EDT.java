@@ -28,7 +28,7 @@ public class EDT {
 	
 	public static void main(String args[])
 	{
-        BaseWindow baseWindow = new BaseWindow();
+        new BaseWindow();
         
         //RemplirSeances(user);
         //Tests(user);

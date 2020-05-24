@@ -8,14 +8,12 @@ package View;
 import Seances.Seance;
 import java.util.List;
 import UI_Elements.Button;
-import UI_Elements.JScrollListe;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import Utilisateurs.User;
-import static java.util.Collections.list;
 import javax.swing.JTable;
 
 /**

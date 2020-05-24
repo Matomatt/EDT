@@ -7,7 +7,6 @@ package View;
 
 import Seances.Seance;
 import Utilisateurs.User;
-import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.sql.Time;
@@ -44,7 +43,7 @@ public class EdtGrillePanel extends JPanel{
     {"17:15 - 18:45", "", "", "", "", "", ""},
     {"19:00 - 20:30", "", "", "", "", "", ""}};
     
-    	public EdtGrillePanel(User _user) throws ParseException {
+	public EdtGrillePanel(User _user) throws ParseException {
 		user = _user;
 		this.setLayout(new GridBagLayout());
 
@@ -55,6 +54,7 @@ public class EdtGrillePanel extends JPanel{
         validate();
     }
         
+
         
         
         private void initComponents() throws ParseException
@@ -85,9 +85,8 @@ public class EdtGrillePanel extends JPanel{
             c.gridx = 0;
             c.gridy = 3;
             
-            this.add(scroll, c);
+            this.add(scroll,c);
               
-    
         }
         
         
@@ -140,20 +139,10 @@ public class EdtGrillePanel extends JPanel{
     
     
     }
-
-    private void add(EdtGrilleTable tableau, GridBagConstraints c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    public void centrerTable(JTable table){
-	   for(int i = 0;i < table.getColumnCount();i++){
-		   ColorRenderer cr = new ColorRenderer();
-		   cr.setHorizontalAlignment(JLabel.CENTER);
-		   table.getColumnModel().getColumn(i).setCellRenderer(cr);
-	   }
-                 
-    }
+}
+    
+   
     
  
     
 
-}

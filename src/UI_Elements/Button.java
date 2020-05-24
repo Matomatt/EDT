@@ -1,8 +1,12 @@
 package UI_Elements;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+
+import Controllers.ModifAdminPanelController;
 
 public class Button extends JButton {
 
@@ -25,6 +29,13 @@ public class Button extends JButton {
 		Init();
 	}
 	
+	public Button(String name, String text, ActionListener controller) {
+		super(text);
+		setName(name);
+		addActionListener(controller);
+		Init();
+	}
+
 	private void Init()
 	{
 		this.setHorizontalTextPosition(SwingConstants.CENTER);
