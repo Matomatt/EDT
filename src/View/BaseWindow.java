@@ -131,6 +131,7 @@ public class BaseWindow extends JFrame implements ActionListener{
 		c.gridx = 0;
 		c.gridy = 1;
 		this.add(mainWindow, c);
+                validate();
 	}
 	
 	public boolean Connect(String login, String password) throws ParseException {
@@ -150,8 +151,7 @@ try {
                 addComponentsToPane();
                         
                         
-                EdtGrillePanel edpgp = null;
-                edpgp.definir_cours();
+                
 		System.out.println(user.getUtilisateurConnecte());
                 validate();
                 return true;
@@ -161,9 +161,9 @@ try {
         @Override
         public void actionPerformed(ActionEvent evt)
         {
-            //if(evt.getSource()==button1){
-            //SwitchPage(new EdtGrillePanel(user));
-            //}
+            if(evt.getSource()==button1){
+            SwitchPage(new EdtGrillePanel(user));
+            }
             
             if(evt.getSource()== button3){
             SwitchPage(new ModifAdminPanel(user));

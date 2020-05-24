@@ -25,6 +25,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import Utilitaires.ImageManager;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginPanel extends JPanel {
     
@@ -129,7 +132,11 @@ public class LoginPanel extends JPanel {
         jButton1.setText("Se connecter");
         jButton1.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                try {
+                    jButton1MouseClicked(evt);
+                } catch (ParseException ex) {
+                    Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         jButton1.addActionListener(new ActionListener() {
@@ -162,7 +169,7 @@ public class LoginPanel extends JPanel {
         
     }
 
-    private void jButton1MouseClicked(MouseEvent evt) {
+    private void jButton1MouseClicked(MouseEvent evt) throws ParseException {
            if (!baseWindow.Connect(champ_email.getText(), champ_mdp.getText()))
            {
 				GridBagConstraints c = new GridBagConstraints();
