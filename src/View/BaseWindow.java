@@ -54,15 +54,15 @@ public class BaseWindow extends JFrame {
 
         JButton button;
         
-		button = new JButton("Button 1");
+		button = new JButton("Emplois du Temps");
 		c.gridx = 0;
 		this.add(button, c);
 	
-		button = new JButton("Button 2");
+		button = new JButton("Récapitulatif des Cours");
 		c.gridx = 1;
 		this.add(button, c);
 	
-		button = new JButton("Button 3");
+		button = new JButton("Reporting");
 		c.gridx = 2;
 		this.add(button, c);
 		
