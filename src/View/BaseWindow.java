@@ -7,26 +7,29 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Controllers.BaseWindowController;
 import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 
 
-public class BaseWindow extends JFrame implements ActionListener{
+public class BaseWindow extends JFrame{
 
 	private static final long serialVersionUID = 3528066671950303397L;
 	
 	JPanel mainWindow;
 	User user = null;
-
+	BaseWindowController controller = new BaseWindowController(this);
+	Map<String, JPanel> pages = new HashMap<String, JPanel>();
+	
 	JButton  button1, button2, button3, button4, button11 = null;
-        
 	GridBagConstraints c = new GridBagConstraints();
-        
+	
+	
 	
 	public BaseWindow(){
 		this.setLayout(new GridBagLayout());
@@ -58,30 +61,38 @@ public class BaseWindow extends JFrame implements ActionListener{
 		c.gridy = 0;
         c.ipady=35;
 		button1 = new JButton("Emploi du temps");
+		button1.setName("bt1");
 		c.gridx = 0;
 		this.add(button1, c);
-        button1.addActionListener(this);
+        button1.addActionListener(controller);
 
         button11 = new JButton("EDT liste");
+        button11.setName("bt11");
 		c.gridx = 1;
 		this.add(button11, c);
-        button11.addActionListener(this);
+        button11.addActionListener(controller);
                 
 		button2 = new JButton("Récapitulatif des cours");
+		button2.setName("bt2");
 		c.gridx = 2;
 		this.add(button2, c);
-        button2.addActionListener(this);
+        button2.addActionListener(controller);
 
 		button3 = new JButton("Modifier");
+		button3.setName("bt3");
 		c.gridx = 3;
 		this.add(button3, c);
-        button3.addActionListener(this);
+        button3.addActionListener(controller);
                 
                 
         button4 = new JButton("Reporting");
+        //button4.setName("bt4");
 		c.gridx = 4;
 		this.add(button4, c);
-                
+        
+		
+		this.validate();
+		this.repaint();
     }
 
 	public void SwitchPage(JPanel newPage)
@@ -100,6 +111,7 @@ public class BaseWindow extends JFrame implements ActionListener{
 		this.add(mainWindow, c);
 		
 		validate();
+		this.repaint();
 	}
 	
 	public boolean Connect(String login, String password) {
@@ -113,30 +125,18 @@ public class BaseWindow extends JFrame implements ActionListener{
 			return false;
 		}
                 
-        SwitchPage(new ModifAdminPanel(user));
+        SwitchPage(new EdtGrillePanel(user));
         addComponentsToPane();
 		System.out.println(user.getUtilisateurConnecte());
 
 		return true;
 	}
+	
+	public Map<String, JPanel> getPages() {
+		return pages;
+	}
 
-        @Override
-        public void actionPerformed(ActionEvent evt)
-        {
-            if(evt.getSource()==button1){
-            SwitchPage(new EdtGrillePanel(user));
-            }
-            
-            if(evt.getSource()==button11){
-            	SwitchPage(new EDT_ListePanel(user));
-            }
-        	
-            if(evt.getSource()== button3){
-            	SwitchPage(new ModifAdminPanel(user));
-            }
-        }
-        
-      
-           
-
+	public User getUser() {
+		return user;
+	}
 }

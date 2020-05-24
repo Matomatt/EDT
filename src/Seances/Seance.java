@@ -67,6 +67,22 @@ public class Seance {
 		salles.add(salle);
 	}
 
+	public Seance(int _semaine, Date _date, Time _debut, Time _fin, int _etat, Donnee _cours, Donnee _type, List<Groupe> _groupes, List<Utilisateur> _enseignants, List<Salle> _salles) 
+	{
+		ID = 0;
+		semaine = _semaine;
+		date = _date;
+		debut = _debut;
+		fin = _fin;
+		etat = _etat;
+		cours = _cours;
+		type =_type;
+		
+		groupes = _groupes;
+		enseignants = _enseignants;
+		salles = _salles;
+	}
+
 	public int getID() { return ID; }
 	public int getSemaine() { return semaine; }
 	public Date getDate() { return date; }
@@ -79,6 +95,7 @@ public class Seance {
 	public List<Utilisateur> getEnseignants() { return enseignants; }
 	public List<Salle> getSalles() { return salles; }
 	
+	void setID(long newID) { ID = (int) newID; }
 	void setCours(Donnee cours) { this.cours = cours; }
 	void setType(Donnee type) { this.type = type; }
 	
@@ -99,6 +116,4 @@ public class Seance {
 		}
 		return toReturnString;
 	}
-        
-	
 }

@@ -10,6 +10,7 @@ import Donnees.Donnee;
 import Donnees.ListeDonnees;
 import Groupes.ListeGroupes;
 import Seances.Seance;
+import Utilisateurs.User.UserType;
 
 public class ListeUtilisateursImpl implements ListeUtilisateurs {
 	Connection connection = null;
@@ -84,7 +85,7 @@ public class ListeUtilisateursImpl implements ListeUtilisateurs {
 
 	@Override
 	public List<Utilisateur> getEnseignants() {
-		return ExecuteQuery("Select * From utilisateur Where ID IN (Select ID_Utilisateur from enseignant)");
+		return ExecuteQuery("Select * From utilisateur Where Droit=3");
 	}
 
 	@Override
@@ -114,6 +115,25 @@ public class ListeUtilisateursImpl implements ListeUtilisateurs {
 	@Override
 	public List<Utilisateur> getEtudiants() {
 		return ExecuteQuery("Select * From utilisateur Where Droit=4");
+	}
+
+	@Override
+	public void Delete(Utilisateur utilisateur) {
+		try {
+			connection.createStatement().executeUpdate("DELETE From utilisateur Where ID="+utilisateur.getID());
+								
+			if (utilisateur.getType() == UserType.Etudiant)
+				connection.createStatement().executeUpdate("DELETE From etudiant Where ID_Utilisateur="+utilisateur.getID());
+			else
+			{
+				connection.createStatement().executeUpdate("DELETE From enseignant Where ID_Utilisateur="+utilisateur.getID());
+				connection.createStatement().executeUpdate("DELETE From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+";");
+			}
+				
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
