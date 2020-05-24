@@ -3,8 +3,6 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.statistics.HistogramDataset;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import Donnees.Donnee;
 import Filters.Filter;
 import Filters.Filter.Filters;
@@ -17,8 +15,6 @@ import Utilisateurs.Utilisateur;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
 import View.BaseWindow;
-import View.EDT_fond;
-import View.Test;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
