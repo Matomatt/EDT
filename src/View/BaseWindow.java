@@ -42,7 +42,32 @@ import java.awt.Dimension;
 import View.EDT_Grille;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Time;
+
+import java.text.ParseException;
+
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import Utilisateurs.ConnectionViaUser;
+import Utilisateurs.User;
+import Utilitaires.ConnectionErrorException;
+import Utilitaires.UserNotFoundException;
+import java.awt.Dimension;
+import View.EDT_Grille;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 import java.text.SimpleDateFormat;
@@ -51,6 +76,13 @@ import java.util.Locale;
 
 import java.text.DateFormat;  
 import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import java.text.DateFormat;  
+import java.util.Calendar;
+
 
 
 public class BaseWindow extends JFrame implements ActionListener{
@@ -64,7 +96,7 @@ public class BaseWindow extends JFrame implements ActionListener{
 	GridBagConstraints c = new GridBagConstraints();
         
 	
-	public BaseWindow() {
+	public BaseWindow(){
 		this.setLayout(new GridBagLayout());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
