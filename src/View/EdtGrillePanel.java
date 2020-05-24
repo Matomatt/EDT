@@ -73,7 +73,6 @@ public class EdtGrillePanel extends JPanel{
             c.gridx = 0;
             c.gridy = 3;
             
-            
             this.add(scroll, c);
               
     
