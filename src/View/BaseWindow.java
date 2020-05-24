@@ -1,5 +1,7 @@
 package View;
 
+
+import Seances.Seance;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -13,15 +15,54 @@ import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
+import java.awt.Dimension;
+import View.EDT_Grille;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
 
-public class BaseWindow extends JFrame {
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import Utilisateurs.ConnectionViaUser;
+import Utilisateurs.User;
+import Utilitaires.ConnectionErrorException;
+import Utilitaires.UserNotFoundException;
+import java.awt.Dimension;
+import View.EDT_Grille;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Time;
+
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import java.text.DateFormat;  
+import java.util.Calendar;
+
+
+public class BaseWindow extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 3528066671950303397L;
 	
 	JPanel mainWindow;
 	User user = null;
-	
+	JButton  button1, button2, button3, button4 = null;
+        
 	GridBagConstraints c = new GridBagConstraints();
+        
 	
 	public BaseWindow() {
 		this.setLayout(new GridBagLayout());
@@ -33,7 +74,7 @@ public class BaseWindow extends JFrame {
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1.0;
 		c.weighty = 1.0;
-		c.gridwidth = 3;
+		c.gridwidth = 4;
 		c.gridx = 0;
 		c.gridy = 1;
 		this.add(mainWindow, c);
@@ -51,52 +92,85 @@ public class BaseWindow extends JFrame {
 		c.weighty = 0.0;
 		c.gridwidth = 1;
 		c.gridy = 0;
+                c.ipady=35;
 
-        JButton button;
         
-		button = new JButton("Emplois du Temps");
+        
+		button1 = new JButton("Emploi du temps");
 		c.gridx = 0;
-		this.add(button, c);
-	
-		button = new JButton("Récapitulatif des Cours");
+		this.add(button1, c);
+                button1.addActionListener(this);
+                
+               
+		button2 = new JButton("Récapitulatif des cours");
 		c.gridx = 1;
-		this.add(button, c);
+		this.add(button2, c);
+                
+                
 	
-		button = new JButton("Reporting");
+		button3 = new JButton("Mofifier");
 		c.gridx = 2;
-		this.add(button, c);
-		
-		//Automatiquement sur edt
+		this.add(button3, c);
+                button3.addActionListener(this);
+                
+                
+                button4 = new JButton("Reporting");
+		c.gridx = 4;
+		this.add(button4, c);
+                
     }
 
 	public void SwitchPage(JPanel newPage)
 	{
 		this.remove(mainWindow);
 		mainWindow = newPage;
+                c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+		c.gridwidth = 5;
+		c.gridx = 0;
+		c.gridy = 1;
 		this.add(mainWindow, c);
 	}
 	
-	public boolean Connect(String login, String password) {
+	public boolean Connect(String login, String password) throws ParseException {
 		login = "admin";
 		password = "pw";
-		try {
+try {
 			System.out.println(login + " " + password);
 			user = new ConnectionViaUser(login, password);
+			
+			
 		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
 			return false;
 		}
-		
-		for (Seance s : user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), "2020-05-26")) {
-			System.out.println(s);
-		}
-		
-		SwitchPage(new ModifAdminPanel(user));
-		addComponentsToPane();
-		validate();
+
+                
+                SwitchPage(new ModifAdminPanel(user));
+                addComponentsToPane();
+                        
+                        
+                EdtGrillePanel edpgp = null;
+                edpgp.definir_cours();
 		System.out.println(user.getUtilisateurConnecte());
-		
-		
-		
-		return true;
+                validate();
+                return true;
+
 	}
+
+        @Override
+        public void actionPerformed(ActionEvent evt)
+        {
+            //if(evt.getSource()==button1){
+            //SwitchPage(new EdtGrillePanel(user));
+            //}
+            
+            if(evt.getSource()== button3){
+            SwitchPage(new ModifAdminPanel(user));
+            }
+        }
+        
+      
+           
+
 }
