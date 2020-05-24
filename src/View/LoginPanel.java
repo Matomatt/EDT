@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -129,7 +128,7 @@ public class LoginPanel extends JPanel {
         jButton1.setText("Se connecter");
         jButton1.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                    jButton1MouseClicked(evt);
             }
         });
         jButton1.addActionListener(new ActionListener() {
@@ -161,21 +160,20 @@ public class LoginPanel extends JPanel {
         // TODO add your handling code here:
         
     }
-
-    private void jButton1MouseClicked(MouseEvent evt) {
-           if (!baseWindow.Connect(champ_email.getText(), champ_mdp.getText()))
-           {
-				GridBagConstraints c = new GridBagConstraints();
-				c.fill = GridBagConstraints.HORIZONTAL;
-				c.insets = new Insets(40, 20, 5, 20);
-				c.weighty = 0.0;
-				c.gridwidth = 1;
-				c.weightx = 0.5;
-				c.gridx = 0;
-				c.gridy = 4;
-				background.add(new JLabel("Login or password incorrect"), c);
-				validate();
-           }
-        	  
+    private void jButton1MouseClicked(MouseEvent evt)
+    {
+       if (!baseWindow.Connect(champ_email.getText(), new String(champ_mdp.getPassword())))
+       {
+			GridBagConstraints c = new GridBagConstraints();
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets = new Insets(40, 20, 5, 20);
+			c.weighty = 0.0;
+			c.gridwidth = 1;
+			c.weightx = 0.5;
+			c.gridx = 0;
+			c.gridy = 4;
+			background.add(new JLabel("Login or password incorrect"), c);
+			validate();
+       } 
     }
 }
