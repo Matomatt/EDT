@@ -95,12 +95,7 @@ public class ListeUtilisateursImpl implements ListeUtilisateurs {
 		catch (Exception e) { e.printStackTrace(); return null; }
 		
 	}
-
-	@Override
-	public List<Utilisateur> getReferents() {
-		return ExecuteQuery("Select * From utilisateur Where Droit=2");
-	}
-
+	
 	@Override
 	public List<Utilisateur> getEnseignantsBySeance(Seance seance) {
 		return getEnseignantsBySeanceID(seance.getID());
@@ -109,6 +104,16 @@ public class ListeUtilisateursImpl implements ListeUtilisateurs {
 	@Override
 	public List<Utilisateur> getEnseignantsBySeanceID(int ID) {
 		return ExecuteQuery("Select * From utilisateur Where ID IN (Select ID_Enseignant From seance_enseigants Where ID_Seance="+ID+")");
+	}
+
+	@Override
+	public List<Utilisateur> getReferents() {
+		return ExecuteQuery("Select * From utilisateur Where Droit=2");
+	}
+	
+	@Override
+	public List<Utilisateur> getEtudiants() {
+		return ExecuteQuery("Select * From utilisateur Where Droit=4");
 	}
 
 }

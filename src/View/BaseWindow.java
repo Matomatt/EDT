@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Seances.Seance;
 import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
 import Utilitaires.ConnectionErrorException;
@@ -53,9 +54,11 @@ import java.util.Calendar;
 
 public class BaseWindow extends JFrame implements ActionListener{
 
+	private static final long serialVersionUID = 3528066671950303397L;
+	
 	JPanel mainWindow;
 	User user = null;
-	JButton  button1, button2, button3, button4 = null;
+	JButton  button1, button2, button3, button4, button11 = null;
         
 	GridBagConstraints c = new GridBagConstraints();
         
@@ -91,21 +94,24 @@ public class BaseWindow extends JFrame implements ActionListener{
                 c.ipady=35;
 
         
-        
+
 		button1 = new JButton("Emploi du temps");
 		c.gridx = 0;
 		this.add(button1, c);
                 button1.addActionListener(this);
                 
+                button11 = new JButton("EDT liste");
+		c.gridx = 1;
+		this.add(button11, c);
+                button1.addActionListener(this);
                
 		button2 = new JButton("Récapitulatif des cours");
-		c.gridx = 1;
+                c.gridx = 2;
 		this.add(button2, c);
-                
-                
-	
+                button2.addActionListener(this);
+
 		button3 = new JButton("Mofifier");
-		c.gridx = 2;
+		c.gridx = 3;
 		this.add(button3, c);
                 button3.addActionListener(this);
                 
@@ -135,15 +141,18 @@ public class BaseWindow extends JFrame implements ActionListener{
 		try {
 			System.out.println(login + " " + password);
 			user = new ConnectionViaUser(login, password);
-			SwitchPage(new ModifAdminPanel(user));
-			addComponentsToPane();
-                        transformerDate();
-			System.out.println(user.getUtilisateurConnecte());
-			return true;
+
 		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
 			return false;
 		}
 		
+	SwitchPage(new ModifAdminPanel(user));
+		addComponentsToPane();
+		validate();
+		System.out.println(user.getUtilisateurConnecte());
+		
+
+		return true;
 	}
 
         @Override

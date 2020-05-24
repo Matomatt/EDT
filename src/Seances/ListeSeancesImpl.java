@@ -82,11 +82,34 @@ public class ListeSeancesImpl implements ListeSeances {
 	}
 	
 	@Override
+	public List<Seance> getByWeek(int week) {
+		return ExecuteQuery("Select * From seance Where Semaine="+week);
+	}
+	
+	@Override
 	public List<Seance> getByUtilisateur(Utilisateur utilisateur) {
 		if (utilisateur.getType() == User.UserType.Etudiant)
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+"))");
 		else
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+")");
+	}
+	
+	@Override
+	public List<Seance> getByUtilisateurAtDate(Utilisateur utilisateur, String date) {
+		if (java.sql.Date.valueOf(date) == null)
+			return null;
+		if (utilisateur.getType() == User.UserType.Etudiant)
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+")) AND Date='"+date+"'");
+		else
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+") AND Date='"+date+"'");
+	}
+	
+	@Override
+	public List<Seance> getByUtilisateurAtWeek(Utilisateur utilisateur, int week) {
+		if (utilisateur.getType() == User.UserType.Etudiant)
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+")) AND Semaine='"+week+"'");
+		else
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+week+"'");
 	}
 	
 	@Override
