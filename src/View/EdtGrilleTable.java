@@ -24,91 +24,113 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 /**
  *
  * @author Célia BOCHER
  */
-public class EdtGrilleTable extends AbstractTableModel {
+public final class EdtGrilleTable extends AbstractTableModel {
     
     
     User user = null;
-    
+    private final String[] columns = { "", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
+        private final String[][] data = {
+        {"8:30 - 10:00", "", "", "", "", "", ""},
+        {"10:15 - 11:45", "", "", "", "", "", ""},
+        {"12:00 - 13:30", "", "", "", "", "", ""},
+        {"13:45 - 15:15", "", "", "", "", "", ""},
+        {"15:30 - 17:00", "", "", "", "", "", ""},
+        {"17:15 - 18:45", "", "", "", "", "", ""},
+        {"19:00 - 20:30", "", "", "", "", "", ""}};
+
+    @Override
     public int getColumnCount(){
-        return 5;
+        return 7;
     }
     
+    @Override
     public int getRowCount(){
         return 7;
     }
     
     
-    public Object getValueAt(int indiceLigne, int indiceColonne) {
-        return null;
-       
-    }
-    
+     @Override
+        public Object getValueAt(int row, int col) {
+            return data[row][col];
+        }
+        
+        
+    @Override
     public String getColumnName(int indiceColonne)
     {
         switch(indiceColonne)
         {
-            case 0: return  "Lundi";
-            case 1: return  "Mardi";
-            case 2: return  "Mercredi";
-            case 3: return  "Jeudi";
-            case 4: return  "Vendredi";
+            case 1: return  "Lundi";
+            case 2: return  "Mardi";
+            case 3: return  "Mercredi";
+            case 4: return  "Jeudi";
+            case 5: return  "Vendredi";
+            case 6: return  "Samedi";
             default:return null;
         }
     }
     
-    public boolean isCellEditable(int indiceLigne, int indiceColonne){
-        return true;
-    
+       @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if (getRowCount() > 0 && getValueAt(0, columnIndex) != null) {
+            return getValueAt(0, columnIndex).getClass();
+        }
+        return super.getColumnClass(columnIndex);
     }
     
-    public void setValueAt(String val, int indiceLigne, int indiceColonne){
-        
-    }
+    
+    
+    @Override
+    public boolean isCellEditable(int row, int col){ 
+    return true; 
+} 
+    
+   
+    
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            data[rowIndex][columnIndex]= (String)aValue;
+            fireTableCellUpdated(rowIndex, columnIndex);
+            System.out.print(rowIndex + " et " + columnIndex);
+        }
 
     /**
      *
      * @param _user
+     * @throws java.text.ParseException
      */
     public EdtGrilleTable(User _user) {
         user = _user;
-	//this.setLayout(new GridBagLayout());
-
-        merde();            
-        
-        
-        //validate();
+        definir_cours();  
     }
     
-    public void merde()
-    {
-    System.out.println("ok");
-    }
+  
 
 
 
-    public void definir_cours() throws ParseException
+    public void definir_cours()
     {
             
-                  String pattern = "dd-MM-yyyy";
-          SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-          Date date = null;
-          DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
-          int nb;
-          int caseHeure;
-          String info;
-          SimpleDateFormat simpleformat = new SimpleDateFormat("hh.mm.ss");
-          String strTime;
-          Time heure = null;
-          DateFormat heureformat = new SimpleDateFormat("HH.mm.ss");
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        Date date = null;
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
+        int nb;
+        int caseHeure;
+        String info;
+        SimpleDateFormat simpleformat = new SimpleDateFormat("hh.mm.ss");
+        String strTime;
+        Time heure = null;
+        DateFormat heureformat = new SimpleDateFormat("HH.mm.ss");
           
 //System.out.println(user.ListeSeances().getByUtilisateur(user.getUtilisateurConnecte()));
           for(Seance s : user.ListeSeances().getByUtilisateur(user.ListeUtilisateurs().getByID(1709))){
@@ -117,15 +139,18 @@ public class EdtGrilleTable extends AbstractTableModel {
               
              
         String strDate = dateFormat.format(s.getDate()); 
-        date = simpleDateFormat.parse(strDate);
+        try {
+			date = simpleDateFormat.parse(strDate);
+		} catch (ParseException e) {
+			// Si strDate est pas valide on prends une valeur par défaut
+			date = new Date();
+			e.printStackTrace();
+		}
         System.out.println( date);
         System.out.println("strdate :" + strDate);
         System.out.println("day of the week is  : "+date.getDay()); 
         nb = date.getDay();
-        if(nb == 0)
-            nb=6;
-        else
-            nb=nb-1;
+       
         
         
         strTime = heureformat.format(s.getDebut());
@@ -144,9 +169,16 @@ public class EdtGrilleTable extends AbstractTableModel {
             default: caseHeure=99; break;
         }
               System.out.println("caseee :" +caseHeure);
+              ArrayList<String> cours = new ArrayList<>();
+              cours.add("arrr");
+              cours.add("beee");
               
-              info = s.getCours().toString() + s.getEnseignants() + s.getSalles().toString() +s.getType().toString() ;
-              setValueAt(info, caseHeure, nb);
+              info = s.getCours().toString() + "\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
+              
+               String[] strArray = new String[] {info};
+                 
+              
+              setValueAt(info, caseHeure, nb+1); 
             }
     
     

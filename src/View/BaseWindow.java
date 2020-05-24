@@ -12,12 +12,13 @@ import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
 
-public class BaseWindow extends JFrame{
+public class BaseWindow extends JFrame {
 
 	private static final long serialVersionUID = 3528066671950303397L;
 	
@@ -25,8 +26,9 @@ public class BaseWindow extends JFrame{
 	User user = null;
 	BaseWindowController controller = new BaseWindowController(this);
 	Map<String, JPanel> pages = new HashMap<String, JPanel>();
-	
+
 	JButton  button1, button2, button3, button4, button11 = null;
+        
 	GridBagConstraints c = new GridBagConstraints();
 	
 	
@@ -64,8 +66,8 @@ public class BaseWindow extends JFrame{
 		button1.setName("bt1");
 		c.gridx = 0;
 		this.add(button1, c);
-        button1.addActionListener(controller);
-
+		button1.addActionListener(controller);
+		
         button11 = new JButton("EDT liste");
         button11.setName("bt11");
 		c.gridx = 1;
@@ -86,7 +88,7 @@ public class BaseWindow extends JFrame{
                 
                 
         button4 = new JButton("Reporting");
-        //button4.setName("bt4");
+        button4.setName("bt4");
 		c.gridx = 4;
 		this.add(button4, c);
         
@@ -124,9 +126,10 @@ public class BaseWindow extends JFrame{
 		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
 			return false;
 		}
-                
+
         SwitchPage(new EdtGrillePanel(user));
         addComponentsToPane();
+        
 		System.out.println(user.getUtilisateurConnecte());
 
 		return true;
