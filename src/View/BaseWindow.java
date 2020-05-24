@@ -59,7 +59,7 @@ public class BaseWindow extends JFrame implements ActionListener{
 	
 	JPanel mainWindow;
 	User user = null;
-	JButton  button1, button2, button3, button4 = null;
+	JButton  button1, button2, button3, button4, button11= null;
         
 	GridBagConstraints c = new GridBagConstraints();
         
@@ -101,15 +101,18 @@ public class BaseWindow extends JFrame implements ActionListener{
 		this.add(button1, c);
                 button1.addActionListener(this);
                 
-               
-		button2 = new JButton("Récapitulatif des cours");
+               button11 = new JButton("EDT Liste");
 		c.gridx = 1;
+		this.add(button11, c);
+                
+		button2 = new JButton("Récapitulatif des cours");
+		c.gridx = 2;
 		this.add(button2, c);
                 
                 
 	
 		button3 = new JButton("Mofifier");
-		c.gridx = 2;
+		c.gridx = 3;
 		this.add(button3, c);
                 button3.addActionListener(this);
                 
@@ -163,6 +166,10 @@ try {
         {
             if(evt.getSource()==button1){
             SwitchPage(new EdtGrillePanel(user));
+            }
+            
+            if(evt.getSource()==button11){
+            SwitchPage(new EDT_ListePanel(user));
             }
             
             if(evt.getSource()== button3){
