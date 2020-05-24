@@ -25,8 +25,10 @@ public class ModifAdminPanel extends JPanel
 	public ModifAdminPanel(User _user) {
 		user = _user;
 		this.setLayout(new GridBagLayout());
-
+		
+		
         initComponents();
+        
         
         this.setVisible(true);
         
@@ -50,7 +52,7 @@ public class ModifAdminPanel extends JPanel
         tabbedPanes.addTab("Groupes", new JScrollListe(user.ListeGroupes()));
 
         tabbedPanes.addTab("Promotions", new JScrollListe(user.ListePromotion(), "promotion"));
-        
+
         tabbedPanes.addTab("Cours", new JScrollListe(user.ListeCours(), "cours"));
 
         GridBagConstraints c = new GridBagConstraints();

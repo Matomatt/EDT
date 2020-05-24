@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -163,19 +164,24 @@ public class LoginPanel extends JPanel {
     }
 
     private void jButton1MouseClicked(MouseEvent evt) {
-           if (!baseWindow.Connect(champ_email.getText(), champ_mdp.getText()))
-           {
-				GridBagConstraints c = new GridBagConstraints();
-				c.fill = GridBagConstraints.HORIZONTAL;
-				c.insets = new Insets(40, 20, 5, 20);
-				c.weighty = 0.0;
-				c.gridwidth = 1;
-				c.weightx = 0.5;
-				c.gridx = 0;
-				c.gridy = 4;
-				background.add(new JLabel("Login or password incorrect"), c);
-				validate();
-           }
+           try {
+			if (!baseWindow.Connect(champ_email.getText(), champ_mdp.getText()))
+			   {
+					GridBagConstraints c = new GridBagConstraints();
+					c.fill = GridBagConstraints.HORIZONTAL;
+					c.insets = new Insets(40, 20, 5, 20);
+					c.weighty = 0.0;
+					c.gridwidth = 1;
+					c.weightx = 0.5;
+					c.gridx = 0;
+					c.gridy = 4;
+					background.add(new JLabel("Login or password incorrect"), c);
+					validate();
+			   }
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         	  
     }
 }

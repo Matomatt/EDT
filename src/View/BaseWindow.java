@@ -4,8 +4,6 @@ package View;
 import Seances.Seance;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,8 +12,6 @@ import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
-import java.awt.Dimension;
-import View.EDT_Grille;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -25,31 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import Seances.Seance;
-import Utilisateurs.ConnectionViaUser;
-import Utilisateurs.User;
-import Utilitaires.ConnectionErrorException;
-import Utilitaires.UserNotFoundException;
-import java.awt.Dimension;
-import View.EDT_Grille;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import java.text.DateFormat;  
-import java.util.Calendar;
+import java.text.DateFormat;
 
 
 public class BaseWindow extends JFrame implements ActionListener{
@@ -98,19 +70,19 @@ public class BaseWindow extends JFrame implements ActionListener{
 		button1 = new JButton("Emploi du temps");
 		c.gridx = 0;
 		this.add(button1, c);
-                button1.addActionListener(this);
+        button1.addActionListener(this);
                 
-                button11 = new JButton("EDT liste");
+        button11 = new JButton("EDT liste");
 		c.gridx = 1;
 		this.add(button11, c);
-                button1.addActionListener(this);
+        button11.addActionListener(this);
                
 		button2 = new JButton("Récapitulatif des cours");
                 c.gridx = 2;
 		this.add(button2, c);
                 button2.addActionListener(this);
 
-		button3 = new JButton("Mofifier");
+		button3 = new JButton("Modifier");
 		c.gridx = 3;
 		this.add(button3, c);
                 button3.addActionListener(this);
@@ -125,14 +97,19 @@ public class BaseWindow extends JFrame implements ActionListener{
 	public void SwitchPage(JPanel newPage)
 	{
 		this.remove(mainWindow);
+		
 		mainWindow = newPage;
-                c.fill = GridBagConstraints.BOTH;
+		
+        c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 		c.gridwidth = 5;
 		c.gridx = 0;
 		c.gridy = 1;
+		
 		this.add(mainWindow, c);
+		
+		validate();
 	}
 	
 	public boolean Connect(String login, String password) throws ParseException {
@@ -146,7 +123,7 @@ public class BaseWindow extends JFrame implements ActionListener{
 			return false;
 		}
 		
-	SwitchPage(new ModifAdminPanel(user));
+		SwitchPage(new ModifAdminPanel(user));
 		addComponentsToPane();
 		validate();
 		System.out.println(user.getUtilisateurConnecte());
@@ -162,8 +139,12 @@ public class BaseWindow extends JFrame implements ActionListener{
             //SwitchPage(new EdtGrillePanel(user));
             //}
             
+        	if(evt.getSource()== button11){
+            	SwitchPage(new EDT_ListePanel(user));
+            }
+        	
             if(evt.getSource()== button3){
-            SwitchPage(new ModifAdminPanel(user));
+            	SwitchPage(new ModifAdminPanel(user));
             }
         }
         
