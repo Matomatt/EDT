@@ -59,6 +59,7 @@ public class NewJFrame extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 255, 255));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
+        jButton1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jButton1.setText("jButton1");
         jButton1.setBorder(null);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
