@@ -1,7 +1,7 @@
 package UI_Elements;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -19,23 +19,19 @@ import Utilisateurs.ListeUtilisateurs;
 import Utilisateurs.Utilisateur;
 import Utilisateurs.User.UserType;
 
+
 public class JScrollListe extends JScrollPane
 {
 	private static final long serialVersionUID = -2054706871757546641L;
 	
-	final DefaultListModel<String> listModel = new DefaultListModel<String>();
-	final DefaultListModel<String> filteredListModel = new DefaultListModel<String>();
-	private JList<String> listString = new javax.swing.JList<>();
-	private List<Object> listObjects = new ArrayList<Object>();
+	private JList<Object> list = new JList<Object>();
+	private List<Object> originalList;
+	private DefaultListModel<Object> model = new DefaultListModel<Object>();
 	
-	public JScrollListe(ListeSeances listeSeances) 
-	{
-		for (Seance seance : listeSeances.getAll()) {
-			listModel.addElement(seance.toString());
-			filteredListModel.addElement(seance.toString());
-			listObjects.add(seance);
-		}
-		Init();
+	public JScrollListe(ListeSeances listeSeances) {
+		List<Seance> listSeances = listeSeances.getByWeek(25);
+		originalList = listSeances.stream().map(x -> (Object)x).collect(Collectors.toList());
+		Init();		
     }
 	
 	public JScrollListe(ListeUtilisateurs listeUtilisateurs, UserType userType) 
@@ -51,47 +47,51 @@ public class JScrollListe extends JScrollPane
 			default: listUtilisateurs = listeUtilisateurs.getAll(); break;
 		}
 		
-		for (Utilisateur utilisateur : listUtilisateurs) {
-			listModel.addElement(utilisateur.toString());
-			filteredListModel.addElement(utilisateur.toString());
-			listObjects.add(utilisateur);
-		}
-		Init();
+		originalList = listUtilisateurs.stream().map(x -> (Object)x).collect(Collectors.toList());
+		Init();	
 	}
 
 	public JScrollListe(ListeSalles listeSalles) {
-		for (Salle salle : listeSalles.getAll()) {
-			listModel.addElement(salle.toString());
-			filteredListModel.addElement(salle.toString());
-			listObjects.add(salle);
-		}
-		Init();	}
+		List<Salle> listSalles = listeSalles.getAll();
+		originalList = listSalles.stream().map(x -> (Object)x).collect(Collectors.toList());
+		Init();	
+	}
 
 	public JScrollListe(ListeGroupes listeGroupes) {
-		for (Groupe groupe : listeGroupes.getAll()) {
-			listModel.addElement(groupe.toString());
-			filteredListModel.addElement(groupe.toString());
-			listObjects.add(groupe);
-		}
-		Init();	}
+		List<Groupe> listGroupes = listeGroupes.getAll();
+		originalList = listGroupes.stream().map(x -> (Object)x).collect(Collectors.toList());
+		Init();	
+	}
 
 	public JScrollListe(ListeDonnees listeDonnees, String string) {
-		for (Donnee donnee : listeDonnees.getAll()) {
-			listModel.addElement(donnee.toString());
-			filteredListModel.addElement(donnee.toString());
-			listObjects.add(donnee);
-		}
-		Init();
-	}
-
-	private void Init()
-	{
-		listString.setModel(filteredListModel);
-        this.setViewportView(listString);
+		List<Donnee> listDonnees = listeDonnees.getAll();
+		originalList = listDonnees.stream().map(x -> (Object)x).collect(Collectors.toList());
+		Init();	
 	}
 	
-	public List<Object> getSelectedObjects()
+	private void Init()
 	{
-		return null;
+		Filter("");
+		list.setModel(model);
+		this.setViewportView(list);
 	}
+	
+	public void Filter(String filter)
+	{
+		for (Object object : originalList) {
+			
+			if (object.toString().contains(filter))
+			{
+				if (!model.contains(object))
+					model.addElement(object);
+			}
+			else {
+				if (model.contains(object))
+					model.removeElement(object);
+			}
+		}
+		
+		this.revalidate();
+	}
+	
 }
