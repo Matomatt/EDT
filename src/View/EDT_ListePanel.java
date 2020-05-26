@@ -13,6 +13,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+
+import Controllers.Controller;
 import Utilisateurs.User;
 import javax.swing.JTable;
 
@@ -20,21 +22,15 @@ import javax.swing.JTable;
  *
  * @author Léonie
  */
-public class EDT_ListePanel extends JPanel
+public class EDT_ListePanel extends Panel
 {    
     private static final long serialVersionUID = 3736956335101565252L;
-    User user = null;
 
-    public EDT_ListePanel(User _user) 
+    public EDT_ListePanel(User _user, Controller controller) 
     {
-	user = _user;
-	this.setLayout(new GridBagLayout());		
+    	super(_user, controller);
 		
         initComponents();//code de la page
-        
-        this.setVisible(true);
-        
-        validate();
     }
 	
     private void initComponents() 

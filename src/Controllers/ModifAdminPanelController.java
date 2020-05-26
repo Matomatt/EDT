@@ -16,9 +16,6 @@ import View.dataModifierWindows.addUtilisateurWindow;
 
 public class ModifAdminPanelController extends Controller
 {
-	public ModifAdminPanelController() {
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{

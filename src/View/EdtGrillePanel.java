@@ -8,25 +8,18 @@ package View;
 import Seances.Seance;
 import Utilisateurs.User;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-/**
- *
- * @author Célia BOCHER
- */
+import Controllers.Controller;
 
-public class EdtGrillePanel extends JPanel 
+public class EdtGrillePanel extends Panel 
 {
 	private static final long serialVersionUID = -4510731458552817257L;
-
-	User user = null;
     
     private final String[] columns = { "", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 
@@ -39,57 +32,51 @@ public class EdtGrillePanel extends JPanel
     {"17:15 - 18:45", "", "", "", "", "", ""},
     {"19:00 - 20:30", "", "", "", "", "", ""}};
     
-	public EdtGrillePanel(User _user) {
-		user = _user;
-		this.setLayout(new GridBagLayout());
+	public EdtGrillePanel(User _user, Controller controller) {
+		super(_user, controller);
 
         initComponents();
-        
-        this.setVisible(true);
-        
-        validate();
     }
         
 
         
         
-        private void initComponents()
-        {
-            
-            GridBagConstraints c = new GridBagConstraints();
-        
-            c.fill = GridBagConstraints.BOTH;
-            c.weightx = 1.0;
-            c.weighty = 1.0;
-            c.gridx = 0;
-            c.gridy = 1;
-            
-            JTable table = new JTable(data,columns);
-            
-            int lines = 5;
-            table.setRowHeight(table.getRowHeight() * lines);
-            
-            TextAreaRenderer render =  new TextAreaRenderer();
-            // We use our cell renderer for the third column
-            for(int i = 0; i<7; i++)
-            table.getColumnModel().getColumn(i).setCellRenderer(render);
-            
-            display_courses(table);
-            
-            JScrollPane scroll = new JScrollPane(table);
-            
-            c.gridx = 0;
-            c.gridy = 3;
-            
-            this.add(scroll,c);
-              
-        }
-        
-        
-        @SuppressWarnings("deprecation")
-		public void display_courses(JTable table)
+    private void initComponents()
     {
-            
+        
+        GridBagConstraints c = new GridBagConstraints();
+    
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.gridx = 0;
+        c.gridy = 1;
+        
+        JTable table = new JTable(data,columns);
+        
+        int lines = 5;
+        table.setRowHeight(table.getRowHeight() * lines);
+        
+        TextAreaRenderer render =  new TextAreaRenderer();
+        // We use our cell renderer for the third column
+        for(int i = 0; i<7; i++)
+        table.getColumnModel().getColumn(i).setCellRenderer(render);
+        
+        display_courses(table);
+        
+        JScrollPane scroll = new JScrollPane(table);
+        
+        c.gridx = 0;
+        c.gridy = 3;
+        
+        this.add(scroll,c);
+          
+    }
+        
+        
+    @SuppressWarnings("deprecation")
+	public void display_courses(JTable table)
+    {
         String pattern = "dd-MM-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Date date = null;
@@ -99,9 +86,9 @@ public class EdtGrillePanel extends JPanel
         String info;
         String strTime;
         DateFormat heureformat = new SimpleDateFormat("HH.mm.ss");
-          
         
-        for(Seance s : user.ListeSeances().getByUtilisateur(user.ListeUtilisateurs().getByID(1709))){
+        for(Seance s : user.ListeSeances().getByUtilisateur(user.ListeUtilisateurs().getByID(1709)))
+        {
             s.getDate();
              
             String strDate = dateFormat.format(s.getDate()); 
@@ -137,9 +124,7 @@ public class EdtGrillePanel extends JPanel
 
             info = s.getCours().toString() + "\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
             table.getModel().setValueAt(info, caseHeure, nb+1); 
-            }
-    
-    
+        }
     }
 }
     

@@ -7,6 +7,5 @@ public class EDT_ListePanelController extends Controller {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		super.actionPerformed(e);
 	}
 }

@@ -22,9 +22,6 @@ public class BaseWindowController implements ActionListener {
 	BaseWindow baseWindow = null;
 	JPanel mainWindowPanel = null;
 	
-	public BaseWindowController() {
-	}
-	
 	public void setControlledView(BaseWindow baseWindow) {
 		this.baseWindow = baseWindow;
 		LaunchLoginPage();
@@ -57,13 +54,18 @@ public class BaseWindowController implements ActionListener {
 	    	{
     			JButton bt = (JButton) e.getSource();
     			System.out.println(bt.getName());
+    			Controller controller = null;
     			switch (bt.getName()) 
     			{
-					case "bt1": page = new EdtGrillePanel(baseWindow.getUser());
+					case "bt1": controller = new EdtGrillePanelController();
+								page = new EdtGrillePanel(baseWindow.getUser(), controller);
 								break;
 
-					case "bt11": page = new EDT_ListePanel(baseWindow.getUser()); break;
-					case "bt3": Controller controller = new ModifAdminPanelController();
+					case "bt11": controller = new EDT_ListePanelController();
+								 page = new EDT_ListePanel(baseWindow.getUser(), controller);
+								 break;
+								 
+					case "bt3": controller = new ModifAdminPanelController();
 								page = new ModifAdminPanel(baseWindow.getUser(), controller); 
 								break;
 	
@@ -114,7 +116,7 @@ public class BaseWindowController implements ActionListener {
 		
 		baseWindow.setUser(user);
 		baseWindow.addComponentsToPane();
-        SwitchPage(new EdtGrillePanel(user));
+        SwitchPage(new EdtGrillePanel(baseWindow.getUser(), new EdtGrillePanelController()));
         
 		System.out.println(user.getUtilisateurConnecte());
 
