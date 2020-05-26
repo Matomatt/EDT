@@ -13,6 +13,7 @@ import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
+import java.text.ParseException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,7 +97,7 @@ public class BaseWindow extends JFrame
 	public User getUser() {
 		return user;
 	}
-
+	
 	public void setUser(User user) {
 		this.user = user;
 	}

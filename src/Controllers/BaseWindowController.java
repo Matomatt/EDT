@@ -16,7 +16,9 @@ import View.EDT_ListePanel;
 import View.EdtGrillePanel;
 import View.LoginPanel;
 import View.ModifAdminPanel;
-import View.Panel;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BaseWindowController implements ActionListener {
 	
@@ -60,7 +62,9 @@ public class BaseWindowController implements ActionListener {
     			System.out.println(bt.getName());
     			switch (bt.getName()) 
     			{
-					case "bt1": page = new EdtGrillePanel(baseWindow.getUser()); break;
+					case "bt1": page = new EdtGrillePanel(baseWindow.getUser());
+								break;
+
 					case "bt11": page = new EDT_ListePanel(baseWindow.getUser()); break;
 					case "bt3": Controller controller = new ModifAdminPanelController();
 								page = new ModifAdminPanel(baseWindow.getUser(), controller); 
