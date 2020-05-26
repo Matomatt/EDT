@@ -8,13 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Controllers.BaseWindowController;
-import Controllers.Controller;
-import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
-import Utilitaires.ConnectionErrorException;
-import Utilitaires.UserNotFoundException;
-import java.text.ParseException;
-
 import java.util.HashMap;
 import java.util.Map;
 

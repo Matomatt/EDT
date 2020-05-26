@@ -8,16 +8,14 @@ public class TextAreaRenderer extends JTextArea implements TableCellRenderer
 {
 	private static final long serialVersionUID = -4904333864225399155L;
 
-public TextAreaRenderer() {
-    setLineWrap(true);
-    setWrapStyleWord(true);
-  }
+	public TextAreaRenderer() {
+	    setLineWrap(true);
+	    setWrapStyleWord(true);
+	  }
 
-  @Override
-  public Component getTableCellRendererComponent(JTable jTable,
-      Object obj, boolean isSelected, boolean hasFocus, int row,
-      int column) {
-    setText((String)obj);
-    return this;
-  }
+	@Override
+	public Component getTableCellRendererComponent(JTable jTable, Object obj, boolean isSelected, boolean hasFocus, int row, int column) {
+		setText((String)obj);
+		return this;
+	}
 }

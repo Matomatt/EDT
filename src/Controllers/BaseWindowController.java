@@ -16,9 +16,6 @@ import View.EDT_ListePanel;
 import View.EdtGrillePanel;
 import View.LoginPanel;
 import View.ModifAdminPanel;
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class BaseWindowController implements ActionListener {
 	

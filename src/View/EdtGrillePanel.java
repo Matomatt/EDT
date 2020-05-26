@@ -9,19 +9,13 @@ import Seances.Seance;
 import Utilisateurs.User;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import java.awt.TextArea;
-import java.awt.Component;
 
 /**
  *
@@ -92,7 +86,8 @@ public class EdtGrillePanel extends JPanel
         }
         
         
-        public void display_courses(JTable table)
+        @SuppressWarnings("deprecation")
+		public void display_courses(JTable table)
     {
             
         String pattern = "dd-MM-yyyy";

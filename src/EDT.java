@@ -35,6 +35,7 @@ public class EDT {
        //TestsHistogram();
 	}
 	
+	@SuppressWarnings("unused")
 	private static void Tests(User user)
 	{
 		for (Donnee d : user.ListePromotion().getAll()) {
@@ -119,6 +120,7 @@ public class EDT {
         System.out.println("\n\ndone");
 	}
 	
+	@SuppressWarnings("unused")
 	private static void TestsHistogram()
 	{
 		double[] vals = {

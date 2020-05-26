@@ -6,21 +6,9 @@
 package View;
 
 import Seances.Seance;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-
-import javax.swing.AbstractListModel;
-import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 
 import Utilisateurs.User;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,13 +20,11 @@ import java.util.Date;
  *
  * @author Célia BOCHER
  */
-public final class EdtGrilleTable extends AbstractTableModel {
-    
-    
-    User user = null;
-    private final String[] columns = { "", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
-
-        private final String[][] data = {
+public final class EdtGrilleTable extends AbstractTableModel 
+{
+	private static final long serialVersionUID = -3758052488971221765L;
+	User user = null;
+    private final String[][] data = {
         {"8:30 - 10:00", "", "", "", "", "", ""},
         {"10:15 - 11:45", "", "", "", "", "", ""},
         {"12:00 - 13:30", "", "", "", "", "", ""},
@@ -116,7 +102,8 @@ public final class EdtGrilleTable extends AbstractTableModel {
 
 
 
-    public void definir_cours()
+    @SuppressWarnings("deprecation")
+	public void definir_cours()
     {
             
         String pattern = "dd-MM-yyyy";
@@ -126,9 +113,8 @@ public final class EdtGrilleTable extends AbstractTableModel {
         int nb;
         int caseHeure;
         String info;
-        SimpleDateFormat simpleformat = new SimpleDateFormat("hh.mm.ss");
+        new SimpleDateFormat("hh.mm.ss");
         String strTime;
-        Time heure = null;
         DateFormat heureformat = new SimpleDateFormat("HH.mm.ss");
           
 //System.out.println(user.ListeSeances().getByUtilisateur(user.getUtilisateurConnecte()));
@@ -174,10 +160,7 @@ public final class EdtGrilleTable extends AbstractTableModel {
               
               info = s.getCours().toString() + "\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
               
-               String[] strArray = new String[] {info};
-                 
-              
-              setValueAt(info, caseHeure, nb+1); 
+               setValueAt(info, caseHeure, nb+1); 
             }
     
     

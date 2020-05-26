@@ -6,8 +6,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import Controllers.ModifAdminPanelController;
-
 public class Button extends JButton {
 
 	private static final long serialVersionUID = 669376052961263990L;
