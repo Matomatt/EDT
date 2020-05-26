@@ -3,6 +3,7 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.statistics.HistogramDataset;
 
+import Controllers.BaseWindowController;
 import Donnees.Donnee;
 import Filters.Filter;
 import Filters.Filter.Filters;
@@ -14,6 +15,7 @@ import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
+import Utilitaires.path;
 import View.BaseWindow;
 import java.io.File;
 import java.io.IOException;
@@ -23,12 +25,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class EDT {
 
 	
 	public static void main(String args[])
 	{
-        new BaseWindow();
+		BaseWindowController controller = new BaseWindowController();
+        new BaseWindow(controller);
+        
+        
         
         //RemplirSeances(user);
         //Tests(user);

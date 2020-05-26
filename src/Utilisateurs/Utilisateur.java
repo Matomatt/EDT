@@ -5,10 +5,12 @@ import java.util.List;
 
 import Donnees.Donnee;
 import Groupes.Groupe;
+import Utilisateurs.User.UserType;
 
 public class Utilisateur {
 	private int ID = 0;
 	private String email = "";
+	private String password = "";
 	private String nom = "";
 	private String prenom = "";
 	private User.UserType type = User.UserType.none;
@@ -17,10 +19,11 @@ public class Utilisateur {
 	private int numeroEtudiant = 0;
 	private Groupe groupeSiEtudiant = null;
 	
-	private void Init(int _ID, String _email, String _nom, String _prenom, int _type)
+	private void Init(int _ID, String _email, String _password, String _nom, String _prenom, int _type)
 	{
 		ID = _ID;
 		setEmail(_email);
+		setPassword(_password);
 		setNom(_nom);
 		setPrenom(_prenom);
 		
@@ -33,19 +36,19 @@ public class Utilisateur {
 		}
 	}
 	
-	Utilisateur(int _ID, String _email, String _nom, String _prenom, int _type) {
-		Init(_ID, _email, _nom, _prenom, _type);
+	Utilisateur(int _ID, String _email, String _password, String _nom, String _prenom, int _type) {
+		Init(_ID, _email, _password, _nom, _prenom, _type);
 	}
 	
-	Utilisateur(int _ID, String _email, String _nom, String _prenom, int _type, List<Donnee> cours) {
-		Init(_ID, _email, _nom, _prenom, _type);
+	Utilisateur(int _ID, String _email, String _password, String _nom, String _prenom, int _type, List<Donnee> cours) {
+		Init(_ID, _email, _password, _nom, _prenom, _type);
 		
 		if (type == User.UserType.Enseignant)
 			coursDonnesSiEnseignant = cours;
 	}
 	
-	Utilisateur(int _ID, String _email, String _nom, String _prenom, int _type, Groupe groupe, int numero) {
-		Init(_ID, _email, _nom, _prenom, _type);
+	Utilisateur(int _ID, String _email, String _password, String _nom, String _prenom, int _type, Groupe groupe, int numero) {
+		Init(_ID, _email, _password, _nom, _prenom, _type);
 		
 		if (type == User.UserType.Etudiant)
 		{
@@ -55,19 +58,19 @@ public class Utilisateur {
 			
 	}
 	
-	public Utilisateur(String _email, String _nom, String _prenom, int _type) {
-		Init(0, _email, _nom, _prenom, _type);
+	public Utilisateur(String _email, String _password, String _nom, String _prenom, int _type) {
+		Init(0, _email, _password, _nom, _prenom, _type);
 	}
 	
-	public Utilisateur(String _email, String _nom, String _prenom, int _type, List<Donnee> cours) {
-		Init(0, _email, _nom, _prenom, _type);
+	public Utilisateur(String _email, String _password, String _nom, String _prenom, int _type, List<Donnee> cours) {
+		Init(0, _email, _password, _nom, _prenom, _type);
 		
-		if (type == User.UserType.Enseignant)
+		if (type == UserType.Enseignant || type == UserType.Referent_pedagogique)
 			coursDonnesSiEnseignant = cours;
 	}
 	
-	public Utilisateur(String _email, String _nom, String _prenom, int _type, Groupe groupe, int numero) {
-		Init(0, _email, _nom, _prenom, _type);
+	public Utilisateur(String _email, String _password, String _nom, String _prenom, int _type, Groupe groupe, int numero) {
+		Init(0, _email, _password, _nom, _prenom, _type);
 		
 		if (type == User.UserType.Etudiant)
 		{
@@ -78,17 +81,20 @@ public class Utilisateur {
 
 	public int getID() { return ID; }
 	public String getEmail() { return email; }
+	public String getPassword() { return password; }
 	public String getNom() { return nom; }
 	public String getPrenom() { return prenom; }
 	public User.UserType getType() { return type; }
-	public List<Donnee> getCoursDonnes() { return (type == User.UserType.Enseignant?coursDonnesSiEnseignant:null); }
+	public List<Donnee> getCoursDonnes() { return coursDonnesSiEnseignant; }
 	public Groupe getGroupe() { return (type == User.UserType.Etudiant?groupeSiEtudiant:null); }
 	public int getNumeroEtudiant() { return numeroEtudiant; }
 
+	void setID(int ID) { this.ID = ID; }
 	public void setEmail(String email) { this.email = email; }
+	public void setPassword(String password) { this.password = password; }
 	public void setNom(String nom) { this.nom = nom; }
 	public void setPrenom(String prenom) { this.prenom = prenom; }
-	public void setCoursDonnes(List<Donnee> cours) { coursDonnesSiEnseignant = (type == User.UserType.Enseignant?cours:null); }
+	public void setCoursDonnes(List<Donnee> cours) { coursDonnesSiEnseignant = cours; }
 	public void addCours(Donnee cours) { if (type == User.UserType.Enseignant) coursDonnesSiEnseignant.add(cours); }
 	public void removeCours(Donnee cours) { if (type == User.UserType.Enseignant) coursDonnesSiEnseignant.remove(cours); }
 	public void setGroupe(Groupe groupe) { groupeSiEtudiant = (type == User.UserType.Etudiant?groupe:null); }
@@ -109,6 +115,4 @@ public class Utilisateur {
 		
 		return  toReturn;
 	}
-
-	
 }

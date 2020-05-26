@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.sql.Date;
 import java.sql.Time;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,10 +19,7 @@ import javax.swing.JSpinner;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
-import com.sun.xml.internal.ws.api.model.wsdl.editable.EditableWSDLBoundFault;
-
-import Controllers.Controller;
-import Controllers.addSeanceWindowController;
+import Controllers.dataModifierWindowsControllers.addSeanceWindowController;
 import Donnees.Donnee;
 import Groupes.Groupe;
 import Salles.Salle;

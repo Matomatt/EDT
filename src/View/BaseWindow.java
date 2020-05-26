@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Controllers.BaseWindowController;
+import Controllers.Controller;
 import Utilisateurs.ConnectionViaUser;
 import Utilisateurs.User;
 import Utilitaires.ConnectionErrorException;
@@ -18,38 +19,29 @@ import java.util.Map;
 
 
 
-public class BaseWindow extends JFrame {
-
+public class BaseWindow extends JFrame 
+{
 	private static final long serialVersionUID = 3528066671950303397L;
 	
 	JPanel mainWindow;
 	User user = null;
-	BaseWindowController controller = new BaseWindowController(this);
+	BaseWindowController controller;
 	Map<String, JPanel> pages = new HashMap<String, JPanel>();
 
 	JButton  button1, button2, button3, button4, button11 = null;
         
 	GridBagConstraints c = new GridBagConstraints();
-	
-	
-	
-	public BaseWindow(){
-		this.setLayout(new GridBagLayout());
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+	public BaseWindow(BaseWindowController controller)
+	{
+		this.setLayout(new GridBagLayout());
+		
+		controller.setControlledView(this);
+		this.controller = controller;
+		
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		mainWindow = new LoginPanel(this);
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		c.gridwidth = 4;
-		c.gridx = 0;
-		c.gridy = 1;
-		this.add(mainWindow, c);
-		
-		//addComponentsToPane();
-		
 		this.setVisible(true);
 		this.pack();
 	}
@@ -96,44 +88,6 @@ public class BaseWindow extends JFrame {
 		this.validate();
 		this.repaint();
     }
-
-	public void SwitchPage(JPanel newPage)
-	{
-		this.remove(mainWindow);
-		
-		mainWindow = newPage;
-		
-        c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		c.gridwidth = 5;
-		c.gridx = 0;
-		c.gridy = 1;
-		
-		this.add(mainWindow, c);
-		
-		validate();
-		this.repaint();
-	}
-	
-	public boolean Connect(String login, String password) {
-		login = "admin";
-		password = "pw";
-		
-		try {
-			System.out.println(login + " " + password);
-			user = new ConnectionViaUser(login, password);
-		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
-			return false;
-		}
-
-        SwitchPage(new EdtGrillePanel(user));
-        addComponentsToPane();
-        
-		System.out.println(user.getUtilisateurConnecte());
-
-		return true;
-	}
 	
 	public Map<String, JPanel> getPages() {
 		return pages;
@@ -141,5 +95,9 @@ public class BaseWindow extends JFrame {
 
 	public User getUser() {
 		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

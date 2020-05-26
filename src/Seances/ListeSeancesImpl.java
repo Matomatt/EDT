@@ -102,7 +102,7 @@ public class ListeSeancesImpl implements ListeSeances {
 		if (utilisateur.getType() == User.UserType.Etudiant)
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+"))");
 		else
-			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+")");
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant="+utilisateur.getID()+")");
 	}
 	
 	@Override
@@ -112,7 +112,7 @@ public class ListeSeancesImpl implements ListeSeances {
 		if (utilisateur.getType() == User.UserType.Etudiant)
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+")) AND Date='"+date+"'");
 		else
-			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+") AND Date='"+date+"'");
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant="+utilisateur.getID()+") AND Date='"+date+"'");
 	}
 	
 	@Override
@@ -120,7 +120,7 @@ public class ListeSeancesImpl implements ListeSeances {
 		if (utilisateur.getType() == User.UserType.Etudiant)
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+")) AND Semaine='"+week+"'");
 		else
-			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseigants Where ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+week+"'");
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+week+"'");
 	}
 	
 	@Override
@@ -140,7 +140,7 @@ public class ListeSeancesImpl implements ListeSeances {
 				connection.createStatement().executeUpdate("INSERT INTO `seance_groupes` (`ID_Seance`, `ID_Groupe`) VALUES ('"+newID+"', '"+groupe.getID()+"');");
 			}
 			for (Utilisateur enseignant : seance.getEnseignants()) {
-				connection.createStatement().executeUpdate("INSERT INTO `seance_enseigants` (`ID_Seance`, `ID_Enseignant`) VALUES ('"+newID+"', '"+enseignant.getID()+"');");
+				connection.createStatement().executeUpdate("INSERT INTO `seance_enseignants` (`ID_Seance`, `ID_Enseignant`) VALUES ('"+newID+"', '"+enseignant.getID()+"');");
 			}
 			for (Salle salle : seance.getSalles()) {
 				connection.createStatement().executeUpdate("INSERT INTO `seance_salles` (`ID_Seance`, `ID_Salle`) VALUES ('"+newID+"', '"+salle.getID()+"');");
@@ -207,7 +207,7 @@ public class ListeSeancesImpl implements ListeSeances {
 				connection.createStatement().executeUpdate("DELETE From `seance_groupes` Where ID_Groupe="+groupe.getID()+" AND ID_Seance="+seance.getID());
 			}
 			for (Utilisateur enseignant : seance.getEnseignants()) {
-				connection.createStatement().executeUpdate("DELETE From `seance_enseigants` Where ID_Enseignant="+enseignant.getID()+" AND ID_Seance="+seance.getID());
+				connection.createStatement().executeUpdate("DELETE From `seance_enseignants` Where ID_Enseignant="+enseignant.getID()+" AND ID_Seance="+seance.getID());
 			}
 			for (Salle salle : seance.getSalles()) {
 				connection.createStatement().executeUpdate("DELETE From `seance_salles` Where ID_Salle="+salle.getID()+" AND ID_Seance="+seance.getID());

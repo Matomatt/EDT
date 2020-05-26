@@ -117,7 +117,7 @@ public class JScrollListe extends JScrollPane
 	}
 
 	public void Delete(Object o) {
-		System.out.println(o.toString());
+		System.out.println(o.toString() + " deleted !");
 		if (originalList.contains(o))
 			originalList.remove(o);
 		if(model.contains(o))

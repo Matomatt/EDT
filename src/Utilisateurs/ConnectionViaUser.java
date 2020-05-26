@@ -2,6 +2,10 @@ package Utilisateurs;
 
 
 import java.sql.*;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import Donnees.ListeDonnees;
 import Donnees.ListeDonneesImpl;
 import Groupes.ListeGroupes;
@@ -37,14 +41,14 @@ public class ConnectionViaUser implements User {
 	 * PUBLIC METHODS
 	 */
 	
-        /****
-         * Se connecte a un utilisateur et génère toutes les interfaces d'accès a la bdd
-         * @param login
-         * @param password
-         * @throws UserNotFoundException
-         * @throws ClassNotFoundException
-         * @throws ConnectionErrorException
-         */
+    /****
+     * Se connecte a un utilisateur et génère toutes les interfaces d'accès a la bdd
+     * @param login
+     * @param password
+     * @throws UserNotFoundException
+     * @throws ClassNotFoundException
+     * @throws ConnectionErrorException
+     */
 	public ConnectionViaUser(String login, String password) throws UserNotFoundException, ClassNotFoundException, ConnectionErrorException
 	{
 		Class.forName("com.mysql.jdbc.Driver");
@@ -52,6 +56,20 @@ public class ConnectionViaUser implements User {
 		System.out.println("Driver O.K.");
 
 		try {
+			String s = (String)JOptionPane.showInputDialog(
+                    new JFrame(),
+                    "Entrez le nom de la bdd",
+                    "BDD",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    "edt");
+
+			//If a string was returned, say so.
+			if ((s != null) && (s.length() > 0)) {
+			    url = "jdbc:mysql://localhost:3306/"+s+"?autoReconnect=true&useSSL=false";
+			}
+			
 			connection = DriverManager.getConnection(url, user, passwd);
 			System.out.println("Connected to the database (user not verified yet)...");
 		} catch (SQLException e) {

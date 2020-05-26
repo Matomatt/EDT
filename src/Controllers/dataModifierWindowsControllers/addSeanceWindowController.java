@@ -1,9 +1,10 @@
-package Controllers;
+package Controllers.dataModifierWindowsControllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
+import Controllers.ModifAdminPanelController;
 import Seances.Seance;
 import UI_Elements.Button;
 import View.dataModifierWindows.addSeanceWindow;

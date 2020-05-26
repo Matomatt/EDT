@@ -19,17 +19,20 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import Controllers.LoginPanelController;
 import Utilitaires.ImageManager;
+import Utilitaires.path;
 
 public class LoginPanel extends JPanel {
     
 	private static final long serialVersionUID = -7196042227727118997L;
 	
-	BaseWindow baseWindow;
+	LoginPanelController controller = null;
 	
 	private JLabel background;
 	private JTextField champ_email;
@@ -38,13 +41,14 @@ public class LoginPanel extends JPanel {
     private JLabel jLabel2;
     private JLabel jLabel3;
     
-    public LoginPanel(BaseWindow _baseWindow)
+    public LoginPanel(LoginPanelController controller)
     {
-    	baseWindow = _baseWindow;
+    	controller.setControlledView(this);
+    	this.controller = controller;
     	this.setLayout(new GridBagLayout());
     	
     	try {
-    		background = new JLabel(new ImageIcon( ImageManager.LoadImage("./Images/login.png", java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2) ));
+    		background = new JLabel(new ImageIcon( ImageManager.LoadImage(path.getImagePath("login.png"), java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2) ));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -87,7 +91,6 @@ public class LoginPanel extends JPanel {
         
 
         jLabel3.setText("Mot de passe :");
-        //jLabel3.setBounds(207, 180, 85, 20);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 20, 5, 20);
 		c.weightx = 0.0;
@@ -98,12 +101,6 @@ public class LoginPanel extends JPanel {
         champ_email.setBackground(new Color(143, 202, 214));
         champ_email.setToolTipText("");
         champ_email.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 102)));
-        champ_email.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                champ_emailActionPerformed(evt);
-            }
-        });
-        //champ_email.setBounds(165, 140, 170, 30);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.ipady = 20;
 		c.weightx = 0.0;
@@ -113,12 +110,6 @@ public class LoginPanel extends JPanel {
 
         champ_mdp.setBackground(new java.awt.Color(143, 202, 214));
         champ_mdp.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 102)));
-        champ_mdp.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                champ_mdpActionPerformed(evt);
-            }
-        });
-        //champ_mdp.setBounds(165, 205, 170, 30);
         c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.0;
 		c.gridx = 0;
@@ -126,17 +117,8 @@ public class LoginPanel extends JPanel {
 		background.add(champ_mdp, c);
 
         jButton1.setText("Se connecter");
-        jButton1.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                    jButton1MouseClicked(evt);
-            }
-        });
-        jButton1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        //jButton1.setBounds(185, 270, 130, 40);
+        jButton1.setName("btLogin");
+        jButton1.addActionListener(controller);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 20, 20, 20);
         c.ipady = 0;
@@ -147,33 +129,13 @@ public class LoginPanel extends JPanel {
 		background.add(jButton1, c);
     }
 
-    private void champ_emailActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void champ_mdpActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-
-    }
-
-    private void jButton1ActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-        
-    }
-    private void jButton1MouseClicked(MouseEvent evt)
-    {
-       if (!baseWindow.Connect(champ_email.getText(), new String(champ_mdp.getPassword())))
-       {
-			GridBagConstraints c = new GridBagConstraints();
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.insets = new Insets(40, 20, 5, 20);
-			c.weighty = 0.0;
-			c.gridwidth = 1;
-			c.weightx = 0.5;
-			c.gridx = 0;
-			c.gridy = 4;
-			background.add(new JLabel("Login or password incorrect"), c);
-			validate();
-       } 
-    }
+	public String getEmail() {
+		return champ_email.getText();
+	}
+	public String getPassword() {
+		return new String(champ_mdp.getPassword());
+	}
+	public JLabel getBackgroundPanel() {
+		return background;
+	}
 }

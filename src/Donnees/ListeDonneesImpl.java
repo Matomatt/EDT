@@ -25,7 +25,7 @@ public class ListeDonneesImpl implements ListeDonnees {
 		
 		try 
 		{
-			result = connection.createStatement().executeQuery(query);
+			result = connection.createStatement().executeQuery(query + " ORDER BY Nom ASC");
 			
 			while(result.next())
 				list.add(new Donnee(result.getInt("ID"), result.getString("Nom")));

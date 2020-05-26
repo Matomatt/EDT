@@ -14,6 +14,8 @@ public interface ListeUtilisateurs {
 	public List<Utilisateur> getEnseignantsByCours(Donnee cours);
 	public List<Utilisateur> getEnseignantsBySeance(Seance seance);
 	public List<Utilisateur> getEnseignantsBySeanceID(int ID);
+	public int getHighestStudentNumber();
 	public void Delete(Utilisateur utilisateur);
+	public void addUtilisateur(Utilisateur utilisateur);
 	
 }

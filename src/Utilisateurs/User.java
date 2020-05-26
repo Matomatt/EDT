@@ -13,11 +13,22 @@ public interface User {
 			{
 			case Etudiant : return "Etudiant";
 			case Enseignant : return "Enseignant";
-			case Referent_pedagogique : return "R�f�rant p�dagogique";
+			case Referent_pedagogique : return "Référant pédagogique";
 			case Admin : return "Admin";
 			default: return "none";
 			}
-		}; };
+		}
+		public int toInt() {
+			switch (this)
+			{
+			case Etudiant : return 4;
+			case Enseignant : return 3;
+			case Referent_pedagogique : return 2;
+			case Admin : return 1;
+			default: return 0;
+			}
+		}; 
+	};
 	public Utilisateur getUtilisateurConnecte();
 	
 	public ListeSeances ListeSeances();
