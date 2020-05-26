@@ -39,7 +39,6 @@ public class addUtilisateurWindowController implements ActionListener
 		{
 			window.ToggleJComboBoxLists();
 		}
-		
 	}
 	
 	private void addUtilisateur() {

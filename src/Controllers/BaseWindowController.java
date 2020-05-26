@@ -104,8 +104,6 @@ public class BaseWindowController implements ActionListener {
 	
 	public boolean Connect(String login, String password) 
 	{
-		login = "admin";
-		password = "pw";
 		User user = null;
 		try {
 			System.out.println(login + " " + password);

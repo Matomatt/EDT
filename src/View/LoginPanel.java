@@ -122,6 +122,9 @@ public class LoginPanel extends JPanel {
 		c.gridx = 0;
 		c.gridy = 5;
 		background.add(jButton1, c);
+		
+		champ_email.setText("Admin");
+		champ_mdp.setText("pw");
     }
 
 	public String getEmail() {
