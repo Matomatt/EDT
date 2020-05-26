@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 
 import Controllers.BaseWindowController;
 import Utilisateurs.User;
+import Utilisateurs.User.UserType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,18 +68,21 @@ public class BaseWindow extends JFrame
 		c.gridx = 2;
 		this.add(button2, c);
         button2.addActionListener(controller);
-
-		button3 = new JButton("Modifier");
-		button3.setName("bt3");
-		c.gridx = 3;
-		this.add(button3, c);
-        button3.addActionListener(controller);
-                
-                
+        
         button4 = new JButton("Reporting");
         button4.setName("bt4");
-		c.gridx = 4;
+		c.gridx = 3;
 		this.add(button4, c);
+		
+		if (user.getUserType() == UserType.Admin)
+		{
+			button3 = new JButton("Modifier");
+			button3.setName("bt3");
+			c.gridx = 4;
+			this.add(button3, c);
+	        button3.addActionListener(controller);
+		}
+		
         
 		
 		this.validate();

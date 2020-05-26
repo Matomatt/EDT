@@ -155,49 +155,7 @@ public class ListeSeancesImpl implements ListeSeances {
 		
 		return true;
 	}
-
-	@Override
-	public boolean salleLibre(Salle salle, Time heureDebut, Time heureFin, Date date) 
-	{
-		
-		for (Seance seance : getBySalle(salle)) {
-			//System.out.println(date + "==" + seance.getDate());
-			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
-				return false;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean promoLibre(Donnee promotion, Time heureDebut, Time heureFin, Date date) {
-		for (Seance seance : getByPromo(promotion)) {
-			//System.out.println(date + "==" + seance.getDate());
-			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
-				return false;
-		}
-		return true;
-	}
 	
-	@Override
-	public boolean groupeLibre(Groupe groupe, Time heureDebut, Time heureFin, Date date) {
-		for (Seance seance : getByGroupe(groupe)) {
-			//System.out.println(date + "==" + seance.getDate());
-			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
-				return false;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean utilisateurLibre(Utilisateur utilisateur, Time heureDebut, Time heureFin, Date date) {
-		for (Seance seance : getByUtilisateur(utilisateur)) {
-			//System.out.println(date + "==" + seance.getDate());
-			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
-				return false;
-		}
-		return true;
-	}
-
 	@Override
 	public void Delete(Seance seance) {
 		try {
@@ -216,5 +174,65 @@ public class ListeSeancesImpl implements ListeSeances {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean salleLibre(Salle salle, Time heureDebut, Time heureFin, Date date) 
+	{
+		
+		for (Seance seance : getBySalle(salle)) {
+			//System.out.println(date + "==" + seance.getDate());
+			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean promoLibre(Donnee promotion, Time heureDebut, Time heureFin, Date date) {
+		for (Seance seance : getByPromo(promotion)) {
+			//System.out.println(date + "==" + seance.getDate());
+			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date.equals(seance.getDate()))
+				return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean groupeLibre(Groupe groupe, Time heureDebut, Time heureFin, Date date) {
+		for (Seance seance : getByGroupe(groupe)) {
+			//System.out.println(seance.getDebut() + " / " + heureFin + " : " + seance.getDebut().after(heureFin) + " || " + seance.getFin() +" / " + heureDebut + " : " + seance.getFin().before(heureDebut) + " && " + date + "==" + seance.getDate() + " : " + date.equals(seance.getDate()));
+			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date.equals(seance.getDate()))
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean utilisateurLibre(Utilisateur utilisateur, Time heureDebut, Time heureFin, Date date) {
+		for (Seance seance : getByUtilisateur(utilisateur)) {
+			//System.out.println(date + "==" + seance.getDate());
+			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date.equals(seance.getDate()))
+				return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean seancePossible(Seance seance) 
+	{
+		for (Groupe groupe : seance.getGroupes()) {
+			if (!groupeLibre(groupe, seance.getDebut(), seance.getFin(), seance.getDate()))
+				return false;
+		}
+		for (Utilisateur enseignant : seance.getEnseignants()) {
+			if (!utilisateurLibre(enseignant, seance.getDebut(), seance.getFin(), seance.getDate()))
+				return false;
+		}
+		for (Salle salle : seance.getSalles()) {
+			if (!salleLibre(salle, seance.getDebut(), seance.getFin(), seance.getDate()))
+				return false;
+		}
+		return true;
 	}
 }

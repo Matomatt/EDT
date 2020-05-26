@@ -19,9 +19,10 @@ public interface ListeSeances {
 	public List<Seance> getByUtilisateurAtDate(Utilisateur utilisateur, String date); //Format yyyy-mm-dd
 	public List<Seance> getByUtilisateurAtWeek(Utilisateur utilisateur, int week);
 	public boolean addSeance(Seance seance);
+	public void Delete(Seance seance);
 	public boolean salleLibre(Salle salle, Time heureDebut, Time heureFin, Date date);
 	public boolean promoLibre(Donnee promotion, Time heureDebut, Time heureFin, Date date);
 	public boolean groupeLibre(Groupe groupe, Time heureDebut, Time heureFin, Date date);
 	public boolean utilisateurLibre(Utilisateur utilisateur, Time heureDebut, Time heureFin, Date date);
-	public void Delete(Seance seance);
+	public boolean seancePossible(Seance seance);
 }

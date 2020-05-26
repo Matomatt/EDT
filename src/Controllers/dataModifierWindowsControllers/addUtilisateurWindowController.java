@@ -3,6 +3,7 @@ package Controllers.dataModifierWindowsControllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import Controllers.ModifAdminPanelController;
@@ -33,6 +34,10 @@ public class addUtilisateurWindowController implements ActionListener
 				
 				default: break;
 			}
+		}
+		else if (e.getSource().getClass() == JComboBox.class) 
+		{
+			window.ToggleJComboBoxLists();
 		}
 		
 	}

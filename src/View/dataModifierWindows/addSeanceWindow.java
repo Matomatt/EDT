@@ -7,14 +7,13 @@ import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
@@ -24,6 +23,7 @@ import Donnees.Donnee;
 import Groupes.Groupe;
 import Salles.Salle;
 import UI_Elements.Button;
+import UI_Elements.JEditableComboBoxList;
 import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 
@@ -37,9 +37,9 @@ public class addSeanceWindow extends JFrame
 	private JFormattedTextField dateTextField = new JFormattedTextField(new SimpleDateFormat("yyyy-mm-dd"));
     private JFormattedTextField heureDebutTextField = new JFormattedTextField();
     private JFormattedTextField heureFinTextField = new JFormattedTextField();
-    private JPanel groupesJPanel = new JPanel();
-    private JPanel enseignantsJPanel = new JPanel();
-    private JPanel sallesJPanel = new JPanel();
+    private JEditableComboBoxList groupesComboBoxList = null;
+    private JEditableComboBoxList enseignantsComboBoxList = null;
+    private JEditableComboBoxList sallesComboBoxList = null;
     private JSpinner etatSpinner = new JSpinner();
     private JComboBox<Object> coursComboBox = null;
     private JComboBox<Object> typeDeCoursComboBox = null;
@@ -80,7 +80,11 @@ public class addSeanceWindow extends JFrame
 		heureFinTextField.setFormatterFactory(new DefaultFormatterFactory(new DateFormatter(new SimpleDateFormat("HH':'mm"))));
 		
 		coursComboBox = new JComboBox<Object>( user.ListeCours().getAll().toArray() );
+		coursComboBox.addActionListener(controller);
 		typeDeCoursComboBox = new JComboBox<Object>( user.ListeType_cours().getAll().toArray() );
+		
+		groupesComboBoxList = new JEditableComboBoxList(user.ListeGroupes().getAll().toArray(), "a course");
+		sallesComboBoxList = new JEditableComboBoxList(user.ListeSalles().getAll().toArray(), "a room");
 		
 		constraints.insets = new Insets(5, 0, 5, 0);
 		constraints.gridx = 1;
@@ -97,11 +101,12 @@ public class addSeanceWindow extends JFrame
 		constraints.gridy = 5;
 		this.add(typeDeCoursComboBox, constraints);
 		constraints.gridy = 6;
-		this.add(groupesJPanel, constraints);
-		constraints.gridy = 7;
-		this.add(enseignantsJPanel, constraints);
+		this.add(groupesComboBoxList, constraints);
+		
+		ChangeListEnseignant();
+		
 		constraints.gridy = 8;
-		this.add(sallesJPanel, constraints);
+		this.add(sallesComboBoxList, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 9;
@@ -109,6 +114,8 @@ public class addSeanceWindow extends JFrame
 		this.add(new Button("btAdd", "Add", controller), constraints);
 	}
 
+	public User getUser() { return user; }
+	
 	public int getSemaine() throws NumberFormatException, ParseException {
 		return Integer.parseInt( new SimpleDateFormat("w").format(new SimpleDateFormat("yyyy-MM-dd").parse(dateTextField.getText())) );
 	}
@@ -138,16 +145,34 @@ public class addSeanceWindow extends JFrame
 	}
 
 	public List<Groupe> getGroupes() {
-		return new ArrayList<Groupe>();
+		return groupesComboBoxList.getSelectedItems().stream().map(x -> (Groupe)x).collect(Collectors.toList());
 	}
 	
 	public List<Utilisateur> getEnseignants() {
-		return new ArrayList<Utilisateur>();
+		return enseignantsComboBoxList.getSelectedItems().stream().map(x -> (Utilisateur)x).collect(Collectors.toList());
+	}
+	
+	public void ChangeListEnseignant()
+	{
+		if (enseignantsComboBoxList != null)
+			this.remove(enseignantsComboBoxList);
+		
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets = new Insets(5, 0, 5, 0);
+		constraints.weightx = 1.0;
+		constraints.weighty = 1.0;
+		constraints.gridx = 1;
+		constraints.gridy = 7;
+		
+		enseignantsComboBoxList = new JEditableComboBoxList(user.ListeUtilisateurs().getEnseignantsByCours((Donnee)coursComboBox.getSelectedItem()).toArray(), "a professor");
+		
+		this.add(enseignantsComboBoxList, constraints);
+		
+		validate();
 	}
 	
 	public List<Salle> getSalles() {
-		return new ArrayList<Salle>();
+		return sallesComboBoxList.getSelectedItems().stream().map(x -> (Salle)x).collect(Collectors.toList());
 	}
-	
-	
 }

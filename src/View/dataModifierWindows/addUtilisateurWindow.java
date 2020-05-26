@@ -69,7 +69,7 @@ public class addUtilisateurWindow extends JFrame
 		userTypeComboBox.addActionListener(controller);
 		
 		groupeComboBox = new JComboBox<Object>(user.ListeGroupes().getAll().toArray());
-		coursComboBoxList = new JEditableComboBoxList(user.ListeCours().getAll().toArray(), "un cours");
+		coursComboBoxList = new JEditableComboBoxList(user.ListeCours().getAll().toArray(), "a course");
 		coursComboBoxList.setVisible(true);
 		
 		constraints.insets = new Insets(5, 0, 5, 0);
@@ -94,6 +94,11 @@ public class addUtilisateurWindow extends JFrame
 		this.add(new Button("btAdd", "Add", controller), constraints);
 	}
 	
+	public void ToggleJComboBoxLists() {
+		groupeComboBox.setVisible((userTypeComboBox.getSelectedItem() == UserType.Etudiant));
+		coursComboBoxList.setVisible(!(userTypeComboBox.getSelectedItem() == UserType.Etudiant));
+	}	
+	
 	public String getEmail() {
 		return emailTextField.getText();
 	}
@@ -117,6 +122,4 @@ public class addUtilisateurWindow extends JFrame
 	public Groupe getGroupe() {
 		return (Groupe) groupeComboBox.getSelectedItem();
 	}
-	
-	
 }

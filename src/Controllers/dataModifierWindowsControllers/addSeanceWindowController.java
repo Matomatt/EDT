@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+
 import Controllers.ModifAdminPanelController;
 import Seances.Seance;
 import UI_Elements.Button;
@@ -31,6 +34,8 @@ public class addSeanceWindowController implements ActionListener
 				default: break;
 			}
 		}
+		else if (e.getSource().getClass() == JComboBox.class)
+			window.ChangeListEnseignant();
 		
 	}
 	
@@ -43,8 +48,14 @@ public class addSeanceWindowController implements ActionListener
 			e.printStackTrace();
 			return;
 		}
-		panelController.addSeance(seance);
-		window.dispose();
+		
+		if (window.getUser().ListeSeances().seancePossible(seance))
+		{
+			panelController.addSeance(seance);
+			window.dispose();
+		}
+		else
+			JOptionPane.showMessageDialog(window, "Impossible d'ajouter cette séance");
 	}
 
 	public void setControlledView(addSeanceWindow addSeanceWindow) {

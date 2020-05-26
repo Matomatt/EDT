@@ -3,7 +3,6 @@ package Controllers;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
-
 import Controllers.dataModifierWindowsControllers.addSeanceWindowController;
 import Controllers.dataModifierWindowsControllers.addUtilisateurWindowController;
 import Seances.Seance;
@@ -35,7 +34,7 @@ public class ModifAdminPanelController extends Controller
 					if (((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).getObjectClass() == Utilisateur.class)
 						new addUtilisateurWindow(Panel().getUser(), new addUtilisateurWindowController(this));
 					 break;
-				case "btSupprimer": for (Object o : ((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).getJList().getSelectedValuesList()) { Supprimer(o); } break;
+				case "btSupprimer": for (Object o : ((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).getSelectedValues()) { Supprimer(o); } break;
 				case "btModifier":  break;
 
 				default: break;
@@ -78,7 +77,15 @@ public class ModifAdminPanelController extends Controller
 		}
 		
 		Panel().getUser().ListeUtilisateurs().addUtilisateur(utilisateur);
-		if (((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).getObjectClass() == Utilisateur.class)
-			((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).addObject(utilisateur);
+		for (int i = 0; i < Panel().getTabbedPanes().getTabCount(); i++) 
+		{
+			JScrollListe liste = (JScrollListe) Panel().getTabbedPanes().getComponentAt(i);
+			
+			if (liste != null)
+			{
+				if (liste.getObjectClass() == Utilisateur.class && liste.getUserType() == utilisateur.getType())
+					liste.addObject(utilisateur);
+			}
+		}
 	}
 }

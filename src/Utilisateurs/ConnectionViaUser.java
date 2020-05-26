@@ -24,6 +24,7 @@ public class ConnectionViaUser implements User {
 	private String passwd = "";
 	
 	private int ID = 0;
+	private UserType userType = UserType.none;
 	
 	private Connection connection = null;
 	
@@ -56,30 +57,26 @@ public class ConnectionViaUser implements User {
 		System.out.println("Driver O.K.");
 
 		try {
-			String s = (String)JOptionPane.showInputDialog(
-                    new JFrame(),
-                    "Entrez le nom de la bdd",
-                    "BDD",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null,
-                    "edt");
+			String s = (String)JOptionPane.showInputDialog(new JFrame(), "Entrez le nom de la bdd", "BDD", JOptionPane.PLAIN_MESSAGE, null,  null, "edt");
 
 			//If a string was returned, say so.
 			if ((s != null) && (s.length() > 0)) {
 			    url = "jdbc:mysql://localhost:3306/"+s+"?autoReconnect=true&useSSL=false";
 			}
 			
+			System.out.println(url);
+			
 			connection = DriverManager.getConnection(url, user, passwd);
 			System.out.println("Connected to the database (user not verified yet)...");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(new JFrame(), "Connection error : " + e.getLocalizedMessage());
 			throw new ConnectionErrorException("There was an error trying to connect to the database");
 		}
 		
 		if (!CheckLogin(login, password))
 			throw new UserNotFoundException("Login or password incorrect for user " + login);
 		
+		System.out.println("User verified !");
 		
 		listeType_cours = new ListeDonneesImpl(connection, "type_cours");
 		listeCours = new ListeDonneesImpl(connection, "cours");
@@ -91,10 +88,14 @@ public class ConnectionViaUser implements User {
 		listeUtilisateurs = new ListeUtilisateursImpl(connection, listeCours, listeGroupes);
 		listeSeances = new ListeSeancesImpl(connection, listeCours, listeType_cours, listeGroupes, listeUtilisateurs, listeSalles);
 		
+		userType = getUtilisateurConnecte().getType();
 	}
 	
 	@Override
 	public Utilisateur getUtilisateurConnecte() { return listeUtilisateurs.getByID(ID); }
+	@Override
+	public UserType getUserType() { return userType; }
+	
 	@Override
 	public ListeSeances ListeSeances() { return listeSeances; }
 	@Override
@@ -137,7 +138,6 @@ public class ConnectionViaUser implements User {
 		
 		return true;
 	}
-	
 	
 	/********
 	 * PACKAGE RESTRICTED METHODS

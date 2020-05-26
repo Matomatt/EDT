@@ -31,6 +31,7 @@ public class JScrollListe extends JScrollPane
 	
 	private String nameString = "";
 	private Class<? extends Object> objectClass = null;
+	private UserType userType = UserType.none;
 	
 	public JScrollListe(ListeSeances listeSeances) {
 		List<Seance> listSeances = listeSeances.getByWeek(Integer.parseInt(new SimpleDateFormat("w").format(new java.util.Date())));
@@ -40,7 +41,9 @@ public class JScrollListe extends JScrollPane
 	
 	public JScrollListe(ListeUtilisateurs listeUtilisateurs, UserType userType) 
 	{
-		List<Utilisateur> listUtilisateurs; 
+		this.userType = userType;
+		List<Utilisateur> listUtilisateurs;
+		
 		switch (userType) {
 			case Referent_pedagogique: listUtilisateurs = listeUtilisateurs.getReferents(); break;
 				
@@ -102,19 +105,27 @@ public class JScrollListe extends JScrollPane
 		this.revalidate();
 	}
 
-	public void changeWeek(ListeSeances listeSeances ,Integer value) {
-		originalList.removeAll(originalList);
-		model.removeAllElements();
-		List<Seance> listSeances = listeSeances.getByWeek(value);
-		originalList = listSeances.stream().map(x -> (Object)x).collect(Collectors.toList());
-		Init();
-		validate();
-		repaint();
+	public void changeWeek(ListeSeances listeSeances ,Integer value) 
+	{
+		if (objectClass == Seance.class)
+		{
+			originalList.removeAll(originalList);
+			model.removeAllElements();
+			List<Seance> listSeances = listeSeances.getByWeek(value);
+			originalList = listSeances.stream().map(x -> (Object)x).collect(Collectors.toList());
+			Init();
+			validate();
+			repaint();
+		}
 	}
 
-	public Class<? extends Object> getObjectClass() {
-		return objectClass;
-	}
+	public Class<? extends Object> getObjectClass() { return objectClass; }
+	
+	public UserType getUserType() { return userType; }
+	
+	public String getNameString() { return nameString; }
+	
+	public List<Object> getSelectedValues() { return list.getSelectedValuesList(); }
 
 	public void Delete(Object o) {
 		System.out.println(o.toString() + " deleted !");
@@ -125,15 +136,7 @@ public class JScrollListe extends JScrollPane
 		
 		this.revalidate();
 	}
-
-	public String getNameString() {
-		return nameString;
-	}
 	
-	public JList<Object> getJList(){
-		return list;
-	}
-
 	public void addObject(Object o) {
 		if (!originalList.contains(o))
 			originalList.add(o);
@@ -142,5 +145,4 @@ public class JScrollListe extends JScrollPane
 		
 		this.revalidate();
 	}
-	
 }

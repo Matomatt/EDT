@@ -29,7 +29,9 @@ public interface User {
 			}
 		}; 
 	};
+	
 	public Utilisateur getUtilisateurConnecte();
+	public UserType getUserType();
 	
 	public ListeSeances ListeSeances();
 	public ListeUtilisateurs ListeUtilisateurs();
@@ -40,4 +42,6 @@ public interface User {
 	public ListeDonnees ListeCours();
 	public ListeDonnees ListeSite();
 	public ListeDonnees ListePromotion();
+
+	
 }
