@@ -119,13 +119,13 @@ public class ListeSeancesImpl implements ListeSeances {
 	
 	@Override
 	public List<Seance> getByUtilisateurAtWeek(Utilisateur utilisateur, int week) {
+		System.out.println("Week " + week);
 		if (utilisateur.getType() == User.UserType.Etudiant)
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+")) AND Semaine='"+week+"'");
 		else
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+week+"'");
 	}
 	
-	//
 	@Override
 	public Map<String, Integer> getNombreHeureParCours(Utilisateur utilisateur) 
 	{

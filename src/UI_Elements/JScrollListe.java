@@ -145,4 +145,12 @@ public class JScrollListe extends JScrollPane
 		
 		this.revalidate();
 	}
+	
+	public void validateCustom()
+	{
+		this.revalidate();
+		list.revalidate();
+		list.repaint();
+		this.repaint();
+	}
 }

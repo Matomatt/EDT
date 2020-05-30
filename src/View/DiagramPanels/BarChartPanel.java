@@ -17,7 +17,7 @@ public class BarChartPanel extends JPanel
 {
 	private static final long serialVersionUID = -6163532647075047922L;
 
-	public BarChartPanel(String yLabel, Map<String, Integer> map) 
+	public BarChartPanel(String title, String yLabel, Map<String, Integer> map) 
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -26,7 +26,7 @@ public class BarChartPanel extends JPanel
 		}
 		
         JFreeChart chart = ChartFactory.createBarChart(
-                "Nombre d'heure dans l'année par cours",
+        		title,
                 "",
                 yLabel,
                 dataset,

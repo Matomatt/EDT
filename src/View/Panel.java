@@ -1,6 +1,9 @@
 package View;
 
+import java.awt.Color;
 import java.awt.GridBagLayout;
+
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import Controllers.Controller;
 import Utilisateurs.User;
@@ -19,7 +22,8 @@ public class Panel extends JPanel
 		
 		this.user = user;
 		this.setLayout(new GridBagLayout());
-		this.setBackground(new java.awt.Color(255, 255, 255));
+		this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		this.setBackground(Color.white);
         
         this.setVisible(true);
         validate();

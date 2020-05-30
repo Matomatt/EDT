@@ -171,7 +171,7 @@ public class ModifAdminPanelController extends Controller
 
 	public void updateSeance(Seance seance) {
 		panel.getUser().ListeSeances().update(seance);
-		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validate();
+		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validateCustom();
 		panel.validate();
 	}
 	
@@ -182,7 +182,7 @@ public class ModifAdminPanelController extends Controller
 		if (utilisateur.getType() == UserType.Etudiant)
 			JOptionPane.showMessageDialog(panel, "This student number is : "  + utilisateur.getNumeroEtudiant());
 
-		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validate();
+		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validateCustom();
 		panel.validate();
 	}
 
@@ -197,7 +197,7 @@ public class ModifAdminPanelController extends Controller
 				panel.getUser().ListeCours().Update(donnee);
 		}
 		
-		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validate();
+		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validateCustom();
 		panel.validate();
 	}
 
@@ -205,7 +205,7 @@ public class ModifAdminPanelController extends Controller
 	{
 		panel.getUser().ListeSalles().update(salle);
 			
-		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validate();
+		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validateCustom();
 		panel.validate();
 	}
 	
@@ -213,7 +213,7 @@ public class ModifAdminPanelController extends Controller
 	{
 		panel.getUser().ListeGroupes().Update(groupe);
 		
-		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validate();
+		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validateCustom();
 		panel.validate();
 	}
 }

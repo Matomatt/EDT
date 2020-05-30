@@ -7,14 +7,9 @@ package View;
 
 import java.awt.GridBagConstraints;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.JLabel;
-
 import Controllers.Controller;
 import Utilisateurs.User;
 import View.DiagramPanels.BarChartPanel;
-import View.DiagramPanels.LineChartPanel;
 
 
 public class ReportingPanel extends Panel
@@ -42,12 +37,10 @@ public class ReportingPanel extends Panel
 		c.gridx = 0;
 		c.gridy = 0;
 		
-    	
-    	
     	//Select COUNT(cours.Nom), SUM(TIMESTAMPDIFF(minute, CAST(Heure_Debut as Datetime), CAST(Heure_Fin as Datetime)))/(60*30) as duree From seance,cours Where cours.ID = seance.ID_Cours
     	Map<String, Integer> map = user.ListeSeances().getNombreHeureParCours(user.getUtilisateurConnecte());
     	
-    	this.add(new BarChartPanel("Heures de cours",map), c);
+    	this.add(new BarChartPanel("Nombre d'heure total par cours dans l'année", "Heures de cours", map), c);
     	
     }
 }
