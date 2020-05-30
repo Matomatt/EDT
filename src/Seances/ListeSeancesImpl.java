@@ -47,7 +47,7 @@ public class ListeSeancesImpl implements ListeSeances {
 			result = connection.createStatement().executeQuery(query + " ORDER BY Date ASC, Heure_Debut ASC");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			return list;
 		}
 		
 		try {
@@ -157,7 +157,38 @@ public class ListeSeancesImpl implements ListeSeances {
 	}
 	
 	@Override
-	public void Delete(Seance seance) {
+	public void update(Seance seance) 
+	{
+		System.out.println("update");
+		try {
+			connection.createStatement().executeUpdate("UPDATE `seance` SET `Semaine` = '"+seance.getSemaine()+"', `Date` = '"+seance.getDate()+"', "
+					+ "`Heure_Debut` = '"+seance.getDebut()+"', `Heure_Fin` = '"+seance.getFin()+"', `Etat` = '"+seance.getEtat()+"', "
+					+ "`ID_Cours` = '"+seance.getCours().getID()+"', `ID_Type` = '"+seance.getType().getID()+"' WHERE `seance`.`ID` = "+seance.getID()+";");
+			
+			connection.createStatement().executeUpdate("DELETE From `seance_groupes` Where ID_Seance="+seance.getID());
+			connection.createStatement().executeUpdate("DELETE From `seance_enseignants` Where ID_Seance="+seance.getID());
+			connection.createStatement().executeUpdate("DELETE From `seance_salles` Where ID_Seance="+seance.getID());
+			
+			for (Groupe groupe : seance.getGroupes()) {
+				System.out.println(groupe);
+				connection.createStatement().executeUpdate("INSERT INTO `seance_groupes` (`ID_Seance`, `ID_Groupe`) VALUES ('"+seance.getID()+"', '"+groupe.getID()+"');");
+			}
+			for (Utilisateur enseignant : seance.getEnseignants()) {
+				System.out.println(enseignant);
+				connection.createStatement().executeUpdate("INSERT INTO `seance_enseignants` (`ID_Seance`, `ID_Enseignant`) VALUES ('"+seance.getID()+"', '"+enseignant.getID()+"');");
+			}
+			for (Salle salle : seance.getSalles()) {
+				System.out.println(salle);
+				System.out.println("INSERT INTO `seance_salles` (`ID_Seance`, `ID_Salle`) VALUES ('"+seance.getID()+"', '"+salle.getID()+"');");
+				connection.createStatement().executeUpdate("INSERT INTO `seance_salles` (`ID_Seance`, `ID_Salle`) VALUES ('"+seance.getID()+"', '"+salle.getID()+"');");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void delete(Seance seance) {
 		try {
 			connection.createStatement().executeUpdate("DELETE From seance Where ID="+seance.getID());
 								

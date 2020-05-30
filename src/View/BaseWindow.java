@@ -37,7 +37,6 @@ public class BaseWindow extends JFrame
 		this.controller = controller;
 		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		this.setVisible(true);
 		this.pack();
@@ -83,7 +82,7 @@ public class BaseWindow extends JFrame
 	        button3.addActionListener(controller);
 		}
 		
-        
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 		this.validate();
 		this.repaint();

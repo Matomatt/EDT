@@ -59,7 +59,6 @@ public class ListeUtilisateursImpl implements ListeUtilisateurs {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
 		}
 		
 		return list;
@@ -178,6 +177,26 @@ public class ListeUtilisateursImpl implements ListeUtilisateurs {
 		}
 	}
 
-	
-
+	@Override
+	public void update(Utilisateur utilisateur) 
+	{
+		try {
+			connection.createStatement().executeUpdate("UPDATE `utilisateur` SET `Email` = '"+utilisateur.getEmail()+"', `Password` = '"+utilisateur.getPassword()+"', "
+					+ "`Nom` = '"+utilisateur.getNom()+"', `Prenom` = '"+utilisateur.getPrenom()+"', `Droit` = '"+utilisateur.getType().toInt()+"' WHERE `utilisateur`.`ID` = "+utilisateur.getID()+";");
+			
+			connection.createStatement().executeUpdate("DELETE From etudiant Where ID_Utilisateur="+utilisateur.getID());
+			connection.createStatement().executeUpdate("DELETE From enseignant Where ID_Utilisateur="+utilisateur.getID());
+			
+			if (utilisateur.getType() == UserType.Etudiant)
+				connection.createStatement().executeUpdate("INSERT INTO `etudiant` (`ID_Utilisateur`, `Numero`, `ID_Groupe`) VALUES ('"+utilisateur.getID()+"', '"+utilisateur.getNumeroEtudiant()+"', '"+utilisateur.getGroupe().getID()+"');");
+			else
+			{
+				for (Donnee coursUtil: utilisateur.getCoursDonnes()) {
+					connection.createStatement().executeUpdate("INSERT INTO `enseignant` (`ID_Utilisateur`, `ID_Cours`) VALUES ('"+utilisateur.getID()+"', '"+coursUtil.getID()+"');");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

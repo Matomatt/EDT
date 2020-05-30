@@ -15,9 +15,10 @@ public class JEditableComboBoxList extends JPanel
 {
 	private static final long serialVersionUID = 387607015065088919L;
 	
-	List<JComboBox<Object>> comboBoxs = new ArrayList<JComboBox<Object>>();
-	Object[] list;
-	JEditableComboBoxList thisComboBoxList = this;
+	private List<JComboBox<Object>> comboBoxs = new ArrayList<JComboBox<Object>>();
+	private Object[] list;
+	private JEditableComboBoxList thisComboBoxList = this;
+	private String objectsNames = "";
 	
 	ActionListener controller = new ActionListener() {
 		
@@ -32,6 +33,7 @@ public class JEditableComboBoxList extends JPanel
     			comboBoxs.remove(bt.getComboBox());
     			bt=null;
     			thisComboBoxList.validate();
+    			thisComboBoxList.getParent().validate();
 			}
 			else if (e.getSource().getClass() == Button.class)
 			{
@@ -44,7 +46,13 @@ public class JEditableComboBoxList extends JPanel
 	{
 		this.setLayout(new GridBagLayout());
 		this.list = list;
+		this.objectsNames = objectsNames;
 		
+		addAddButton();
+	}
+	
+	private void addAddButton()
+	{
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1.0;
@@ -57,7 +65,7 @@ public class JEditableComboBoxList extends JPanel
 		add(addButton, c);
 	}
 	
-	private void addComboBox()
+	private JComboBox<Object> addComboBox()
 	{
 		JComboBox<Object> comboBox = new JComboBox<Object>(list);
 		comboBoxs.add(comboBox);
@@ -75,7 +83,9 @@ public class JEditableComboBoxList extends JPanel
 		this.add(new XButton(comboBox, controller), c);
 		
 		validate();
-		getParent().revalidate();
+		getParent().validate();
+		
+		return comboBox;
 	}
 
 	public List<Object> getSelectedItems() 
@@ -86,6 +96,19 @@ public class JEditableComboBoxList extends JPanel
 			selectedItems.add(comboBox.getSelectedItem());
 		
 		return selectedItems;
+	}
+
+	public void setSelectedItems(Object[] array) 
+	{
+		
+		thisComboBoxList.removeAll();
+		comboBoxs.removeAll(comboBoxs);
+		
+		addAddButton();
+		
+		for (Object object : array) {
+			addComboBox().setSelectedItem(object);
+		}
 	}
 
 }

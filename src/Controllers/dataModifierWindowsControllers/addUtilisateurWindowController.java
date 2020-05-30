@@ -1,47 +1,34 @@
 package Controllers.dataModifierWindowsControllers;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Controllers.ModifAdminPanelController;
-import UI_Elements.Button;
 import Utilisateurs.Utilisateur;
 import Utilisateurs.User.UserType;
 import Utilitaires.RandomString;
 import View.dataModifierWindows.addUtilisateurWindow;
 
-public class addUtilisateurWindowController implements ActionListener
+public class addUtilisateurWindowController extends dataModifierController
 {
 	addUtilisateurWindow window = null;
-	ModifAdminPanelController panelController = null;
 	
 	public addUtilisateurWindowController(ModifAdminPanelController panelController) {
-		this.panelController = panelController;
+		super(panelController);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().getClass() == Button.class)
-		{
-			Button bt = (Button) e.getSource();
-			//System.out.println(bt.getName());
-			switch (bt.getName())
-			{
-				case "btAdd": addUtilisateur(); break;
-				
-				default: break;
-			}
-		}
-		else if (e.getSource().getClass() == JComboBox.class) 
+		if (e.getSource().getClass() == JComboBox.class) 
 		{
 			window.ToggleJComboBoxLists();
 		}
 	}
 	
-	private void addUtilisateur() {
+	@Override
+	protected void add() {
 		Utilisateur utilisateur = null;
 		String password =  new RandomString(10).nextString();
 		
@@ -62,8 +49,11 @@ public class addUtilisateurWindowController implements ActionListener
 		window.dispose();
 	}
 
-	public void setControlledView(addUtilisateurWindow addUtilisateurWindow) {
-		window = addUtilisateurWindow;
-	}
+	@Override
+	protected void modify() { }
 
+	@Override
+	public void setControlledView(JFrame window) {
+		this.window = (addUtilisateurWindow) window;
+	}
 }

@@ -9,16 +9,16 @@ public class Salle {
 	private Donnee site = null;
 	
 	public Salle(String _nom, int _capacite, Donnee _site) {
-		setNom(_nom);
-		setCapacite(_capacite);
-		setSite(_site);
+		nom = _nom;
+		capacite = _capacite;
+		site = _site;
 	}
 	
 	Salle(int _ID, String _nom, int _capacite, Donnee _site) {
 		ID = _ID;
-		setNom(_nom);
-		setCapacite(_capacite);
-		setSite(_site);
+		nom = _nom;
+		capacite = _capacite;
+		site = _site;
 	}
 
 	public int getID() { return ID; }
@@ -26,13 +26,27 @@ public class Salle {
 	public int getCapacite() { return capacite; }
 	public Donnee getSite() { return site; }
 	
-	public void setNom(String nom) { this.nom = nom; }
-	public void setCapacite(int capacite) { this.capacite = capacite; }
-	public void setSite(Donnee site) { this.site = site; }
+	void setID(int ID) { this.ID = ID; }
 
 	@Override
 	public String toString() {
 		return nom + " (" + capacite + "p, " + site + ")";
 	}
+
+	@Override
+	public boolean equals(Object obj) 
+	{
+		try { if (((Salle) obj) == null) return false; }
+		catch (Exception e) { return false; }
 		
+		Salle salle = (Salle) obj;
+		
+		return (nom.contentEquals(salle.getNom()) && capacite == salle.getCapacite() && site.equals(salle.getSite()));
+	}
+
+	public void copy(Salle salle) {
+		nom = salle.getNom();
+		capacite = salle.getCapacite();
+		site = salle.getSite();
+	}
 }

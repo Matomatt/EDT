@@ -111,6 +111,7 @@ public class BaseWindowController implements ActionListener {
 			System.out.println(login + " " + password);
 			user = new ConnectionViaUser(login, password);
 		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
+			//e.printStackTrace();
 			return false;
 		}
 		

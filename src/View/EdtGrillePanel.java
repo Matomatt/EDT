@@ -37,13 +37,9 @@ public class EdtGrillePanel extends Panel
 
         initComponents();
     }
-        
 
-        
-        
     private void initComponents()
     {
-        
         GridBagConstraints c = new GridBagConstraints();
     
         c.fill = GridBagConstraints.BOTH;
@@ -87,7 +83,7 @@ public class EdtGrillePanel extends Panel
         String strTime;
         DateFormat heureformat = new SimpleDateFormat("HH.mm.ss");
         
-        for(Seance s : user.ListeSeances().getByUtilisateur(user.ListeUtilisateurs().getByID(1709)))
+        for(Seance s : user.ListeSeances().getByUtilisateur(user.getUtilisateurConnecte()))
         {
             s.getDate();
              

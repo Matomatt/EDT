@@ -22,10 +22,10 @@ public class Utilisateur {
 	private void Init(int _ID, String _email, String _password, String _nom, String _prenom, int _type)
 	{
 		ID = _ID;
-		setEmail(_email);
-		setPassword(_password);
-		setNom(_nom);
-		setPrenom(_prenom);
+		email = _email;
+		password = _password;
+		nom = _nom;
+		prenom = _prenom;
 		
 		switch (_type)
 		{
@@ -43,7 +43,7 @@ public class Utilisateur {
 	Utilisateur(int _ID, String _email, String _password, String _nom, String _prenom, int _type, List<Donnee> cours) {
 		Init(_ID, _email, _password, _nom, _prenom, _type);
 		
-		if (type == User.UserType.Enseignant)
+		if (type != User.UserType.Etudiant)
 			coursDonnesSiEnseignant = cours;
 	}
 	
@@ -53,7 +53,7 @@ public class Utilisateur {
 		if (type == User.UserType.Etudiant)
 		{
 			groupeSiEtudiant = groupe;
-			setNumeroEtudiant(numero);
+			numeroEtudiant = numero;
 		}
 			
 	}
@@ -75,7 +75,7 @@ public class Utilisateur {
 		if (type == User.UserType.Etudiant)
 		{
 			groupeSiEtudiant = groupe;
-			setNumeroEtudiant(numero);
+			numeroEtudiant = numero;
 		}
 	}
 
@@ -90,15 +90,7 @@ public class Utilisateur {
 	public int getNumeroEtudiant() { return numeroEtudiant; }
 
 	void setID(int ID) { this.ID = ID; }
-	public void setEmail(String email) { this.email = email; }
-	public void setPassword(String password) { this.password = password; }
-	public void setNom(String nom) { this.nom = nom; }
-	public void setPrenom(String prenom) { this.prenom = prenom; }
-	public void setCoursDonnes(List<Donnee> cours) { coursDonnesSiEnseignant = cours; }
-	public void addCours(Donnee cours) { if (type == User.UserType.Enseignant) coursDonnesSiEnseignant.add(cours); }
-	public void removeCours(Donnee cours) { if (type == User.UserType.Enseignant) coursDonnesSiEnseignant.remove(cours); }
-	public void setGroupe(Groupe groupe) { groupeSiEtudiant = (type == User.UserType.Etudiant?groupe:null); }
-	public void setNumeroEtudiant(int numeroEtudiant) { this.numeroEtudiant = numeroEtudiant; }
+	public void setNumeroEtudiant(int numero) { numeroEtudiant = numero; }
 	
 	@Override
 	public String toString() {
@@ -114,5 +106,37 @@ public class Utilisateur {
 			toReturn += "[" + groupeSiEtudiant + "]";
 		
 		return  toReturn;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		try { if (((Utilisateur) obj) == null) return false; }
+		catch (Exception e) { return false; }
+		
+		Utilisateur utilisateur = (Utilisateur) obj;
+		
+		if (coursDonnesSiEnseignant.size() != utilisateur.getCoursDonnes().size())
+			return false;
+		
+		if (groupeSiEtudiant == null && utilisateur.getGroupe() != null || groupeSiEtudiant != null && utilisateur.getGroupe() == null)
+			return false;
+		
+		if (groupeSiEtudiant != null && utilisateur.getGroupe() != null)
+			if (!groupeSiEtudiant.equals(utilisateur.getGroupe()))
+				return false;
+
+		return (email.contentEquals(utilisateur.getEmail()) && password.contentEquals(utilisateur.getPassword()) && 
+				nom.contentEquals(utilisateur.getNom()) && prenom.contentEquals(utilisateur.getPrenom()) && numeroEtudiant == utilisateur.getNumeroEtudiant());
+	}
+
+	public void copy(Utilisateur utilisateur) {
+		email = utilisateur.getEmail();
+		password = utilisateur.getPassword();
+		nom = utilisateur.getNom();
+		prenom = utilisateur.getPrenom();
+		type = utilisateur.getType();
+		coursDonnesSiEnseignant = utilisateur.getCoursDonnes();
+		groupeSiEtudiant = utilisateur.getGroupe();
+		numeroEtudiant = utilisateur.getNumeroEtudiant();
 	}
 }

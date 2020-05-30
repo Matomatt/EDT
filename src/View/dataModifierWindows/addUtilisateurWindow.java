@@ -10,20 +10,21 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import Controllers.dataModifierWindowsControllers.addUtilisateurWindowController;
+import Controllers.dataModifierWindowsControllers.dataModifierController;
 import Donnees.Donnee;
 import Groupes.Groupe;
 import UI_Elements.Button;
 import UI_Elements.JEditableComboBoxList;
 import Utilisateurs.User;
 import Utilisateurs.User.UserType;
+import Utilisateurs.Utilisateur;
 
 public class addUtilisateurWindow extends JFrame
 {
 	private static final long serialVersionUID = 4318587476356190117L;
 	
 	User user = null;
-	addUtilisateurWindowController controller = null;
+	dataModifierController controller = null;
 	
 	private JComboBox<UserType> userTypeComboBox = null;
 	private JTextField emailTextField = new JTextField();
@@ -32,18 +33,20 @@ public class addUtilisateurWindow extends JFrame
     private JComboBox<Object> groupeComboBox;
     private JEditableComboBoxList coursComboBoxList;
     
-	public addUtilisateurWindow(User user, addUtilisateurWindowController controller) 
+	public addUtilisateurWindow(User user, dataModifierController controller) 
 	{
 		this.user = user;
 		this.controller = controller;
-		controller.setControlledView(this);
+
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		this.setName("Adding a séance");
+		this.setName("Adding a user");
 		this.setLayout(new GridBagLayout());
 		this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/3, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2);
 		
 		initComponents();
+		
+		this.controller.setControlledView(this);
 		
 		this.setVisible(true);
 		this.validate();
@@ -90,6 +93,7 @@ public class addUtilisateurWindow extends JFrame
 		this.add(groupeComboBox, constraints);
 		constraints.gridy = 5;
 		this.add(coursComboBoxList, constraints);
+		coursComboBoxList.setVisible(false);
 		constraints.gridy = 6;
 		this.add(new Button("btAdd", "Add", controller), constraints);
 	}
@@ -121,5 +125,17 @@ public class addUtilisateurWindow extends JFrame
 
 	public Groupe getGroupe() {
 		return (Groupe) groupeComboBox.getSelectedItem();
+	}
+	
+	public void fillFields(Utilisateur utilisateur)
+	{
+		userTypeComboBox.setSelectedItem(utilisateur.getType());
+		userTypeComboBox.setEnabled(false);
+		emailTextField.setText(utilisateur.getEmail());
+	    nomTextField.setText(utilisateur.getNom());
+	    prenomTextField.setText(utilisateur.getPrenom());
+	    groupeComboBox.setSelectedItem(utilisateur.getGroupe());
+	    coursComboBoxList.setSelectedItems(utilisateur.getCoursDonnes().toArray());
+	    ToggleJComboBoxLists();
 	}
 }

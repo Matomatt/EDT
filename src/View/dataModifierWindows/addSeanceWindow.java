@@ -18,10 +18,11 @@ import javax.swing.JSpinner;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
-import Controllers.dataModifierWindowsControllers.addSeanceWindowController;
+import Controllers.dataModifierWindowsControllers.dataModifierController;
 import Donnees.Donnee;
 import Groupes.Groupe;
 import Salles.Salle;
+import Seances.Seance;
 import UI_Elements.Button;
 import UI_Elements.JEditableComboBoxList;
 import Utilisateurs.User;
@@ -32,7 +33,7 @@ public class addSeanceWindow extends JFrame
 	private static final long serialVersionUID = 4318587476356190117L;
 	
 	User user = null;
-	addSeanceWindowController controller = null;
+	dataModifierController controller = null;
 	
 	private JFormattedTextField dateTextField = new JFormattedTextField(new SimpleDateFormat("yyyy-mm-dd"));
     private JFormattedTextField heureDebutTextField = new JFormattedTextField();
@@ -44,18 +45,20 @@ public class addSeanceWindow extends JFrame
     private JComboBox<Object> coursComboBox = null;
     private JComboBox<Object> typeDeCoursComboBox = null;
     
-	public addSeanceWindow(User user, addSeanceWindowController controller) 
+	public addSeanceWindow(User user, dataModifierController controller) 
 	{
 		this.user = user;
 		this.controller = controller;
-		controller.setControlledView(this);
+		
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		this.setName("Adding a séance");
 		this.setLayout(new GridBagLayout());
-		this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/3, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2);
+		this.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2);
 		
 		initComponents();
+		
+		this.controller.setControlledView(this);
 		
 		this.setVisible(true);
 		this.validate();
@@ -83,7 +86,7 @@ public class addSeanceWindow extends JFrame
 		coursComboBox.addActionListener(controller);
 		typeDeCoursComboBox = new JComboBox<Object>( user.ListeType_cours().getAll().toArray() );
 		
-		groupesComboBoxList = new JEditableComboBoxList(user.ListeGroupes().getAll().toArray(), "a course");
+		groupesComboBoxList = new JEditableComboBoxList(user.ListeGroupes().getAll().toArray(), "a group");
 		sallesComboBoxList = new JEditableComboBoxList(user.ListeSalles().getAll().toArray(), "a room");
 		
 		constraints.insets = new Insets(5, 0, 5, 0);
@@ -126,11 +129,11 @@ public class addSeanceWindow extends JFrame
 
 	public Time getHeureDebut() {
 		System.out.println(heureDebutTextField.getText());
-		return Time.valueOf(heureDebutTextField.getText()+":00");
+		return Time.valueOf(heureDebutTextField.getText()+(heureDebutTextField.getText().length()<6?":00":""));
 	}
 	
 	public Time getHeureFin() {
-		return Time.valueOf(heureFinTextField.getText()+":00");
+		return Time.valueOf(heureFinTextField.getText()+(heureFinTextField.getText().length()<6?":00":""));
 	}
 
 	public int getEtat() {
@@ -165,7 +168,10 @@ public class addSeanceWindow extends JFrame
 		constraints.gridx = 1;
 		constraints.gridy = 7;
 		
-		enseignantsComboBoxList = new JEditableComboBoxList(user.ListeUtilisateurs().getEnseignantsByCours((Donnee)coursComboBox.getSelectedItem()).toArray(), "a professor");
+		List<Utilisateur> listUtilisateurs = user.ListeUtilisateurs().getEnseignantsByCours((Donnee)coursComboBox.getSelectedItem());
+		if (listUtilisateurs.isEmpty())
+			listUtilisateurs = user.ListeUtilisateurs().getReferents();
+		enseignantsComboBoxList = new JEditableComboBoxList(listUtilisateurs.toArray(), "a professor");
 		
 		this.add(enseignantsComboBoxList, constraints);
 		
@@ -174,5 +180,17 @@ public class addSeanceWindow extends JFrame
 	
 	public List<Salle> getSalles() {
 		return sallesComboBoxList.getSelectedItems().stream().map(x -> (Salle)x).collect(Collectors.toList());
+	}
+
+	public void fillFields(Seance seance) {
+		dateTextField.setText(seance.getDate().toString());
+	    heureDebutTextField.setText(seance.getDebut().toString());
+	    heureFinTextField.setText(seance.getFin().toString());
+	    coursComboBox.setSelectedItem(seance.getCours());
+	    typeDeCoursComboBox.setSelectedItem(seance.getType());
+	    etatSpinner.setValue(seance.getEtat());
+	    groupesComboBoxList.setSelectedItems(seance.getGroupes().toArray());
+	    enseignantsComboBoxList.setSelectedItems(seance.getEnseignants().toArray());
+	    sallesComboBoxList.setSelectedItems(seance.getSalles().toArray());
 	}
 }
