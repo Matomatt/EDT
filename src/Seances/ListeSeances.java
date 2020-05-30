@@ -3,6 +3,7 @@ package Seances;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 import Donnees.Donnee;
 import Groupes.Groupe;
@@ -18,6 +19,7 @@ public interface ListeSeances {
 	public List<Seance> getByUtilisateur(Utilisateur utilisateur);
 	public List<Seance> getByUtilisateurAtDate(Utilisateur utilisateur, String date); //Format yyyy-mm-dd
 	public List<Seance> getByUtilisateurAtWeek(Utilisateur utilisateur, int week);
+	public Map<String, Integer> getNombreHeureParCours(Utilisateur utilisateur);
 	public boolean addSeance(Seance seance);
 	public void update(Seance seance);
 	public void delete(Seance seance);

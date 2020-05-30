@@ -155,7 +155,6 @@ public class EDT {
         try {
 			ChartUtils.saveChartAsPNG(new File("histogram.png"), histogram, 450, 400);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

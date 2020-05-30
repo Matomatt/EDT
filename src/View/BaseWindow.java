@@ -51,32 +51,33 @@ public class BaseWindow extends JFrame
 		c.gridy = 0;
         c.ipady=35;
 		button1 = new JButton("Emploi du temps");
-		button1.setName("bt1");
+		button1.setName("btEDT_Grille");
 		c.gridx = 0;
 		this.add(button1, c);
 		button1.addActionListener(controller);
 		
         button11 = new JButton("EDT liste");
-        button11.setName("bt11");
+        button11.setName("btEDT_Liste");
 		c.gridx = 1;
 		this.add(button11, c);
         button11.addActionListener(controller);
                 
-		button2 = new JButton("Récapitulatif des cours");
-		button2.setName("bt2");
+		button2 = new JButton("Salles libres");
+		button2.setName("btSallesLibres");
 		c.gridx = 2;
 		this.add(button2, c);
         button2.addActionListener(controller);
         
         button4 = new JButton("Reporting");
-        button4.setName("bt4");
+        button4.setName("btReporting");
 		c.gridx = 3;
 		this.add(button4, c);
+		button4.addActionListener(controller);
 		
 		if (user.getUserType() == UserType.Admin)
 		{
 			button3 = new JButton("Modifier");
-			button3.setName("bt3");
+			button3.setName("btModifier");
 			c.gridx = 4;
 			this.add(button3, c);
 	        button3.addActionListener(controller);

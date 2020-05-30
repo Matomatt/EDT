@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Donnees.Donnee;
 import Donnees.ListeDonnees;
@@ -121,6 +123,44 @@ public class ListeSeancesImpl implements ListeSeances {
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+")) AND Semaine='"+week+"'");
 		else
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+week+"'");
+	}
+	
+	//
+	@Override
+	public Map<String, Integer> getNombreHeureParCours(Utilisateur utilisateur) 
+	{
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		String query = "Select cours.Nom as nomCours, TIMESTAMPDIFF(minute, CAST(Heure_Debut as Datetime), CAST(Heure_Fin as Datetime)) as duree From seance,cours Where ";
+		
+		if (utilisateur.getType() == User.UserType.Etudiant)
+			query += "seance.ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur = "+utilisateur.getID()+") ) AND ";
+		else if (utilisateur.getType() == User.UserType.Enseignant)
+			query += "seance.ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant = "+utilisateur.getID()+") AND ";
+		
+		query += "cours.ID = seance.ID_Cours";
+		
+		ResultSet result;
+		try {
+			result = connection.createStatement().executeQuery(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return map;
+		}
+		
+		try {
+			while(result.next())
+			{
+				String nomCours = result.getString("nomCours");
+				if (map.containsKey(nomCours))
+					map.put(nomCours, ((Integer) map.get(nomCours)).intValue() + result.getInt("duree"));
+				else
+					map.put(nomCours, result.getInt("duree"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return map;
 	}
 	
 	@Override

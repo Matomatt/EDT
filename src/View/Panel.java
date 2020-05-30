@@ -2,8 +2,6 @@ package View;
 
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-
 import Controllers.Controller;
 import Utilisateurs.User;
 
@@ -13,8 +11,6 @@ public class Panel extends JPanel
 	
 	User user = null;
 	Controller controller = null;
-	
-	JTabbedPane tabbedPanes = new JTabbedPane();
 	
 	public Panel(User user, Controller controller)
 	{

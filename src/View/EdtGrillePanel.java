@@ -83,7 +83,7 @@ public class EdtGrillePanel extends Panel
         String strTime;
         DateFormat heureformat = new SimpleDateFormat("HH.mm.ss");
         
-        for(Seance s : user.ListeSeances().getByUtilisateur(user.getUtilisateurConnecte()))
+        for(Seance s : user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )))
         {
             s.getDate();
              
@@ -98,8 +98,6 @@ public class EdtGrillePanel extends Panel
             System.out.println("strdate :" + strDate);
             System.out.println("day of the week is  : "+date.getDay()); 
             nb = date.getDay();
-
-
 
             strTime = heureformat.format(s.getDebut());
 

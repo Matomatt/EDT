@@ -16,6 +16,7 @@ import View.EDT_ListePanel;
 import View.EdtGrillePanel;
 import View.LoginPanel;
 import View.ModifAdminPanel;
+import View.ReportingPanel;
 
 public class BaseWindowController implements ActionListener {
 	
@@ -57,15 +58,19 @@ public class BaseWindowController implements ActionListener {
     			Controller controller = null;
     			switch (bt.getName()) 
     			{
-					case "bt1": controller = new EdtGrillePanelController();
+					case "btEDT_Grille": controller = new EdtGrillePanelController();
 								page = new EdtGrillePanel(baseWindow.getUser(), controller);
 								break;
 
-					case "bt11": controller = new EDT_ListePanelController();
-								 page = new EDT_ListePanel(baseWindow.getUser(), controller);
-								 break;
+					case "btEDT_Liste": controller = new EDT_ListePanelController();
+								page = new EDT_ListePanel(baseWindow.getUser(), controller);
+								break;
 								 
-					case "bt3": controller = new ModifAdminPanelController();
+					case "btReporting": controller = new ReportingPanelController();
+								page = new ReportingPanel(baseWindow.getUser(), controller);
+								break;
+ 
+					case "btModifier": controller = new ModifAdminPanelController();
 								page = new ModifAdminPanel(baseWindow.getUser(), controller); 
 								break;
 	
