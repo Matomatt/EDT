@@ -19,7 +19,7 @@ public class path {
 			if (pathString.length()>=9)
 			{
 				if (pathString.substring(pathString.length()-9).contains("classes"))
-					return URLDecoder.decode(new File(ClassLoader.getSystemClassLoader().getResource(".").getPath()).getParentFile().getPath(), "UTF-8");
+					return URLDecoder.decode(new File(ClassLoader.getSystemClassLoader().getResource(".").getPath()).getParentFile().getParentFile().getPath(), "UTF-8");
 			}
 			return pathString;
 		} catch (Exception e) {
