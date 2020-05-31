@@ -42,6 +42,7 @@ public class LoginPanel extends JPanel {
     	this.controller = controller;
     	this.setLayout(new GridBagLayout());
     	
+    	System.out.println(path.getImagePath("login.png"));
     	try {
     		background = new JLabel(new ImageIcon( ImageManager.LoadImage(path.getImagePath("login.png"), java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2, java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2) ));
 		} catch (IOException e) {
@@ -123,8 +124,8 @@ public class LoginPanel extends JPanel {
 		c.gridy = 5;
 		background.add(jButton1, c);
 		
-		champ_email.setText("Admin");
-		champ_mdp.setText("pw");
+		champ_email.setText("Renaldo.Policastro@edu.ece.fr");
+		champ_mdp.setText("IBwJZh}^JF");
     }
 
 	public String getEmail() {

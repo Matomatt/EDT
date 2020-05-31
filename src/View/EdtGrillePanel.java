@@ -7,11 +7,16 @@ package View;
 
 import Seances.Seance;
 import Utilisateurs.User;
+
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+
+import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -37,13 +42,9 @@ public class EdtGrillePanel extends Panel
 
         initComponents();
     }
-        
 
-        
-        
     private void initComponents()
     {
-        
         GridBagConstraints c = new GridBagConstraints();
     
         c.fill = GridBagConstraints.BOTH;
@@ -64,11 +65,14 @@ public class EdtGrillePanel extends Panel
         
         display_courses(table);
         
+        table.getTableHeader().setBackground(new java.awt.Color(255, 255, 255));
         JScrollPane scroll = new JScrollPane(table);
         
         c.gridx = 0;
         c.gridy = 3;
         
+        scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        scroll.setBackground(Color.white);
         this.add(scroll,c);
           
     }
@@ -86,11 +90,12 @@ public class EdtGrillePanel extends Panel
         String info;
         String strTime;
         DateFormat heureformat = new SimpleDateFormat("HH.mm.ss");
+        Calendar calendar = Calendar.getInstance();
         
-        for(Seance s : user.ListeSeances().getByUtilisateur(user.ListeUtilisateurs().getByID(1709)))
+        for(Seance s : user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )))
         {
             s.getDate();
-             
+
             String strDate = dateFormat.format(s.getDate()); 
             try {
 				date = simpleDateFormat.parse(strDate);
@@ -100,14 +105,13 @@ public class EdtGrillePanel extends Panel
 			}
             System.out.println( date);
             System.out.println("strdate :" + strDate);
-            System.out.println("day of the week is  : "+date.getDay()); 
-            nb = date.getDay();
-
-
-
+            System.out.println("day of the week is  : "+date.getDay());
+            
+	        calendar.setTime(s.getDate());
+	        nb = calendar.get(Calendar.DAY_OF_WEEK);
+	        
             strTime = heureformat.format(s.getDebut());
-
-             System.out.println("heure " +strTime);
+            System.out.println("heure " +strTime);
 
             switch(strTime)
             {
@@ -123,7 +127,7 @@ public class EdtGrillePanel extends Panel
             System.out.println("caseee :" +caseHeure);
 
             info = s.getCours().toString() + "\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
-            table.getModel().setValueAt(info, caseHeure, nb+1); 
+            table.getModel().setValueAt(info, caseHeure, nb-1);
         }
     }
 }

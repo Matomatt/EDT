@@ -99,6 +99,20 @@ public class Seance {
 	void setCours(Donnee cours) { this.cours = cours; }
 	void setType(Donnee type) { this.type = type; }
 	
+	public void copy(Seance seance)
+	{
+		semaine = seance.getSemaine();
+		date = seance.getDate();
+		debut = seance.getDebut();
+		fin = seance.getFin();
+		etat = seance.getEtat();
+		cours = seance.getCours();
+		type = seance.getType();
+		groupes = seance.getGroupes();
+		enseignants = seance.getEnseignants();
+		salles = seance.getSalles();
+	}
+	
 
 	@Override
 	public String toString() {

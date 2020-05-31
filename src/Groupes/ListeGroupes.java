@@ -12,6 +12,9 @@ public interface ListeGroupes {
 	public List<Groupe> getBySeance(Seance seance);
 	public List<Groupe> getBySeanceID(int ID);
 	public List<Groupe> getFilteredBy(Filter[] filters);
-	public boolean Update(Groupe groupe);
 	public Groupe getByID(int ID);
+	
+	public void add(Groupe groupe);
+	public boolean Update(Groupe groupe);
+	public void delete(Groupe groupe);
 }

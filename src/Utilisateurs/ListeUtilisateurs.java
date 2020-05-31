@@ -17,5 +17,5 @@ public interface ListeUtilisateurs {
 	public int getHighestStudentNumber();
 	public void Delete(Utilisateur utilisateur);
 	public void addUtilisateur(Utilisateur utilisateur);
-	
+	public void update(Utilisateur utilisateur);
 }

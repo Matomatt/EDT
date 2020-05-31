@@ -1,6 +1,8 @@
 package Controllers;
 
+import UI_Elements.Button;
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,6 +18,8 @@ import View.EDT_ListePanel;
 import View.EdtGrillePanel;
 import View.LoginPanel;
 import View.ModifAdminPanel;
+import View.ReportingPanel;
+import View.SallesLibresPanel;
 
 public class BaseWindowController implements ActionListener {
 	
@@ -31,41 +35,40 @@ public class BaseWindowController implements ActionListener {
 	{
 		LoginPanelController controller = new LoginPanelController(this);
 		mainWindowPanel = new LoginPanel(controller);
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		c.gridwidth = 4;
-		c.gridx = 0;
-		c.gridy = 1;
-		baseWindow.add(mainWindowPanel, c);
+		SwitchPage(mainWindowPanel, false);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if (e.getSource().getClass() == JButton.class)
+		if (e.getSource().getClass() == Button.class)
 		{
 			JPanel page = null;
 			
-			System.out.println(((JButton)e.getSource()).getText());
-			if (!baseWindow.getPages().containsKey(((JButton)e.getSource()).getText()))
+			if (!baseWindow.getPages().containsKey(((Button)e.getSource()).getText()))
 	    	{
-    			JButton bt = (JButton) e.getSource();
+				Button bt = (Button) e.getSource();
     			System.out.println(bt.getName());
     			Controller controller = null;
     			switch (bt.getName()) 
     			{
-					case "bt1": controller = new EdtGrillePanelController();
+					case "btEDT_Grille": controller = new EdtGrillePanelController();
 								page = new EdtGrillePanel(baseWindow.getUser(), controller);
 								break;
 
-					case "bt11": controller = new EDT_ListePanelController();
-								 page = new EDT_ListePanel(baseWindow.getUser(), controller);
-								 break;
+					case "btEDT_Liste": controller = new EDT_ListePanelController();
+								page = new EDT_ListePanel(baseWindow.getUser(), controller);
+								break;
+								
+					case "btSallesLibres": controller = new Controller();
+								page = new SallesLibresPanel(baseWindow.getUser(), controller);
+								break;
 								 
-					case "bt3": controller = new ModifAdminPanelController();
+					case "btReporting": controller = new ReportingPanelController();
+								page = new ReportingPanel(baseWindow.getUser(), controller);
+								break;
+ 
+					case "btModifier": controller = new ModifAdminPanelController();
 								page = new ModifAdminPanel(baseWindow.getUser(), controller); 
 								break;
 	
@@ -80,18 +83,20 @@ public class BaseWindowController implements ActionListener {
 			
 			//System.out.println(page);
 			if (page != null)
-	    		SwitchPage(page);
+	    		SwitchPage(page, true);
 		}
 	}
 	
-	public void SwitchPage(JPanel newPage)
+	public void SwitchPage(JPanel newPage, boolean remove)
 	{
-		baseWindow.remove(mainWindowPanel);
+		if (remove)
+			baseWindow.remove(mainWindowPanel);
 		
 		mainWindowPanel = newPage;
 		
 		GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(10, 0, 0, 0);
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 		c.gridwidth = 5;
@@ -116,7 +121,7 @@ public class BaseWindowController implements ActionListener {
 		
 		baseWindow.setUser(user);
 		baseWindow.addComponentsToPane();
-        SwitchPage(new EdtGrillePanel(baseWindow.getUser(), new EdtGrillePanelController()));
+        SwitchPage(new EdtGrillePanel(baseWindow.getUser(), new EdtGrillePanelController()), true);
         
 		System.out.println(user.getUtilisateurConnecte());
 

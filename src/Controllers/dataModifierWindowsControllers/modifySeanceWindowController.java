@@ -5,28 +5,33 @@ import java.text.ParseException;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import Controllers.ModifAdminPanelController;
 import Seances.Seance;
 import View.dataModifierWindows.addSeanceWindow;
 
-public class addSeanceWindowController extends dataModifierController
+public class modifySeanceWindowController extends dataModifierController 
 {
 	addSeanceWindow window = null;
+	Seance seance = null;
 	
-	public addSeanceWindowController(ModifAdminPanelController panelController) {
+	public modifySeanceWindowController(ModifAdminPanelController panelController, Seance seance) 
+	{
 		super(panelController);
+		this.seance = seance;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
 		if (e.getSource().getClass() == JComboBox.class)
 			window.ChangeListEnseignant();
 	}
 	
 	@Override
-	protected void add() {
+	protected void add() { }
+
+	@Override
+	protected void modify() {
 		Seance seance = null;
 		try {
 			seance = new Seance(window.getSemaine(), window.getDate(), window.getHeureDebut(), window.getHeureFin(), window.getEtat(), window.getCours(), 
@@ -36,21 +41,15 @@ public class addSeanceWindowController extends dataModifierController
 			return;
 		}
 		
-		if (window.getUser().ListeSeances().seancePossible(seance))
-		{
-			panelController.addSeance(seance);
-			window.dispose();
-		}
-		else
-			JOptionPane.showMessageDialog(window, "Impossible d'ajouter cette séance");
+		this.seance.copy(seance);
+		panelController.updateSeance(this.seance);
+		window.dispose();
 	}
-
-	@Override
-	protected void modify() { }
 	
 	@Override
 	public void setControlledView(JFrame window) {
 		this.window = (addSeanceWindow) window;
 		
+		this.window.fillFields(seance);
 	}
 }

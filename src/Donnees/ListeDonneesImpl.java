@@ -3,6 +3,7 @@ package Donnees;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,6 @@ public class ListeDonneesImpl implements ListeDonnees {
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
-			return null;
 		}
 		
 		return list;
@@ -64,6 +64,19 @@ public class ListeDonneesImpl implements ListeDonnees {
 		return ExecuteQuery("Select * from " + tableName + whereQuery);
 	}
 	
+	@Override
+	public void add(Donnee donnee) {
+		try {
+			Statement statement = connection.createStatement();
+			statement.executeUpdate("INSERT INTO `"+tableName+"` (`ID`, `Nom`) VALUES (NULL, '"+donnee.getValue()+"')", Statement.RETURN_GENERATED_KEYS);
+			
+			ResultSet keysResultSet = statement.getGeneratedKeys();
+			if (keysResultSet != null && keysResultSet.next())
+				donnee.setID((int) keysResultSet.getLong(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public boolean Update(Donnee d) 
@@ -78,6 +91,15 @@ public class ListeDonneesImpl implements ListeDonnees {
 		return true;
 	}
 
+	@Override
+	public void delete(Donnee donnee) {
+		try {
+			connection.createStatement().executeUpdate("DELETE FROM `promotion` WHERE `promotion`.`ID` = " + donnee.getID());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public Donnee GetByID(int ID) {
 		Donnee donnee = null;
@@ -109,7 +131,4 @@ public class ListeDonneesImpl implements ListeDonnees {
 		}
 		
 	}
-
-	
-
 }

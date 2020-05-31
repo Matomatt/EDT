@@ -3,6 +3,7 @@ package Groupes;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,6 @@ public class ListeGroupesImpl implements ListeGroupes {
 				list.add(new Groupe(result.getInt("ID"), result.getString("Nom"), promotions.GetByID(result.getInt("ID_Promotion"))));
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
 		}
 		
 		return list; 
@@ -84,19 +84,6 @@ public class ListeGroupesImpl implements ListeGroupes {
 	}
 
 	@Override
-	public boolean Update(Groupe groupe) 
-	{
-		try {
-			connection.createStatement().executeUpdate("Update groupe Set Nom='" + groupe.getName() + "', ID_Promotion="+ groupe.getPromotion().getID() +" Where ID=" + groupe.getID());
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		
-		return true;
-	}
-
-	@Override
 	public Groupe getByID(int ID) {
 		Groupe groupe = null;
 		ResultSet result;
@@ -125,5 +112,41 @@ public class ListeGroupesImpl implements ListeGroupes {
 	@Override
 	public List<Groupe> getBySeanceID(int ID) {
 		return ExecuteQuery("Select * From groupe Where ID IN (Select ID_Groupe From seance_groupes Where ID_Seance="+ID+")");
+	}
+
+	@Override
+	public void add(Groupe groupe) {
+		try {
+			Statement statement = connection.createStatement();
+			statement.executeUpdate("INSERT INTO `groupe` (`ID`, `Nom`, `ID_Promotion`) VALUES (NULL, '"+groupe.getName()+"', '"+groupe.getPromotion().getID()+"');", Statement.RETURN_GENERATED_KEYS);
+
+			ResultSet keysResultSet = statement.getGeneratedKeys();
+			if (keysResultSet != null && keysResultSet.next())
+				groupe.setID((int) keysResultSet.getLong(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public boolean Update(Groupe groupe) 
+	{
+		try {
+			connection.createStatement().executeUpdate("Update groupe Set Nom='" + groupe.getName() + "', ID_Promotion="+ groupe.getPromotion().getID() +" Where ID=" + groupe.getID());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public void delete(Groupe groupe) {
+		try {
+			connection.createStatement().executeUpdate("DELETE FROM `groupe` WHERE `groupe`.`ID` = " + groupe.getID());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
