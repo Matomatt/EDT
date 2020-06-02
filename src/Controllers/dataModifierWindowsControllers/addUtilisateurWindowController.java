@@ -21,6 +21,7 @@ public class addUtilisateurWindowController extends dataModifierController
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
 		if (e.getSource().getClass() == JComboBox.class) 
 		{
 			window.ToggleJComboBoxLists();

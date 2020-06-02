@@ -103,6 +103,19 @@ public class ListeGroupesImpl implements ListeGroupes {
 		
 		return groupe;
 	}
+	
+	@Override
+	public int getNombreEtudiants(Groupe groupe) 
+	{
+		try {
+			ResultSet result = connection.createStatement().executeQuery("Select COUNT(ID_Utilisateur) as nbEtudiant From etudiant Where ID_Groupe ="+groupe.getID());
+			
+			if(result.next()) return result.getInt("nbEtudiant");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 	@Override
 	public List<Groupe> getBySeance(Seance seance) {

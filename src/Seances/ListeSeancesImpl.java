@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +42,7 @@ public class ListeSeancesImpl implements ListeSeances {
 	
 	private List<Seance> ExecuteQuery(String query)
 	{
+		System.out.println(query);
 		List<Seance> list = new ArrayList<Seance>();
 		
 		ResultSet result;
@@ -85,13 +86,28 @@ public class ListeSeancesImpl implements ListeSeances {
 	}
 	
 	@Override
+	public List<Seance> getBySalleAtDate(Salle salle, Date date) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_salles Where ID_Salle="+salle.getID()+") AND Date='"+date+"'");
+	}
+	
+	@Override
 	public List<Seance> getByPromo(Donnee promotion) {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+"))");
 	}
 	
 	@Override
+	public List<Seance> getByPromoAtDate(Donnee promotion, Date date) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+")) AND Date='"+date+"'");
+	}
+	
+	@Override
 	public List<Seance> getByGroupe(Groupe groupe) {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe="+groupe.getID()+")");
+	}
+	
+	@Override
+	public List<Seance> getByGroupeAtDate(Groupe groupe, Date date) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe="+groupe.getID()+") AND Date='"+date+"'");
 	}
 	
 	@Override
@@ -108,9 +124,7 @@ public class ListeSeancesImpl implements ListeSeances {
 	}
 	
 	@Override
-	public List<Seance> getByUtilisateurAtDate(Utilisateur utilisateur, String date) {
-		if (java.sql.Date.valueOf(date) == null)
-			return null;
+	public List<Seance> getByUtilisateurAtDate(Utilisateur utilisateur, Date date) {
 		if (utilisateur.getType() == User.UserType.Etudiant)
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateur.getID()+")) AND Date='"+date+"'");
 		else
@@ -126,10 +140,10 @@ public class ListeSeancesImpl implements ListeSeances {
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+week+"'");
 	}
 	
-	@Override
-	public Map<String, Integer> getNombreHeureParCours(Utilisateur utilisateur) 
+	
+	private Map<String, Double> getNombreHeure(Utilisateur utilisateur, String whereQuery)
 	{
-		Map<String, Integer> map = new HashMap<String, Integer>();
+		Map<String, Double> map = new LinkedHashMap<String, Double>();
 		String query = "Select cours.Nom as nomCours, TIMESTAMPDIFF(minute, CAST(Heure_Debut as Datetime), CAST(Heure_Fin as Datetime)) as duree From seance,cours Where ";
 		
 		if (utilisateur.getType() == User.UserType.Etudiant)
@@ -137,7 +151,7 @@ public class ListeSeancesImpl implements ListeSeances {
 		else if (utilisateur.getType() == User.UserType.Enseignant)
 			query += "seance.ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant = "+utilisateur.getID()+") AND ";
 		
-		query += "cours.ID = seance.ID_Cours";
+		query += "cours.ID = seance.ID_Cours" + whereQuery + " ORDER BY cours.Nom ASC";
 		
 		ResultSet result;
 		try {
@@ -152,15 +166,25 @@ public class ListeSeancesImpl implements ListeSeances {
 			{
 				String nomCours = result.getString("nomCours");
 				if (map.containsKey(nomCours))
-					map.put(nomCours, ((Integer) map.get(nomCours)).intValue() + result.getInt("duree"));
+					map.put(nomCours, ((Double) map.get(nomCours)).doubleValue() + result.getDouble("duree")/60.0);
 				else
-					map.put(nomCours, result.getInt("duree"));
+					map.put(nomCours, result.getDouble("duree")/60.0);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return map;
+	}
+	@Override
+	public Map<String, Double> getNombreHeureParCours(Utilisateur utilisateur) 
+	{
+		return getNombreHeure(utilisateur, "");
+	}
+	
+	@Override
+	public Map<String, Double> getNombreHeureEffectueeParCours(Utilisateur utilisateur) {
+		return getNombreHeure(utilisateur, " AND seance.Date < '"+new Date(new java.util.Date().getTime())+"'");
 	}
 	
 	@Override
@@ -251,17 +275,17 @@ public class ListeSeancesImpl implements ListeSeances {
 	public boolean salleLibre(Salle salle, Time heureDebut, Time heureFin, Date date) 
 	{
 		
-		for (Seance seance : getBySalle(salle)) {
+		for (Seance seance : getBySalleAtDate(salle, date)) {
 			//System.out.println(date + "==" + seance.getDate());
-			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date==seance.getDate())
+			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date.equals(seance.getDate()))
 				return false;
 		}
 		return true;
 	}
-
+	
 	@Override
 	public boolean promoLibre(Donnee promotion, Time heureDebut, Time heureFin, Date date) {
-		for (Seance seance : getByPromo(promotion)) {
+		for (Seance seance : getByPromoAtDate(promotion, date)) {
 			//System.out.println(date + "==" + seance.getDate());
 			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date.equals(seance.getDate()))
 				return false;
@@ -271,7 +295,7 @@ public class ListeSeancesImpl implements ListeSeances {
 	
 	@Override
 	public boolean groupeLibre(Groupe groupe, Time heureDebut, Time heureFin, Date date) {
-		for (Seance seance : getByGroupe(groupe)) {
+		for (Seance seance : getByGroupeAtDate(groupe, date)) {
 			//System.out.println(seance.getDebut() + " / " + heureFin + " : " + seance.getDebut().after(heureFin) + " || " + seance.getFin() +" / " + heureDebut + " : " + seance.getFin().before(heureDebut) + " && " + date + "==" + seance.getDate() + " : " + date.equals(seance.getDate()));
 			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date.equals(seance.getDate()))
 				return false;
@@ -281,7 +305,7 @@ public class ListeSeancesImpl implements ListeSeances {
 
 	@Override
 	public boolean utilisateurLibre(Utilisateur utilisateur, Time heureDebut, Time heureFin, Date date) {
-		for (Seance seance : getByUtilisateur(utilisateur)) {
+		for (Seance seance : getByUtilisateurAtDate(utilisateur, date)) {
 			//System.out.println(date + "==" + seance.getDate());
 			if (!(seance.getDebut().after(heureFin) || seance.getFin().before(heureDebut)) && date.equals(seance.getDate()))
 				return false;

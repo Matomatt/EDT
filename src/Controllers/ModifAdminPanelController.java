@@ -106,7 +106,8 @@ public class ModifAdminPanelController extends Controller
 		return (ModifAdminPanel) panel;
 	}
 
-	public void addSeance(Seance seance) {
+	public void addSeance(Seance seance) 
+	{
 		Panel().getUser().ListeSeances().addSeance(seance);
 		if (((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).getObjectClass() == Seance.class)
 			((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).addObject(seance);

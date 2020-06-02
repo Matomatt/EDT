@@ -53,8 +53,6 @@ public class SallesLibresPanel extends Panel
     	
     	for (Entry<String, LinkedHashMap<Time[], List<Salle>>> dayEntry : user.ListeSalles().getSallesLibresAtWeekStartingFrom(week, day).entrySet()) 
     	{
-    		System.out.println(dayEntry.getKey());
-    		
     		JLabel dayLabel = new JLabel(dayEntry.getKey().substring(0, 1).toUpperCase() + dayEntry.getKey().substring(1));
     		dayLabel.setFont(new Font(dayLabel.getFont().getName(), Font.PLAIN, dayLabel.getFont().getSize()*3));
     		boxPanel.add(dayLabel);

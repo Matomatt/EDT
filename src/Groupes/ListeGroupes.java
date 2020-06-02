@@ -14,6 +14,8 @@ public interface ListeGroupes {
 	public List<Groupe> getFilteredBy(Filter[] filters);
 	public Groupe getByID(int ID);
 	
+	public int getNombreEtudiants(Groupe groupe);
+	
 	public void add(Groupe groupe);
 	public boolean Update(Groupe groupe);
 	public void delete(Groupe groupe);

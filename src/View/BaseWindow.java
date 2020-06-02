@@ -64,7 +64,7 @@ public class BaseWindow extends JFrame
 		c.gridx = 2;
 		this.add(button2, c);
         
-        button4 = new Button("btReporting", "Reporting", controller);
+        button4 = new Button("btReporting", "Analytics", controller);
 		c.gridx = 3;
 		this.add(button4, c);
 		

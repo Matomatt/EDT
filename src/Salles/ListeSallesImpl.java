@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import Donnees.ListeDonnees;
 import Seances.Seance;
 import Utilitaires.TimeComparison;
@@ -62,15 +65,20 @@ public class ListeSallesImpl implements ListeSalles
 	@Override
 	public LinkedHashMap<String, LinkedHashMap<Time[], List<Salle>>> getSallesLibresAtWeekStartingFrom(int week, java.util.Date date) 
 	{
-		LinkedHashMap<String, LinkedHashMap<Time[], List<Salle>>> sallesLibresMap = new LinkedHashMap<String, LinkedHashMap<Time[], List<Salle>>>();
+		long milli = new java.util.Date().getTime();
 		
+		
+		LinkedHashMap<String, LinkedHashMap<Time[], List<Salle>>> sallesLibresMap = new LinkedHashMap<String, LinkedHashMap<Time[], List<Salle>>>();
+		List<Salle> allSalles = getAll();
 		try {
 			Time nowTime = new Time(date.getTime());
-			System.out.println(nowTime);
+			
 			Calendar calendar = Calendar.getInstance();
 	        calendar.setTime(date);
 	        int startingDay = calendar.get(Calendar.DAY_OF_WEEK);
-
+	        
+	        if (startingDay == 1) { startingDay = 2; calendar.add(Calendar.DATE, 1); }
+	        
 			for (int day = startingDay; day < 8; day++) 
 			{
 				if (day != startingDay)
@@ -79,34 +87,41 @@ public class ListeSallesImpl implements ListeSalles
 				Date lookingForDate = new Date(calendar.getTime().getTime());
 				LinkedHashMap<Time[], List<Salle>> map = new LinkedHashMap<Time[], List<Salle>>();
 				
-				for (int j = 0; j < nbCreneauxEnUneJournee; j++) 
+				Time heureDebut = new Time(0);
+				Time heureFin = new Time(0);
+				float h;
+				
+				List<SalleBeingUsed> salles = new ArrayList<SalleBeingUsed>();
+				
+				String query = "SELECT salle.*, seance.Heure_Debut, seance.Heure_Fin FROM salle, seance, seance_salles WHERE seance.ID=seance_salles.ID_Seance AND salle.ID=seance_salles.ID_Salle AND seance.Date='"+lookingForDate+"'";
+				
+				ResultSet result = connection.createStatement().executeQuery(query);
+				
+				while(result.next())
+					salles.add( new SalleBeingUsed(new Salle(result.getInt("ID"), result.getString("Nom"), result.getInt("Capacite"), sites.GetByID(result.getInt("ID_Site"))), result.getTime("Heure_Debut"), result.getTime("Heure_Fin")));
+				
+				
+				for (int j = 0; j < nbCreneauxEnUneJournee; j++)
 				{
-					float h; int m;
+					//Heure début
 					h = j*1.75f+8.5f;
-					m = (int) ((h-(int)h)*60);
-					@SuppressWarnings("deprecation")
-					Time heureDebut = new Time((int) h,m,0);
+					try { heureDebut = new Time(new SimpleDateFormat("HH:mm").parse((int)h+":"+(int)((h-(int)h)*60)).getTime()); } catch (ParseException e) { e.printStackTrace(); }
+					
+					//Heure fin
 					h += 1.5f;
-					m = (int) ((h-(int)h)*60);
-					@SuppressWarnings("deprecation")
-					Time heureFin = new Time((int) h,m,0);
-					System.out.println(heureFin);
+					try { heureFin = new Time(new SimpleDateFormat("HH:mm").parse((int)h+":"+(int)((h-(int)h)*60)).getTime()); } catch (ParseException e) { e.printStackTrace(); }
+
+					if (h > 14 && day == 7) break;
+					
 					if (TimeComparison.Compare(heureFin, nowTime) || day != startingDay)
 					{
-						String query = "SELECT * FROM `salle` WHERE ID NOT IN (Select ID_Salle from seance_salles WHERE ID_Seance IN (SELECT ID From seance Where "
-							+ " (Heure_Debut > '"+heureFin+"' OR Heure_Fin < '"+heureDebut+"') AND Date='"+lookingForDate+"')) ORDER BY ID_Site, Nom";
-						//System.out.println(query);
-						ResultSet result = connection.createStatement().executeQuery(query);
-						
 						Time[] creneau = {heureDebut, heureFin};
-						List<Salle> salles = new ArrayList<Salle>();
+						List<Integer> IdSallesOccupees = salles.stream().filter(s -> !(s.heureDebut.after(creneau[1]) || s.heureFin.before(creneau[0]))).map(s -> (int)s.salle.getID()).collect(Collectors.toList());
 						
-						while(result.next())
-							salles.add(new Salle(result.getInt("ID"), result.getString("Nom"), result.getInt("Capacite"), sites.GetByID(result.getInt("ID_Site")) ));
+						List<Salle> sallesLibres = allSalles.stream().filter(s -> !IdSallesOccupees.contains(s.getID())).collect(Collectors.toList());
 						
-						map.put(creneau, salles);
+						map.put(creneau, sallesLibres);
 					}
-					
 				}
 				
 				sallesLibresMap.put(new SimpleDateFormat("EEEE").format(calendar.getTime()), map);
@@ -115,7 +130,7 @@ public class ListeSallesImpl implements ListeSalles
 			e.printStackTrace();
 		}
 		
-		
+		System.out.println((new java.util.Date().getTime()-milli) + "ms pour charger les salles libres");
 		return sallesLibresMap;
 	}
 
@@ -151,3 +166,19 @@ public class ListeSallesImpl implements ListeSalles
 		}
 	}
 }
+
+
+
+
+
+
+
+//GARBAGE QUERY but like, I wanna keep it, I worked hard on it ;(
+/*
+String query1 = "SELECT * FROM `salle` WHERE ID NOT IN (Select ID_Salle from seance_salles WHERE ID_Seance IN (SELECT ID From seance Where "
+	+ " (Heure_Debut > '"+heureFin+"' OR Heure_Fin < '"+heureDebut+"') AND Date='"+lookingForDate+"')) ORDER BY ID_Site, Nom";
+
+Time[] creneau = {heureDebut, heureFin};
+List<Salle> salles1 = ExecuteQuery(query1);
+map.put(creneau, salles1);
+*/

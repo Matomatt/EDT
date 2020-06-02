@@ -14,7 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JSpinner;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
@@ -41,7 +40,8 @@ public class addSeanceWindow extends JFrame
     private JEditableComboBoxList groupesComboBoxList = null;
     private JEditableComboBoxList enseignantsComboBoxList = null;
     private JEditableComboBoxList sallesComboBoxList = null;
-    private JSpinner etatSpinner = new JSpinner();
+    private static final String[] etats = {"En cours de validation", "Validée", "Annulée"};
+    private JComboBox<String> etatComboBox = new JComboBox<String>(etats);
     private JComboBox<Object> coursComboBox = null;
     private JComboBox<Object> typeDeCoursComboBox = null;
     
@@ -98,7 +98,7 @@ public class addSeanceWindow extends JFrame
 		constraints.gridy = 2;
 		this.add(heureFinTextField, constraints);
 		constraints.gridy = 3;
-		this.add(etatSpinner, constraints);
+		this.add(etatComboBox, constraints);
 		constraints.gridy = 4;
 		this.add(coursComboBox, constraints);
 		constraints.gridy = 5;
@@ -137,7 +137,7 @@ public class addSeanceWindow extends JFrame
 	}
 
 	public int getEtat() {
-		return Integer.parseInt(etatSpinner.getValue().toString());
+		return etatComboBox.getSelectedIndex()+1;
 	}
 
 	public Donnee getCours() {
@@ -188,7 +188,7 @@ public class addSeanceWindow extends JFrame
 	    heureFinTextField.setText(seance.getFin().toString());
 	    coursComboBox.setSelectedItem(seance.getCours());
 	    typeDeCoursComboBox.setSelectedItem(seance.getType());
-	    etatSpinner.setValue(seance.getEtat());
+	    etatComboBox.setSelectedIndex(seance.getEtat()-1);
 	    groupesComboBoxList.setSelectedItems(seance.getGroupes().toArray());
 	    enseignantsComboBoxList.setSelectedItems(seance.getEnseignants().toArray());
 	    sallesComboBoxList.setSelectedItems(seance.getSalles().toArray());

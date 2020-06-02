@@ -10,6 +10,8 @@ import java.util.List;
 import UI_Elements.Button;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.sql.Date;
+
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
@@ -48,7 +50,7 @@ public class EDT_ListePanel extends Panel
        }*/
        
        //on récupère une liste avec toutes les séances qui se passe pendant une journée.
-       List<Seance> liste = user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), "2020-05-26");
+       List<Seance> liste = user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()));
        //on récupère la taille pour savoir le nombre de cours en une journée et pouvoir ensuite passer au jour d'après.
        int taille = liste.size();
        //création d'un tableau qui affichera sous forme de liste
@@ -58,7 +60,7 @@ public class EDT_ListePanel extends Panel
         
        int i=0;
         
-        for (Seance s : user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), "2020-05-26")) 
+        for (Seance s : user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()))) 
         {
             System.out.println(s);
             table[i][0]=s.getDebut();
