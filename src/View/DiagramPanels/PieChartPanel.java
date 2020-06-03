@@ -24,7 +24,7 @@ public class PieChartPanel extends JPanel
 		}
 		
         JFreeChart chart = ChartFactory.createPieChart(title,
-                dataset, true, false, false);
+                dataset, true, true, true);
         
         chart.setBorderVisible(false);
         

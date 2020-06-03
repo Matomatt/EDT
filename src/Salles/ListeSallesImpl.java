@@ -10,10 +10,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import Donnees.Donnee;
 import Donnees.ListeDonnees;
 import Seances.Seance;
 import Utilitaires.TimeComparison;
@@ -132,6 +135,38 @@ public class ListeSallesImpl implements ListeSalles
 		
 		System.out.println((new java.util.Date().getTime()-milli) + "ms pour charger les salles libres");
 		return sallesLibresMap;
+	}
+	
+	@Override
+	public Map<String, Double> getProportionCapacitePourSite(Donnee site) {
+		Map<String, Double> map = new HashMap<String, Double>();
+		
+		try {
+			ResultSet result = connection.createStatement().executeQuery("Select Capacite, COUNT(Capacite) as nbCapa From salle Where ID_Site="+site.getID()+" GROUP BY Capacite");
+			
+			while(result.next())
+				map.put(result.getString("Capacite"), result.getDouble("nbCapa"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return map;
+	}
+	
+	@Override
+	public Map<String, Double> getMoyenneOccupationPourSite(Donnee site) {
+		Map<String, Double> map = new LinkedHashMap<String, Double>();
+		
+		try {
+			ResultSet result = connection.createStatement().executeQuery("Select Semaine, SUM(TIMESTAMPDIFF(minute, CAST(Heure_Debut as Datetime), CAST(Heure_Fin as Datetime))) as duree From seance,salle,seance_salles Where ID_Salle=salle.ID AND ID_Seance=seance.ID AND ID_Site="+site.getID()+" GROUP BY Semaine");
+			
+			while(result.next())
+				map.put("Semaine "+result.getString("Semaine"), result.getDouble("duree")/60.0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return map;
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public class path {
 	public static String get() {
 		try {
 			String pathString = URLDecoder.decode(ClassLoader.getSystemClassLoader().getResource(".").getPath(), "UTF-8");
-			System.out.println(pathString);
+			//System.out.println(pathString);
 			if (pathString.length()>=5)
 			{
 				if (pathString.substring(pathString.length()-5).contains("bin"))

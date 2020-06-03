@@ -9,8 +9,12 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTabbedPane;
 
 import Controllers.Controller;
+import Donnees.Donnee;
 import Utilisateurs.User;
+import Utilisateurs.User.UserType;
 import View.DiagramPanels.BarChartPanel;
+import View.DiagramPanels.PieChartPanel;
+import View.DiagramPanels.XYAreaChartPanel;
 
 
 public class ReportingPanel extends Panel
@@ -46,9 +50,21 @@ public class ReportingPanel extends Panel
 		tabbedPanes.add("Heures de cours dans l'année", new BarChartPanel("Heures de cours dans l'année", "", 
 				user.ListeSeances().getNombreHeureParCours(user.getUtilisateurConnecte()), user.ListeSeances().getNombreHeureEffectueeParCours(user.getUtilisateurConnecte()), labels));
     	
-
+		if (user.getUserType() == UserType.Admin || user.getUserType() == UserType.Referent_pedagogique)
+		{
+			JTabbedPane tabbedPanesPieChart = new JTabbedPane();
+			for (Donnee site : user.ListeSite().getAll())
+				tabbedPanesPieChart.add(site.toString(), new PieChartPanel("Capacité des salles pour " + site, user.ListeSalles().getProportionCapacitePourSite(site)));
+			
+			tabbedPanes.add("Capacité des salles", tabbedPanesPieChart);
+			
+			JTabbedPane tabbedPanesXYGraph = new JTabbedPane();
+			for (Donnee site : user.ListeSite().getAll())
+				tabbedPanesXYGraph.add(site.toString(), new XYAreaChartPanel("Moyenne d'occupation des salles pour " + site, "Dates", "Nombre d'heures", user.ListeSalles().getMoyenneOccupationPourSite(site)));
+			
+			tabbedPanes.add("Capacité des salles", tabbedPanesXYGraph);
+		}
 		
-    	this.add(tabbedPanes, c);
-    	
+		this.add(tabbedPanes, c);
     }
 }

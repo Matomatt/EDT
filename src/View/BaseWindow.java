@@ -3,6 +3,8 @@ package View;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,6 +13,8 @@ import Controllers.BaseWindowController;
 import UI_Elements.Button;
 import Utilisateurs.User;
 import Utilisateurs.User.UserType;
+import Utilitaires.ImageManager;
+import Utilitaires.path;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +43,12 @@ public class BaseWindow extends JFrame
 		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+		try {
+			this.setIconImage(ImageManager.LoadImage(path.getImagePath("logo2.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.setTitle("EDT");
 		this.setVisible(true);
 		this.pack();
 	}
