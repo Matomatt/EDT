@@ -1,8 +1,9 @@
 package Controllers;
 
 import UI_Elements.Button;
+
+import java.awt.Color;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -94,9 +95,11 @@ public class BaseWindowController implements ActionListener {
 		
 		mainWindowPanel = newPage;
 		
+		baseWindow.setBackground(Color.white);
+		
 		GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(10, 0, 0, 0);
+        //c.insets = new Insets(10, 0, 0, 0);
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 		c.gridwidth = 5;
@@ -112,18 +115,12 @@ public class BaseWindowController implements ActionListener {
 	public boolean Connect(String login, String password) 
 	{
 		User user = null;
-		try {
-			System.out.println(login + " " + password);
-			user = new ConnectionViaUser(login, password);
-		} catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) {
-			return false;
-		}
+		try { user = new ConnectionViaUser(login, password); } 
+		catch (UserNotFoundException | ClassNotFoundException | ConnectionErrorException e) { return false; }
 		
 		baseWindow.setUser(user);
 		baseWindow.addComponentsToPane();
         SwitchPage(new EdtGrillePanel(baseWindow.getUser(), new EdtGrillePanelController()), true);
-        
-		System.out.println(user.getUtilisateurConnecte());
 
 		return true;
 	}
