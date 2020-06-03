@@ -5,19 +5,16 @@
  */
 package View;
  
-import Seances.Seance;
 import java.util.List;
-import UI_Elements.Button;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.sql.Date;
-
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
+import Seances.Seance;
 import Utilisateurs.User;
-import Controllers.Controller;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import Controllers.Controller;
 
 /**
  *
@@ -37,17 +34,18 @@ public class EDT_ListePanel extends Panel
     
     private void initComponents() 
     {
-        JTabbedPane tabbedPanes = new JTabbedPane();
-
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridBagLayout());
-
-        System.out.println("toto");
+        GridBagConstraints c = new GridBagConstraints();
+    
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.gridx = 0;
+        c.gridy = 1;
         
-       /*for (int y=0; y<6;y++)
-       {
-           
-       }*/
+        //JTabbedPane tabbedPanes = new JTabbedPane();
+
+//        JPanel panel1 = new JPanel();
+//        panel1.setLayout(new GridBagLayout());
        
        //on récupère une liste avec toutes les séances qui se passe pendant une journée.
        List<Seance> liste = user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()));
@@ -56,63 +54,50 @@ public class EDT_ListePanel extends Panel
        //création d'un tableau qui affichera sous forme de liste
        //ligne : cours (taille)
        //colonne : les détails (entêtes) 
-       Object[][] table = new Object[6][taille];
+       Object[][] table = new Object[7][taille];
         
-       int i=0;
+      int i =0;
         
         for (Seance s : user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()))) 
         {
             System.out.println(s);
-            table[i][0]=s.getDebut();
-            table[i][1]=s.getFin();
-            table[i][2]=s.getCours();
-            table[i][3]=s.getEnseignants();
-            table[i][4]=s.getGroupes();
-            table[i][5]=s.getSalles();
-            table[i][6]=s.getType();
+            table[0][i]=s.getDebut();
+            table[1][i]=s.getFin();
+            table[2][i]=s.getCours();
+            table[3][i]=s.getEnseignants();
+            table[4][i]=s.getGroupes();
+            table[5][i]=s.getSalles();
+            table[6][i]=s.getType();
             i++;
         }
-        
+       
         String[] entetes={"Heure Début", "Heure Fin", "Cours", "Enseignant", "Groupe", "Salle", "Type de Cours"};
         JTable tableau= new JTable(table, entetes);
+       
+       
         
-        tabbedPanes.addTab("Enseignants",tableau);
-//        tabbedPanes.addTab("Etudiants", new JScrollListe(user.ListeUtilisateurs(), User.UserType.Etudiant));
-//
-//        tabbedPanes.addTab("Salles", new JScrollListe(user.ListeSalles()));
-//
-//        tabbedPanes.addTab("Groupes", new JScrollListe(user.ListeGroupes()));
-//
-//        tabbedPanes.addTab("Promotions", new JScrollListe(user.ListePromotion(), "promotion"));
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1.0;
-		c.weighty = 1.0;
-		c.gridx = 0;
-		c.gridy = 1;
-        this.add(tabbedPanes, c);
+        //this.add(tabbedPanes, c);
         
 
-        JToolBar toolBar  = new JToolBar();
-        Button bAjouter = new Button(" Ajouter ");
-        Button bSupprimer = new Button(" Supprimer ");
-        Button bModifier = new Button(" Modifier ");
-        
-        toolBar.setRollover(false);
-        toolBar.setFloatable(false);
-        toolBar.setBackground(new java.awt.Color(255, 255, 255));
-        toolBar.add(bAjouter);
-        toolBar.add(bSupprimer);
-        toolBar.add(bModifier);
+//        JToolBar toolBar  = new JToolBar();
+//        Button bAjouter = new Button(" Ajouter ");
+//        Button bSupprimer = new Button(" Supprimer ");
+//        Button bModifier = new Button(" Modifier ");
+//        
+//        toolBar.setRollover(false);
+//        toolBar.setFloatable(false);
+//        toolBar.setBackground(new java.awt.Color(255, 255, 255));
+//        toolBar.add(bAjouter);
+//        toolBar.add(bSupprimer);
+//        toolBar.add(bModifier);
+//
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//		c.weightx = 1.0;
+//		c.weighty = 0.0;
+//		c.gridx = 0;
+//		c.gridy = 0;
+//        this.add(toolBar, c);
 
-        c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 1.0;
-		c.weighty = 0.0;
-		c.gridx = 0;
-		c.gridy = 0;
-        this.add(toolBar, c);
-
-        validate();
+        //validate();
     }
 }
