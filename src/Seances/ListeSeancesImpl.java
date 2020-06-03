@@ -42,7 +42,6 @@ public class ListeSeancesImpl implements ListeSeances {
 	
 	private List<Seance> ExecuteQuery(String query)
 	{
-		System.out.println(query);
 		List<Seance> list = new ArrayList<Seance>();
 		
 		ResultSet result;

@@ -64,7 +64,7 @@ public class ConnectionViaUser implements User {
 			    url = "jdbc:mysql://localhost:3306/"+s+"?autoReconnect=true&useSSL=false";
 			}
 			
-			System.out.println(url);
+			//System.out.println(url);
 			
 			connection = DriverManager.getConnection(url, user, passwd);
 			System.out.println("Connected to the database (user not verified yet)...");

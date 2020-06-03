@@ -34,6 +34,7 @@ public class ReportingPanel extends Panel
     	
         initComponents();
     }
+    
     private void initComponents() 
     {
     	GridBagConstraints c = new GridBagConstraints();
