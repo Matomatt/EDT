@@ -16,6 +16,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import Controllers.Controller;
 import java.awt.GridBagLayout;
+import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
@@ -23,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.xml.bind.DatatypeConverter;
@@ -90,7 +94,7 @@ public class EDT_ListePanel extends Panel
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 2;
         
         //JTabbedPane tabbedPanes = new JTabbedPane();
 
@@ -149,6 +153,41 @@ public class EDT_ListePanel extends Panel
         scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         scroll.setBackground(Color.white);
         this.add(scroll,c);
+        
+        Object [] objListe = new Object [] {"Nom","Classe", "Salle", "Promo"};
+        JComboBox<String> liste2 = new JComboBox(objListe);
+        c.gridy = 1;
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.ipadx = 30;
+        c.ipady = 20;
+        c.weightx = 0.5;
+        c.weighty= 0.1;
+           liste2.addActionListener(new ActionListener() {     
+         @Override
+         public void actionPerformed(ActionEvent e) {
+        System.out.println("Valeur: " + liste2.getSelectedItem().toString());      
+     }
+   });
+            this.add(liste2,c);
+
+                      
+            /*Object [] objListe2 = new Object [] {"P325","P318", "P333", "P329"};
+            JComboBox<String> cb = new JComboBox(objListe2);
+            cb.setEditable(true);*/
+        JComboBox cb;
+        cb = new JComboBox(((user.ListeSalles()).getAll()).toArray());
+        cb.setEditable(true);
+        Label test =null; 
+        
+    
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1;
+
+        this.add(cb,c);
 
     }
 }
