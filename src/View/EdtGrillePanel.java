@@ -1,3 +1,4 @@
+//source de là où j'ai trouvé la barre pour les semaines
 //https://www.developpez.net/forums/d1503732/java/interfaces-graphiques-java/debuter/faire-planning-jtable/
 
 /*
@@ -170,7 +171,7 @@ public class EdtGrillePanel extends Panel
     }
         
         
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "empty-statement"})
 	public void display_courses(JTable table)
     {
         String pattern = "dd-MM-yyyy";
@@ -218,7 +219,31 @@ public class EdtGrillePanel extends Panel
             }
             System.out.println("caseee :" +caseHeure);
 
-            info = s.getCours().toString() + "\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
+            
+            //********Récuperer uniquement nom + prénom de l'enseignant ******
+            
+            final String espace =" ";
+            String enseignant = s.getEnseignants().toString();
+            String mots[]=enseignant.split(espace);
+            String NomEns = null;
+            
+               // System.out.println(mots[i]);
+                System.out.println("mot0 ===="+mots[0]);
+                String zut = null;
+                zut = "[Enseignant";
+                if(mots[0].equals(zut))
+                {
+                    NomEns = mots[1]+ " " +mots[2];
+                    System.out.println("ici ==== "+NomEns);
+                }
+                else
+                    NomEns = mots[2]+ " " +mots[3];
+            
+            
+            //**************
+            
+            
+            info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
             table.getModel().setValueAt(info, caseHeure, nb-1);
         }
     }
