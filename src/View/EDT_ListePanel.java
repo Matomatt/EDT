@@ -89,10 +89,6 @@ public class EDT_ListePanel extends Panel
                i++;
            }
            
-//            System.out.println("tata 1");
-//            System.out.println(s);
-//            System.out.println(s.getDate());
-            System.out.println("tata 2 et i=" + i);
             table[i][0]=s.getDebut();
             table[i][1]=s.getFin();
             table[i][2]=s.getCours();
