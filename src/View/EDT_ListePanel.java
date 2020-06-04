@@ -98,9 +98,9 @@ public class EDT_ListePanel extends Panel
             System.out.println("tata 3");
             table[i][1]=s.getFin();
 //            System.out.println("tata 4");
-            table[2][i]=s.getCours();
+            table[i][2]=s.getCours();
 //            System.out.println("tata 5");
-//            table[3][i]=s.getEnseignants();
+            table[i][3]=s.getEnseignants();
 //            System.out.println("tata 6");
 //            table[4][i]=s.getGroupes();
 //            System.out.println("tata 7");
