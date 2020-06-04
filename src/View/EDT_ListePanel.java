@@ -19,8 +19,11 @@ import java.awt.GridBagLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import javax.swing.JPanel;
+import javax.xml.bind.DatatypeConverter;
+import static javax.xml.bind.DatatypeConverter.parseDate;
 
 /**
  *
@@ -65,15 +68,18 @@ public class EDT_ListePanel extends Panel
         
        int i =0;
        
-       Date sauvDate=null;
+       Date sauvDate=new Date(2001-01-01);
+        
        Date dateEnCours;
         
        //for (Seance s : user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()))) 
        for(Seance s : user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )))
        {
            dateEnCours=s.getDate();
-           
-           if(dateEnCours!=sauvDate)
+           System.out.println(dateEnCours);
+           System.out.println(sauvDate);
+           System.out.println("tata  et i=" + i);
+           if(dateEnCours.compareTo(sauvDate)!=0)
            {
                table[i][0]=dateEnCours;
                for(int j=1; j<7;++j)
@@ -87,9 +93,9 @@ public class EDT_ListePanel extends Panel
 //            System.out.println("tata 1");
 //            System.out.println(s);
 //            System.out.println(s.getDate());
-//            System.out.println("tata 2");
-//            table[0][i]=s.getDebut();
-//            System.out.println("tata 3");
+            System.out.println("tata 2 et i=" + i);
+            table[i][0]=s.getDebut();
+            System.out.println("tata 3");
 //            table[1][i]=s.getFin();
 //            System.out.println("tata 4");
 //            table[2][i]=s.getCours();
@@ -102,7 +108,7 @@ public class EDT_ListePanel extends Panel
 //            System.out.println("tata 8");
 //            table[6][i]=s.getType();
 //            System.out.println("tata 9");
-           // i++;
+            i++;
         }
        System.out.println("tata 10");
        String[] entetes={"Heure Début", "Heure Fin", "Cours", "Enseignant", "Groupe", "Salle", "Type de Cours"};
