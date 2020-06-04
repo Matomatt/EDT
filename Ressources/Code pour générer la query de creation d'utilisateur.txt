@@ -1,0 +1,34 @@
+//INSERT INTO `utilisateur` (`ID`, `Email`, `Password`, `Nom`, `Prenom`, `Droit`) VALUES ;
+//http://listofrandomnames.com/
+		String pathDuDossierString = "./Ressources";
+        	int typeUtilisateurAgenerer = 3;
+        
+        	File mapData = new File(pathDuDossierString + "/names.txt");
+		
+		BufferedReader br = new BufferedReader(new FileReader(mapData));
+
+		RandomString randomString = new RandomString(10);
+		String st;
+		List<String[]> namesandall = new ArrayList<String[]>(); 
+		//On lit toutes les lignes du fichier texte
+		while ((st = br.readLine()) != null) {
+			namesandall.add(st.split(" "));
+		}
+		br.close();
+		
+		PrintWriter saveFile = new PrintWriter(pathDuDossierString + "/query.txt", "UTF-8");
+		
+		while(!namesandall.isEmpty()) {
+			Random random = new Random();
+			int index = random.nextInt(namesandall.size());
+			try {
+				saveFile.println(", (NULL, '"+namesandall.get(index)[0]+"."+namesandall.get(index)[1]+"@edu.ece.fr', '"+randomString.nextString()+"', '"+namesandall.get(index)[1]+"', '"+namesandall.get(index)[0]+"', '"+typeUtilisateurAgenerer+"')");
+
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				e.printStackTrace();
+			}
+			namesandall.remove(index);
+		}
+		saveFile.close();
