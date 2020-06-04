@@ -104,7 +104,7 @@ public class EDT_ListePanel extends Panel
 //            System.out.println("tata 6");
             table[i][4]=s.getGroupes();
 //            System.out.println("tata 7");
-//            table[5][i]=s.getSalles();
+            table[i][5]=s.getSalles();
 //            System.out.println("tata 8");
 //            table[6][i]=s.getType();
 //            System.out.println("tata 9");
