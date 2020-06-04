@@ -72,7 +72,6 @@ public class EDT_ListePanel extends Panel
         
        Date dateEnCours;
         
-       //for (Seance s : user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()))) 
        for(Seance s : user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )))
        {
            dateEnCours=s.getDate();
