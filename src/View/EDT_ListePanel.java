@@ -111,9 +111,8 @@ public class EDT_ListePanel extends Panel
         System.out.println("tata 13");
         c.gridx = 0;
         c.gridy = 3;
-        System.out.println("tata 14");
+        
         scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        System.out.println("tata 15");
         scroll.setBackground(Color.white);
         this.add(scroll,c);
 
