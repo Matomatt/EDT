@@ -72,21 +72,21 @@ public class EDT_ListePanel extends Panel
            
             System.out.println("tata 1");
             System.out.println(s);
-//            System.out.println("tata 2");
-//            //table[0][i]=s.getDebut();
-//            System.out.println("tata 3");
-//            //table[1][i]=s.getFin();
-//            System.out.println("tata 4");
-//            table[2][i]=s.getCours();
-//            System.out.println("tata 5");
-//            table[3][i]=s.getEnseignants();
-//            System.out.println("tata 6");
-//            table[4][i]=s.getGroupes();
-//            System.out.println("tata 7");
-//            table[5][i]=s.getSalles();
-//            System.out.println("tata 8");
-//            table[6][i]=s.getType();
-//            System.out.println("tata 9");
+            System.out.println("tata 2");
+            table[0][i]=s.getDebut();
+            System.out.println("tata 3");
+            table[1][i]=s.getFin();
+            System.out.println("tata 4");
+            table[2][i]=s.getCours();
+            System.out.println("tata 5");
+            table[3][i]=s.getEnseignants();
+            System.out.println("tata 6");
+            table[4][i]=s.getGroupes();
+            System.out.println("tata 7");
+            table[5][i]=s.getSalles();
+            System.out.println("tata 8");
+            table[6][i]=s.getType();
+            System.out.println("tata 9");
             i++;
         }
        
