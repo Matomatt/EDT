@@ -42,6 +42,8 @@ public class ListeSeancesImpl implements ListeSeances {
 	
 	private List<Seance> ExecuteQuery(String query)
 	{
+		long milli = new java.util.Date().getTime();
+		
 		List<Seance> list = new ArrayList<Seance>();
 		
 		ResultSet result;
@@ -52,24 +54,43 @@ public class ListeSeancesImpl implements ListeSeances {
 			return list;
 		}
 		
+		List<Donnee> listeCours = cours.getAll();
+		List<Donnee> listeTypeCours = type_cours.getAll();
+ 		
 		try {
 			while(result.next())
 			{
+				Donnee ceCours = null;
+				try {
+					ceCours = listeCours.stream().filter(c -> { try { return c.isOfID(result.getInt("ID_Cours")); }  catch (SQLException e) { return false; } }).findFirst().get();
+				} catch (Exception e) {
+					ceCours = cours.GetByID(result.getInt("ID_Cours"));
+				}
+				
+				Donnee ceTypeCours = null;
+				try {
+					ceTypeCours = listeTypeCours.stream().filter(c -> { try { return c.isOfID(result.getInt("ID_Type")); }  catch (SQLException e) { return false; } }).findFirst().get();
+				} catch (Exception e) {
+					ceTypeCours = type_cours.GetByID(result.getInt("ID_Type"));
+				}
+				
 				try {
 					list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), result.getDate("Date"), result.getTime("Heure_Debut"), result.getTime("Heure_Fin"), 
-							result.getInt("Etat"), cours.GetByID(result.getInt("ID_Cours")), type_cours.GetByID(result.getInt("ID_Type")),
-							groupes.getBySeanceID(result.getInt("ID")), utilisateurs.getEnseignantsBySeanceID(result.getInt("ID")), salles.getBySeanceID(result.getInt("ID"))));
+							result.getInt("Etat"), ceCours, ceTypeCours, groupes.getBySeanceID(result.getInt("ID")),
+							utilisateurs.getEnseignantsBySeanceID(result.getInt("ID")), salles.getBySeanceID(result.getInt("ID"))));
 				}
 				catch(Exception e) { 
 					System.out.println("Erreur avec les dates, set at default");
 					list.add(new Seance(result.getInt("ID"), result.getInt("Semaine"), new Date(0), new Time(0), new Time(0),
-							result.getInt("Etat"), cours.GetByID(result.getInt("ID_Cours")), type_cours.GetByID(result.getInt("ID_Type")),
-							groupes.getBySeanceID(result.getInt("ID")), utilisateurs.getEnseignantsBySeanceID(result.getInt("ID")), salles.getBySeanceID(result.getInt("ID"))));
+							result.getInt("Etat"), ceCours, ceTypeCours, groupes.getBySeanceID(result.getInt("ID")), 
+							utilisateurs.getEnseignantsBySeanceID(result.getInt("ID")), salles.getBySeanceID(result.getInt("ID"))));
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println((new java.util.Date().getTime()-milli) + "ms pour charger les salles libres");
 		
 		return list;
 	}

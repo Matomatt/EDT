@@ -29,7 +29,7 @@ public class EDT_ListePanel extends Panel
  
     public EDT_ListePanel(User _user, Controller controller) 
     {
-	super(_user, controller);		
+    	super(_user, controller);		
 		
         initComponents();//code de la page
     }

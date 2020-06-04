@@ -33,7 +33,7 @@ public class ListeGroupesImpl implements ListeGroupes {
 			result = connection.createStatement().executeQuery(query);
 			
 			while(result.next())
-				list.add(new Groupe(result.getInt("ID"), result.getString("Nom"), promotions.GetByID(result.getInt("ID_Promotion"))));
+				list.add(new Groupe(result.getInt("ID"), result.getString("Nom"), promotions.GetByID(result.getInt("ID_Promotion")), getNombreEtudiants(result.getInt("ID"))));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -93,7 +93,7 @@ public class ListeGroupesImpl implements ListeGroupes {
 			result = connection.createStatement().executeQuery("Select * from groupe where ID=" + ID);
 			
 			if(result.next())
-				groupe = new Groupe(result.getInt("ID"), result.getString("Nom"), promotions.GetByID(result.getInt("ID_Promotion")));
+				groupe = new Groupe(result.getInt("ID"), result.getString("Nom"), promotions.GetByID(result.getInt("ID_Promotion")), getNombreEtudiants(result.getInt("ID")));
 		} 
 		catch (SQLException e) 
 		{
@@ -104,17 +104,22 @@ public class ListeGroupesImpl implements ListeGroupes {
 		return groupe;
 	}
 	
-	@Override
-	public int getNombreEtudiants(Groupe groupe) 
+	private int getNombreEtudiants(int groupeID)
 	{
 		try {
-			ResultSet result = connection.createStatement().executeQuery("Select COUNT(ID_Utilisateur) as nbEtudiant From etudiant Where ID_Groupe ="+groupe.getID());
+			ResultSet result = connection.createStatement().executeQuery("Select COUNT(ID_Utilisateur) as nbEtudiant From etudiant Where ID_Groupe ="+groupeID);
 			
 			if(result.next()) return result.getInt("nbEtudiant");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	@Override
+	public int getNombreEtudiants(Groupe groupe) 
+	{
+		return getNombreEtudiants(groupe.getID());
 	}
 
 	@Override

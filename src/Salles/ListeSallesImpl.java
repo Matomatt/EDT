@@ -70,9 +70,9 @@ public class ListeSallesImpl implements ListeSalles
 	{
 		long milli = new java.util.Date().getTime();
 		
-		
 		LinkedHashMap<String, LinkedHashMap<Time[], List<Salle>>> sallesLibresMap = new LinkedHashMap<String, LinkedHashMap<Time[], List<Salle>>>();
 		List<Salle> allSalles = getAll();
+		
 		try {
 			Time nowTime = new Time(date.getTime());
 			

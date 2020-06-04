@@ -45,4 +45,8 @@ public class Donnee {
 	public void copy(Donnee donnee) {
 		value = donnee.getValue();
 	}
+
+	public boolean isOfID(int ID) {
+		return (this.ID == ID);
+	}
 }
