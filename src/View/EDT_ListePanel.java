@@ -118,10 +118,7 @@ public class EDT_ListePanel extends Panel
         System.out.println("tata 16");
         this.add(scroll,c);
         System.out.println("tata 17");
-       
-       //panel1.add(this);
-        
-        //this.add(tabbedPanes, c);
+
         
 
 //        JToolBar toolBar  = new JToolBar();
