@@ -117,7 +117,6 @@ public class EDT_ListePanel extends Panel
         scroll.setBackground(Color.white);
         System.out.println("tata 16");
         this.add(scroll,c);
-        System.out.println("tata 17");
 
     }
 }
