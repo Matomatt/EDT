@@ -61,7 +61,7 @@ public class EDT_ListePanel extends Panel
        //création d'un tableau qui affichera sous forme de liste
        //ligne : cours (taille)
        //colonne : les détails (entêtes) 
-       Object[][] table = new Object[7][taille];
+       Object[][] table = new Object[taille][7];
         
        int i =0;
        
@@ -75,47 +75,51 @@ public class EDT_ListePanel extends Panel
            
            if(dateEnCours!=sauvDate)
            {
-               table[0][i]=dateEnCours;
+               table[i][0]=dateEnCours;
                for(int j=1; j<7;++j)
                {
-                   table[j][i]="";
+                   table[i][j]="";
                }
                sauvDate=dateEnCours;
                i++;
            }
            
-            //System.out.println("tata 1");
-            System.out.println(s);
-            //System.out.println(s.getDate());
-            //System.out.println("tata 2");
-            table[0][i]=s.getDebut();
-            //System.out.println("tata 3");
-            table[1][i]=s.getFin();
-            //System.out.println("tata 4");
-            table[2][i]=s.getCours();
-            //System.out.println("tata 5");
-            table[3][i]=s.getEnseignants();
-            //System.out.println("tata 6");
-            table[4][i]=s.getGroupes();
-            //System.out.println("tata 7");
-            table[5][i]=s.getSalles();
-            //System.out.println("tata 8");
-            table[6][i]=s.getType();
-            //System.out.println("tata 9");
-            i++;
+//            System.out.println("tata 1");
+//            System.out.println(s);
+//            System.out.println(s.getDate());
+//            System.out.println("tata 2");
+//            table[0][i]=s.getDebut();
+//            System.out.println("tata 3");
+//            table[1][i]=s.getFin();
+//            System.out.println("tata 4");
+//            table[2][i]=s.getCours();
+//            System.out.println("tata 5");
+//            table[3][i]=s.getEnseignants();
+//            System.out.println("tata 6");
+//            table[4][i]=s.getGroupes();
+//            System.out.println("tata 7");
+//            table[5][i]=s.getSalles();
+//            System.out.println("tata 8");
+//            table[6][i]=s.getType();
+//            System.out.println("tata 9");
+           // i++;
         }
-       
+       System.out.println("tata 10");
        String[] entetes={"Heure Début", "Heure Fin", "Cours", "Enseignant", "Groupe", "Salle", "Type de Cours"};
+       System.out.println("tata 11");
        JTable tableau= new JTable(table, entetes);
-       
-       //JScrollPane scroll = new JScrollPane(tableau);
-        
+       System.out.println("tata 12");
+       JScrollPane scroll = new JScrollPane(tableau);
+        System.out.println("tata 13");
         c.gridx = 0;
         c.gridy = 3;
-        
-        //scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        //scroll.setBackground(Color.white);
-        //this.add(c);
+        System.out.println("tata 14");
+        scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        System.out.println("tata 15");
+        scroll.setBackground(Color.white);
+        System.out.println("tata 16");
+        this.add(scroll,c);
+        System.out.println("tata 17");
        
        //panel1.add(this);
         
