@@ -106,9 +106,8 @@ public class EDT_ListePanel extends Panel
        String[] entetes={"Heure Début", "Heure Fin", "Cours", "Enseignant", "Groupe", "Salle", "Type de Cours"};
        System.out.println("tata 11");
        JTable tableau= new JTable(table, entetes);
-       System.out.println("tata 12");
        JScrollPane scroll = new JScrollPane(tableau);
-        System.out.println("tata 13");
+       
         c.gridx = 0;
         c.gridy = 3;
         
