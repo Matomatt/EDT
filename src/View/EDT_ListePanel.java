@@ -119,27 +119,5 @@ public class EDT_ListePanel extends Panel
         this.add(scroll,c);
         System.out.println("tata 17");
 
-        
-
-//        JToolBar toolBar  = new JToolBar();
-//        Button bAjouter = new Button(" Ajouter ");
-//        Button bSupprimer = new Button(" Supprimer ");
-//        Button bModifier = new Button(" Modifier ");
-//        
-//        toolBar.setRollover(false);
-//        toolBar.setFloatable(false);
-//        toolBar.setBackground(new java.awt.Color(255, 255, 255));
-//        toolBar.add(bAjouter);
-//        toolBar.add(bSupprimer);
-//        toolBar.add(bModifier);
-//
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//		c.weightx = 1.0;
-//		c.weighty = 0.0;
-//		c.gridx = 0;
-//		c.gridy = 0;
-//        this.add(toolBar, c);
-
-        //validate();
     }
 }
