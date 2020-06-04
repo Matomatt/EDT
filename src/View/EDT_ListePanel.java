@@ -102,7 +102,7 @@ public class EDT_ListePanel extends Panel
             table[i][6]=s.getType();
             i++;
         }
-       System.out.println("tata 10");
+       
        String[] entetes={"Heure Début", "Heure Fin", "Cours", "Enseignant", "Groupe", "Salle", "Type de Cours"};
        
        JTable tableau= new JTable(table, entetes);
