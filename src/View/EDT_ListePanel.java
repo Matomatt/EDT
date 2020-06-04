@@ -16,11 +16,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import Controllers.Controller;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.xml.bind.DatatypeConverter;
 import static javax.xml.bind.DatatypeConverter.parseDate;
@@ -44,7 +47,40 @@ public class EDT_ListePanel extends Panel
     private void initComponents() 
     {
         GridBagConstraints c = new GridBagConstraints();
-    
+        
+        Color color = new Color(111,199,227);
+        JPanel pan = new JPanel();
+        
+        
+		for(int i=1; i<=52; i++) {
+                    
+			JLabel label = new JLabel(String.valueOf(i));
+                        
+			label.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+			label.setOpaque(true);
+			if ( i%2==0 ) {
+				label.setBackground(Color.WHITE);
+
+			}
+			else {
+				label.setBackground(color);
+			}
+			label.setEnabled(true);
+			label.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+                                    System.out.println(".mouseClicked()"+ label.getText());
+                                    String semaineselec ;
+                                    semaineselec = label.getText();
+				}
+                                
+			});
+			pan.add(label);
+		}
+                
+
+		JScrollPane slider = new JScrollPane(pan,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                
+                
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;
