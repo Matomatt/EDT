@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 public class EdtGrillePanel extends Panel 
 {
 	private static final long serialVersionUID = -4510731458552817257L;
+        JComboBox cb = null;
     
     private final String[] columns = { "", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 
@@ -134,6 +135,7 @@ public class EdtGrillePanel extends Panel
         
         Object [] objListe = new Object [] {"Nom","Classe", "Salle", "Promo"};
         JComboBox<String> liste = new JComboBox(objListe);
+        
         c.gridy = 1;
         c.gridx = 0;
         c.gridwidth = 1;
@@ -141,33 +143,113 @@ public class EdtGrillePanel extends Panel
         c.ipady = 20;
         c.weightx = 0.5;
         c.weighty= 0.1;
+        
+        this.add(liste,c);
+ 
+        
+        nomsAdd(c);
+        
            liste.addActionListener(new ActionListener() {     
          @Override
-         public void actionPerformed(ActionEvent e) {
-        System.out.println("Valeur: " + liste.getSelectedItem().toString());      
-     }
-   });
-            this.add(liste,c);
+         public void actionPerformed(ActionEvent e) 
+         { 
 
-                      
-            /*Object [] objListe2 = new Object [] {"P325","P318", "P333", "P329"};
-            JComboBox<String> cb = new JComboBox(objListe2);
-            cb.setEditable(true);*/
-        JComboBox cb;
-        cb = new JComboBox(((user.ListeSalles()).getAll()).toArray());
-        cb.setEditable(true);
+            System.out.println("Valeur: " + liste.getSelectedItem().toString());      
+            if((liste.getSelectedItem().toString()) == "Salle")
+                {
+                    removeAll();
+                    sallesAdd(c);
+                    repaintAll();
+                }
+            if((liste.getSelectedItem().toString()) == "Nom")
+                { 
+                    removeAll();
+                    nomsAdd(c);
+                    repaintAll();
+                }
+            if((liste.getSelectedItem().toString()) == "Classe")
+                { 
+                    removeAll();
+                    classesAdd(c);
+                    repaintAll();
+                }
+            if((liste.getSelectedItem().toString()) == "Promo")
+                {
+                    removeAll();
+                    promosAdd(c);
+                    repaintAll();
+                }
+            
+         }
+   });
+            
         Label test =null; 
         
+
+          
+    }
     
+    public void repaintAll()
+    {
+      this.revalidate();
+    }
+    
+    public void removeAll()
+    {
+        this.remove(cb);
+    }
+    
+    public void sallesAdd(GridBagConstraints c)
+    {
+        cb = null;
         c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 1;
         c.weightx = 0.5;
-        c.weighty= 0.1;
-
+        c.weighty= 0.1; 
+        cb = new JComboBox(((user.ListeSalles()).getAll()).toArray()); 
+        cb.setEditable(true);
         this.add(cb,c);
+    }
+    
+    public void nomsAdd(GridBagConstraints c)
+    {
+        cb = null;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1; 
+        cb = new JComboBox(((user.ListeUtilisateurs().getEnseignants().toArray()))); 
+        cb.setEditable(true);
+        this.add(cb,c);
+    }
+    
+    public void classesAdd(GridBagConstraints c)
+    {
         
-          
+        cb = null;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1; 
+        cb = new JComboBox(((user.ListeGroupes().getAll().toArray()))); 
+        cb.setEditable(true);
+        this.add(cb,c);
+    }
+        
+    public void promosAdd(GridBagConstraints c)
+    {
+        cb = null;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1; 
+        cb = new JComboBox(((user.ListePromotion().getAll().toArray()))); 
+        cb.setEditable(true);
+        this.add(cb,c);
     }
         
         
