@@ -24,12 +24,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import Controllers.Controller;
+import Salles.Salle;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -183,10 +185,7 @@ public class EdtGrillePanel extends Panel
          }
    });
             
-        Label test =null; 
-        
-
-          
+        Label test =null;
     }
     
     public void repaintAll()
@@ -197,6 +196,11 @@ public class EdtGrillePanel extends Panel
     public void removeAll()
     {
         this.remove(cb);
+    }
+    
+    public void edtsalles(Salle s)
+    {
+        
     }
     
     public void sallesAdd(GridBagConstraints c)
@@ -210,6 +214,10 @@ public class EdtGrillePanel extends Panel
         cb = new JComboBox(((user.ListeSalles()).getAll()).toArray()); 
         cb.setEditable(true);
         this.add(cb,c);
+        
+       // edtsalles(s);
+         
+
     }
     
     public void nomsAdd(GridBagConstraints c)
@@ -223,6 +231,16 @@ public class EdtGrillePanel extends Panel
         cb = new JComboBox(((user.ListeUtilisateurs().getEnseignants().toArray()))); 
         cb.setEditable(true);
         this.add(cb,c);
+        
+        
+          cb.addActionListener(new ActionListener() {     
+         @Override
+         public void actionPerformed(ActionEvent ae) 
+         {       
+            System.out.println("SALLE SELEC ==" + cb.getSelectedItem());
+         }
+            });
+
     }
     
     public void classesAdd(GridBagConstraints c)
@@ -254,6 +272,7 @@ public class EdtGrillePanel extends Panel
         
         
     @SuppressWarnings({"deprecation", "empty-statement"})
+    
 	public void display_courses(JTable table)
     {
         String pattern = "dd-MM-yyyy";
@@ -301,11 +320,17 @@ public class EdtGrillePanel extends Panel
             }
             System.out.println("caseee :" +caseHeure);
 
+            getNomEns(s.getEnseignants().toString());
+            String NomEns = getNomEns(s.getEnseignants().toString());;
             
-            //********Récuperer uniquement nom + prénom de l'enseignant ******
-            
+            info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
+            table.getModel().setValueAt(info, caseHeure, nb-1);
+        }
+    }
+        
+        public String getNomEns(String enseignant)
+        {
             final String espace =" ";
-            String enseignant = s.getEnseignants().toString();
             String mots[]=enseignant.split(espace);
             String NomEns = null;
             
@@ -320,18 +345,11 @@ public class EdtGrillePanel extends Panel
                 }
                 else
                     NomEns = mots[2]+ " " +mots[3];
-            
-            
-            //**************
-            
-            
-            info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
-            table.getModel().setValueAt(info, caseHeure, nb-1);
+                
+                return  NomEns;
         }
-    }
 }
     
-   
     
  
     
