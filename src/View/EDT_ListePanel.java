@@ -57,6 +57,7 @@ public class EDT_ListePanel extends Panel
        List<Seance> liste = user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) ));//user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()));
        //on récupère la taille pour savoir le nombre de cours en une journée et pouvoir ensuite passer au jour d'après.
        int taille = liste.size();
+       taille=taille+7;
        //création d'un tableau qui affichera sous forme de liste
        //ligne : cours (taille)
        //colonne : les détails (entêtes) 
@@ -64,29 +65,43 @@ public class EDT_ListePanel extends Panel
         
        int i =0;
        
-       
+       Date sauvDate=null;
+       Date dateEnCours;
         
        //for (Seance s : user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()))) 
        for(Seance s : user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )))
        {
+           dateEnCours=s.getDate();
            
-            System.out.println("tata 1");
+           if(dateEnCours!=sauvDate)
+           {
+               table[0][i]=dateEnCours;
+               for(int j=1; j<7;++j)
+               {
+                   table[j][i]="";
+               }
+               sauvDate=dateEnCours;
+               i++;
+           }
+           
+            //System.out.println("tata 1");
             System.out.println(s);
-            System.out.println("tata 2");
+            //System.out.println(s.getDate());
+            //System.out.println("tata 2");
             table[0][i]=s.getDebut();
-            System.out.println("tata 3");
+            //System.out.println("tata 3");
             table[1][i]=s.getFin();
-            System.out.println("tata 4");
+            //System.out.println("tata 4");
             table[2][i]=s.getCours();
-            System.out.println("tata 5");
+            //System.out.println("tata 5");
             table[3][i]=s.getEnseignants();
-            System.out.println("tata 6");
+            //System.out.println("tata 6");
             table[4][i]=s.getGroupes();
-            System.out.println("tata 7");
+            //System.out.println("tata 7");
             table[5][i]=s.getSalles();
-            System.out.println("tata 8");
+            //System.out.println("tata 8");
             table[6][i]=s.getType();
-            System.out.println("tata 9");
+            //System.out.println("tata 9");
             i++;
         }
        
