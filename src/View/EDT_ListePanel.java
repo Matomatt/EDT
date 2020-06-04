@@ -79,7 +79,12 @@ public class EDT_ListePanel extends Panel
                 
 
 		JScrollPane slider = new JScrollPane(pan,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                c.fill = GridBagConstraints.BOTH;
                 
+                c.gridy = 0;
+                c.weighty = 0.05;
+                c.gridwidth = 2;
+                this.add(slider,c);
                 
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
