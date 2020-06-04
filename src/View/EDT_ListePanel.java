@@ -15,7 +15,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import Controllers.Controller;
+import Donnees.Donnee;
+import UI_Elements.JEditableComboBoxList;
+import Utilisateurs.Utilisateur;
+import com.sun.java.swing.plaf.windows.resources.windows;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,6 +52,26 @@ public class EDT_ListePanel extends Panel
         initComponents();//code de la page
     }
 	
+    public void ChangeListEnseignant()
+    {
+        this.remove(enseignantsComboBoxList);
+        
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.insets = new Insets(5,0,5,0);
+        constraints.weightx =1.0;
+        constraints.weighty =1.0;
+        constraints.gridx =1;
+        constraints.gridy =7;
+        
+        List<Utilisateur> listUtilisateurs = user.ListeUtilisateurs().getEnseignantsByCours((Donnee)liste2.getSelectedItem());
+        
+        enseignantsComboBoxList = new JEditableComboBoxList( listUtilisateurs.toArray(), "a professor");
+        
+        this.add(enseignantsComboBoxList, constraints);
+        
+        validate();
+    }
     
     private void initComponents() 
     {
@@ -163,12 +188,15 @@ public class EDT_ListePanel extends Panel
         c.ipady = 20;
         c.weightx = 0.5;
         c.weighty= 0.1;
-           liste2.addActionListener(new ActionListener() {     
-         @Override
-         public void actionPerformed(ActionEvent e) {
-        System.out.println("Valeur: " + liste2.getSelectedItem().toString());      
-     }
-   });
+        liste2.addActionListener(controller);
+        
+    }
+//           liste2.addActionListener(new ActionListener() {   
+//         @Override
+//         public void actionPerformed(ActionEvent e) {
+//        System.out.println("Valeur: " + liste2.getSelectedItem().toString());      
+//     }
+//   });
             this.add(liste2,c);
 
                       
