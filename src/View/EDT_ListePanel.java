@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import Controllers.Controller;
 import Donnees.Donnee;
+import Salles.Salle;
 import UI_Elements.JEditableComboBoxList;
 import Utilisateurs.Utilisateur;
 import com.sun.java.swing.plaf.windows.resources.windows;
@@ -44,33 +45,13 @@ import static javax.xml.bind.DatatypeConverter.parseDate;
 public class EDT_ListePanel extends Panel
 {    
     private static final long serialVersionUID = 3736956335101565252L;
+    JComboBox cb = null;
  
     public EDT_ListePanel(User _user, Controller controller) 
     {
     	super(_user, controller);		
 		
         initComponents();//code de la page
-    }
-	
-    public void ChangeListEnseignant()
-    {
-        this.remove(enseignantsComboBoxList);
-        
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.insets = new Insets(5,0,5,0);
-        constraints.weightx =1.0;
-        constraints.weighty =1.0;
-        constraints.gridx =1;
-        constraints.gridy =7;
-        
-        List<Utilisateur> listUtilisateurs = user.ListeUtilisateurs().getEnseignantsByCours((Donnee)liste2.getSelectedItem());
-        
-        enseignantsComboBoxList = new JEditableComboBoxList( listUtilisateurs.toArray(), "a professor");
-        
-        this.add(enseignantsComboBoxList, constraints);
-        
-        validate();
     }
     
     private void initComponents() 
@@ -80,48 +61,47 @@ public class EDT_ListePanel extends Panel
         Color color = new Color(111,199,227);
         JPanel pan = new JPanel();
         
-        
-		for(int i=1; i<=52; i++) {
-                    
-			JLabel label = new JLabel(String.valueOf(i));
+	for(int i=1; i<=52; i++) 
+        {         
+            JLabel label = new JLabel(String.valueOf(i));
                         
-			label.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
-			label.setOpaque(true);
-			if ( i%2==0 ) {
-				label.setBackground(Color.WHITE);
-
-			}
-			else {
-				label.setBackground(color);
-			}
-			label.setEnabled(true);
-			label.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-                                    System.out.println(".mouseClicked()"+ label.getText());
-                                    String semaineselec ;
-                                    semaineselec = label.getText();
-				}
-                                
-			});
-			pan.add(label);
-		}
+            label.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
+            label.setOpaque(true);
+            if ( i%2==0 ) 
+            {
+		label.setBackground(Color.WHITE);
+            }
+            else 
+            {
+		label.setBackground(color);
+            }
+            
+            label.setEnabled(true);
+            label.addMouseListener(new MouseAdapter() 
+            {
+		public void mouseClicked(MouseEvent e) 
+                {
+                    System.out.println(".mouseClicked()"+ label.getText());
+                    String semaineselec ;
+                    semaineselec = label.getText();
+                }
+            });
+            pan.add(label);
+	}
                 
-
-		JScrollPane slider = new JScrollPane(pan,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                c.fill = GridBagConstraints.BOTH;
+	JScrollPane slider = new JScrollPane(pan,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        c.fill = GridBagConstraints.BOTH;
                 
-                c.gridy = 0;
-                c.weighty = 0.05;
-                c.gridwidth = 2;
-                this.add(slider,c);
+        c.gridy = 0;
+        c.weighty = 0.05;
+        c.gridwidth = 2;
+        this.add(slider,c);
                 
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.gridx = 0;
         c.gridy = 2;
-        
-        //JTabbedPane tabbedPanes = new JTabbedPane();
 
         JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
@@ -188,34 +168,139 @@ public class EDT_ListePanel extends Panel
         c.ipady = 20;
         c.weightx = 0.5;
         c.weighty= 0.1;
-        liste2.addActionListener(controller);
+        
+        this.add(liste2,c);
+ 
+        nomsAdd(c);
+        
+        liste2.addActionListener(new ActionListener() 
+        {     
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            { 
+                System.out.println("Valeur: " + liste2.getSelectedItem().toString());      
+                if((liste2.getSelectedItem().toString()) == "Salle")
+                {
+                    removeAll();
+                    sallesAdd(c);
+                    repaintAll();
+                }
+                if((liste2.getSelectedItem().toString()) == "Nom")
+                { 
+                    removeAll();
+                    nomsAdd(c);
+                    repaintAll();
+                }
+                if((liste2.getSelectedItem().toString()) == "Classe")
+                { 
+                    removeAll();
+                    classesAdd(c);
+                    repaintAll();
+                }
+                if((liste2.getSelectedItem().toString()) == "Promo")
+                {
+                    removeAll();
+                    promosAdd(c);
+                    repaintAll();
+                }  
+            }
+        });
+        Label test =null;
+    }
+    
+    public void repaintAll()
+    {
+      this.revalidate();
+    }
+    
+    public void removeAll()
+    {
+        this.remove(cb);
+    }
+    
+    public void edtsalles(Salle s)
+    {
         
     }
-//           liste2.addActionListener(new ActionListener() {   
-//         @Override
-//         public void actionPerformed(ActionEvent e) {
-//        System.out.println("Valeur: " + liste2.getSelectedItem().toString());      
-//     }
-//   });
-            this.add(liste2,c);
-
-                      
-            /*Object [] objListe2 = new Object [] {"P325","P318", "P333", "P329"};
-            JComboBox<String> cb = new JComboBox(objListe2);
-            cb.setEditable(true);*/
-        JComboBox cb;
-        cb = new JComboBox(((user.ListeSalles()).getAll()).toArray());
-        cb.setEditable(true);
-        Label test =null; 
-        
     
+    public void sallesAdd(GridBagConstraints c)
+    {
+        cb = null;
         c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 1;
         c.weightx = 0.5;
-        c.weighty= 0.1;
-
+        c.weighty= 0.1; 
+        cb = new JComboBox(((user.ListeSalles()).getAll()).toArray()); 
+        cb.setEditable(true);
+        this.add(cb,c);        
+    }
+    
+    public void nomsAdd(GridBagConstraints c)
+    {
+        cb = null;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1; 
+        cb = new JComboBox(((user.ListeUtilisateurs().getEnseignants().toArray()))); 
+        cb.setEditable(true);
         this.add(cb,c);
-
+        
+        cb.addActionListener(new ActionListener() 
+        {     
+            @Override
+            public void actionPerformed(ActionEvent ae) 
+            {       
+                System.out.println("SALLE SELEC ==" + cb.getSelectedItem());
+            }
+        });
+    }
+    
+    public void classesAdd(GridBagConstraints c)
+    {   
+        cb = null;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1; 
+        cb = new JComboBox(((user.ListeGroupes().getAll().toArray()))); 
+        cb.setEditable(true);
+        this.add(cb,c);
+    }
+        
+    public void promosAdd(GridBagConstraints c)
+    {
+        cb = null;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1; 
+        cb = new JComboBox(((user.ListePromotion().getAll().toArray()))); 
+        cb.setEditable(true);
+        this.add(cb,c);
+    }
+    
+    public String getNomEns(String enseignant)
+    {
+        final String espace =" ";
+        String mots[]=enseignant.split(espace);
+        String NomEns = null;
+            
+        System.out.println("mot0 ===="+mots[0]);
+        String zut = null;
+        zut = "[Enseignant";
+        if(mots[0].equals(zut))
+        {
+            NomEns = mots[1]+ " " +mots[2];
+            System.out.println("ici ==== "+NomEns);
+        }
+        else
+            NomEns = mots[2]+ " " +mots[3];
+              
+        return  NomEns;
     }
 }
