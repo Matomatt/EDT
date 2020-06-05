@@ -14,10 +14,13 @@ public interface ListeSeances {
 	public List<Seance> getAll();
 	public List<Seance> getBySalle(Salle salle);
 	public List<Seance> getBySalleAtDate(Salle salle, Date date);
+	public List<Seance> getBySalleAtWeek(Salle salle, int semaine);
 	public List<Seance> getByPromo(Donnee promotion);
 	public List<Seance> getByPromoAtDate(Donnee promotion, Date date);
+        public List<Seance> getByPromoAtWeek(Donnee promotion, int semaine);
 	public List<Seance> getByGroupe(Groupe groupe);
 	public List<Seance> getByGroupeAtDate(Groupe groupe, Date date);
+        public List<Seance> getByGroupeAtWeek(Groupe groupe,  int semaine);
 	public List<Seance> getByWeek(int week);
 	public List<Seance> getByUtilisateur(Utilisateur utilisateur);
 	public List<Seance> getByUtilisateurAtDate(Utilisateur utilisateur, Date date); //Format yyyy-mm-dd
