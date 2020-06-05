@@ -23,8 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import Controllers.Controller;
-import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -80,8 +78,7 @@ public class EdtGrillePanel extends Panel
 			label.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
                                     System.out.println(".mouseClicked()"+ label.getText());
-                                    String semaineselec ;
-                                    semaineselec = label.getText();
+                                    //String semaineselec = label.getText();
 				}
                                 
 			});
@@ -131,8 +128,8 @@ public class EdtGrillePanel extends Panel
         
         
         
-        Object [] objListe = new Object [] {"Nom","Classe", "Salle", "Promo"};
-        JComboBox<String> liste = new JComboBox(objListe);
+        String[] objListe = {"Nom","Classe", "Salle", "Promo"};
+        JComboBox<String> liste = new JComboBox<String>(objListe);
         c.gridy = 1;
         c.gridx = 0;
         c.gridwidth = 1;
@@ -152,10 +149,10 @@ public class EdtGrillePanel extends Panel
             /*Object [] objListe2 = new Object [] {"P325","P318", "P333", "P329"};
             JComboBox<String> cb = new JComboBox(objListe2);
             cb.setEditable(true);*/
-        JComboBox cb;
-        cb = new JComboBox(((user.ListeSalles()).getAll()).toArray());
+        JComboBox<Object> cb;
+        cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray());
         cb.setEditable(true);
-        Label test =null; 
+        //Label test =null; 
         
     
         c.gridx = 1;

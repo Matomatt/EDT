@@ -14,6 +14,7 @@ public interface ListeSeances {
 	public List<Seance> getAll();
 	public List<Seance> getBySalle(Salle salle);
 	public List<Seance> getBySalleAtDate(Salle salle, Date date);
+	public List<Seance> getBySalleAtWeek(Salle salle, int semaine);
 	public List<Seance> getByPromo(Donnee promotion);
 	public List<Seance> getByPromoAtDate(Donnee promotion, Date date);
 	public List<Seance> getByGroupe(Groupe groupe);

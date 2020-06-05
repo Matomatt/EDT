@@ -16,21 +16,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import Controllers.Controller;
 import java.awt.GridBagLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.xml.bind.DatatypeConverter;
-import static javax.xml.bind.DatatypeConverter.parseDate;
 
 /**
  *
@@ -73,8 +66,7 @@ public class EDT_ListePanel extends Panel
 			label.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
                                     System.out.println(".mouseClicked()"+ label.getText());
-                                    String semaineselec ;
-                                    semaineselec = label.getText();
+                                    //String semaineselec = label.getText();
 				}
                                 
 			});
@@ -154,8 +146,8 @@ public class EDT_ListePanel extends Panel
         scroll.setBackground(Color.white);
         this.add(scroll,c);
         
-        Object [] objListe = new Object [] {"Nom","Classe", "Salle", "Promo"};
-        JComboBox<String> liste2 = new JComboBox(objListe);
+        String[] objListe = {"Nom","Classe", "Salle", "Promo"};
+        JComboBox<String> liste2 = new JComboBox<String>(objListe);
         c.gridy = 1;
         c.gridx = 0;
         c.gridwidth = 1;
@@ -175,10 +167,10 @@ public class EDT_ListePanel extends Panel
             /*Object [] objListe2 = new Object [] {"P325","P318", "P333", "P329"};
             JComboBox<String> cb = new JComboBox(objListe2);
             cb.setEditable(true);*/
-        JComboBox cb;
-        cb = new JComboBox(((user.ListeSalles()).getAll()).toArray());
+        JComboBox<Object> cb;
+        cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray());
         cb.setEditable(true);
-        Label test =null; 
+        //Label test =null; 
         
     
         c.gridx = 1;

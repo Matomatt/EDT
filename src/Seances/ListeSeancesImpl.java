@@ -111,6 +111,11 @@ public class ListeSeancesImpl implements ListeSeances {
 	}
 	
 	@Override
+	public List<Seance> getBySalleAtWeek(Salle salle, int semaine) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_salles Where ID_Salle="+salle.getID()+") AND Semaine='"+semaine+"'");
+	}
+	
+	@Override
 	public List<Seance> getByPromo(Donnee promotion) {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+"))");
 	}
@@ -349,5 +354,5 @@ public class ListeSeancesImpl implements ListeSeances {
 				return false;
 		}
 		return true;
-	}
+	}	
 }
