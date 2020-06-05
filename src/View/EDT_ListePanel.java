@@ -15,28 +15,17 @@ import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import Controllers.Controller;
-import Donnees.Donnee;
 import Salles.Salle;
-import UI_Elements.JEditableComboBoxList;
-import Utilisateurs.Utilisateur;
-import com.sun.java.swing.plaf.windows.resources.windows;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.xml.bind.DatatypeConverter;
-import static javax.xml.bind.DatatypeConverter.parseDate;
 
 /**
  *
