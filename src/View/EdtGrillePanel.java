@@ -1,3 +1,4 @@
+//source de là où j'ai trouvé la barre pour les semaines
 //https://www.developpez.net/forums/d1503732/java/interfaces-graphiques-java/debuter/faire-planning-jtable/
 
 /*
@@ -23,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import Controllers.Controller;
+import Salles.Salle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -34,6 +36,7 @@ import javax.swing.JPanel;
 public class EdtGrillePanel extends Panel 
 {
 	private static final long serialVersionUID = -4510731458552817257L;
+        JComboBox<Object> cb = null;
     
     private final String[] columns = { "", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 
@@ -77,8 +80,9 @@ public class EdtGrillePanel extends Panel
 			label.setEnabled(true);
 			label.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-                                    System.out.println(".mouseClicked()"+ label.getText());
-                                    //String semaineselec = label.getText();
+                        System.out.println(".mouseClicked()"+ label.getText());
+                        String semaineselec ;
+                        semaineselec = label.getText();
 				}
                                 
 			});
@@ -87,13 +91,12 @@ public class EdtGrillePanel extends Panel
                 
 
 		JScrollPane slider = new JScrollPane(pan,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                c.fill = GridBagConstraints.BOTH;
-                
-                c.gridy = 0;
-                c.weighty = 0.05;
-                c.gridwidth = 2;
-                this.add(slider,c);
-                
+		
+        c.fill = GridBagConstraints.BOTH;
+        c.gridy = 0;
+        c.weighty = 0.05;
+        c.gridwidth = 2;
+        this.add(slider,c);
         
     
         c.fill = GridBagConstraints.BOTH;
@@ -128,8 +131,9 @@ public class EdtGrillePanel extends Panel
         
         
         
-        String[] objListe = {"Nom","Classe", "Salle", "Promo"};
+        String [] objListe = new String [] {"Nom","Classe", "Salle", "Promo"};
         JComboBox<String> liste = new JComboBox<String>(objListe);
+        
         c.gridy = 1;
         c.gridx = 0;
         c.gridwidth = 1;
@@ -137,37 +141,120 @@ public class EdtGrillePanel extends Panel
         c.ipady = 20;
         c.weightx = 0.5;
         c.weighty= 0.1;
-           liste.addActionListener(new ActionListener() {     
-         @Override
-         public void actionPerformed(ActionEvent e) {
-        System.out.println("Valeur: " + liste.getSelectedItem().toString());      
-     }
-   });
-            this.add(liste,c);
-
-                      
-            /*Object [] objListe2 = new Object [] {"P325","P318", "P333", "P329"};
-            JComboBox<String> cb = new JComboBox(objListe2);
-            cb.setEditable(true);*/
-        JComboBox<Object> cb;
-        cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray());
-        cb.setEditable(true);
-        //Label test =null; 
         
+        this.add(liste,c);
+ 
+        
+        nomsAdd(c);
+        
+    	liste.addActionListener(new ActionListener() {     
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{ 
+				System.out.println("Valeur: " + liste.getSelectedItem().toString());
+				removeAll();
+				switch (liste.getSelectedItem().toString()) 
+				{
+					case "Salle": sallesAdd(c); break;
+					
+					case "Nom": nomsAdd(c); break;
+					
+					case "Classe": classesAdd(c); break;
+					
+					case "Promo": promosAdd(c); break;
+							
+					default: break;
+				}
+				repaintAll();
+			}
+    	});
+    }
     
+    public void repaintAll()
+    {
+      this.revalidate();
+    }
+    
+    public void removeAll()
+    {
+        this.remove(cb);
+    }
+    
+    public void edtsalles(Salle s)
+    {
+        
+    }
+    
+    public void sallesAdd(GridBagConstraints c)
+    {
+        cb = null;
         c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 1;
         c.weightx = 0.5;
-        c.weighty= 0.1;
-
+        c.weighty= 0.1; 
+        cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray()); 
+        cb.setEditable(true);
         this.add(cb,c);
         
-          
+       // edtsalles(s);
+         
+
+    }
+    
+    public void nomsAdd(GridBagConstraints c)
+    {
+        cb = null;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1; 
+        cb = new JComboBox<Object>(((user.ListeUtilisateurs().getEnseignants().toArray()))); 
+        cb.setEditable(true);
+        this.add(cb,c);
+        
+        
+          cb.addActionListener(new ActionListener() {     
+         @Override
+         public void actionPerformed(ActionEvent ae) 
+         {       
+            System.out.println("SALLE SELEC ==" + cb.getSelectedItem());
+         }
+            });
+
+    }
+    
+    public void classesAdd(GridBagConstraints c)
+    {
+        
+        cb = null;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1; 
+        cb = new JComboBox<Object>(((user.ListeGroupes().getAll().toArray()))); 
+        cb.setEditable(true);
+        this.add(cb,c);
+    }
+        
+    public void promosAdd(GridBagConstraints c)
+    {
+        cb = null;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.weightx = 0.5;
+        c.weighty= 0.1; 
+        cb = new JComboBox<Object>(((user.ListePromotion().getAll().toArray()))); 
+        cb.setEditable(true);
+        this.add(cb,c);
     }
         
         
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation"})
+    
 	public void display_courses(JTable table)
     {
         String pattern = "dd-MM-yyyy";
@@ -215,14 +302,32 @@ public class EdtGrillePanel extends Panel
             }
             System.out.println("caseee :" +caseHeure);
 
-            info = s.getCours().toString() + "\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
+            getNomEns(s.getEnseignants().toString());
+            String NomEns = getNomEns(s.getEnseignants().toString());;
+            
+            info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
             table.getModel().setValueAt(info, caseHeure, nb-1);
         }
     }
+        
+    public String getNomEns(String enseignant)
+    {
+        final String espace =" ";
+        String mots[]=enseignant.split(espace);
+        String NomEns = null;
+        
+           // System.out.println(mots[i]);
+            System.out.println("mot0 ===="+mots[0]);
+            String zut = null;
+            zut = "[Enseignant";
+            if(mots[0].equals(zut))
+            {
+                NomEns = mots[1]+ " " +mots[2];
+                System.out.println("ici ==== "+NomEns);
+            }
+            else
+                NomEns = mots[2]+ " " +mots[3];
+            
+            return  NomEns;
+    }
 }
-    
-   
-    
- 
-    
-
