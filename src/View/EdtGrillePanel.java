@@ -25,13 +25,10 @@ import javax.swing.JTable;
 
 import Controllers.Controller;
 import Salles.Salle;
-import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,7 +36,7 @@ import javax.swing.JPanel;
 public class EdtGrillePanel extends Panel 
 {
 	private static final long serialVersionUID = -4510731458552817257L;
-        JComboBox cb = null;
+        JComboBox<Object> cb = null;
     
     private final String[] columns = { "", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 
@@ -83,9 +80,9 @@ public class EdtGrillePanel extends Panel
 			label.setEnabled(true);
 			label.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-                                    System.out.println(".mouseClicked()"+ label.getText());
-                                    String semaineselec ;
-                                    semaineselec = label.getText();
+                        System.out.println(".mouseClicked()"+ label.getText());
+                        String semaineselec ;
+                        semaineselec = label.getText();
 				}
                                 
 			});
@@ -94,13 +91,12 @@ public class EdtGrillePanel extends Panel
                 
 
 		JScrollPane slider = new JScrollPane(pan,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                c.fill = GridBagConstraints.BOTH;
-                
-                c.gridy = 0;
-                c.weighty = 0.05;
-                c.gridwidth = 2;
-                this.add(slider,c);
-                
+		
+        c.fill = GridBagConstraints.BOTH;
+        c.gridy = 0;
+        c.weighty = 0.05;
+        c.gridwidth = 2;
+        this.add(slider,c);
         
     
         c.fill = GridBagConstraints.BOTH;
@@ -135,8 +131,8 @@ public class EdtGrillePanel extends Panel
         
         
         
-        Object [] objListe = new Object [] {"Nom","Classe", "Salle", "Promo"};
-        JComboBox<String> liste = new JComboBox(objListe);
+        String [] objListe = new String [] {"Nom","Classe", "Salle", "Promo"};
+        JComboBox<String> liste = new JComboBox<String>(objListe);
         
         c.gridy = 1;
         c.gridx = 0;
@@ -151,41 +147,27 @@ public class EdtGrillePanel extends Panel
         
         nomsAdd(c);
         
-           liste.addActionListener(new ActionListener() {     
-         @Override
-         public void actionPerformed(ActionEvent e) 
-         { 
-
-            System.out.println("Valeur: " + liste.getSelectedItem().toString());      
-            if((liste.getSelectedItem().toString()) == "Salle")
-                {
-                    removeAll();
-                    sallesAdd(c);
-                    repaintAll();
-                }
-            if((liste.getSelectedItem().toString()) == "Nom")
-                { 
-                    removeAll();
-                    nomsAdd(c);
-                    repaintAll();
-                }
-            if((liste.getSelectedItem().toString()) == "Classe")
-                { 
-                    removeAll();
-                    classesAdd(c);
-                    repaintAll();
-                }
-            if((liste.getSelectedItem().toString()) == "Promo")
-                {
-                    removeAll();
-                    promosAdd(c);
-                    repaintAll();
-                }
-            
-         }
-   });
-            
-        Label test =null;
+    	liste.addActionListener(new ActionListener() {     
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{ 
+				System.out.println("Valeur: " + liste.getSelectedItem().toString());
+				removeAll();
+				switch (liste.getSelectedItem().toString()) 
+				{
+					case "Salle": sallesAdd(c); break;
+					
+					case "Nom": nomsAdd(c); break;
+					
+					case "Classe": classesAdd(c); break;
+					
+					case "Promo": promosAdd(c); break;
+							
+					default: break;
+				}
+				repaintAll();
+			}
+    	});
     }
     
     public void repaintAll()
@@ -211,7 +193,7 @@ public class EdtGrillePanel extends Panel
         c.gridwidth = 1;
         c.weightx = 0.5;
         c.weighty= 0.1; 
-        cb = new JComboBox(((user.ListeSalles()).getAll()).toArray()); 
+        cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray()); 
         cb.setEditable(true);
         this.add(cb,c);
         
@@ -228,7 +210,7 @@ public class EdtGrillePanel extends Panel
         c.gridwidth = 1;
         c.weightx = 0.5;
         c.weighty= 0.1; 
-        cb = new JComboBox(((user.ListeUtilisateurs().getEnseignants().toArray()))); 
+        cb = new JComboBox<Object>(((user.ListeUtilisateurs().getEnseignants().toArray()))); 
         cb.setEditable(true);
         this.add(cb,c);
         
@@ -252,7 +234,7 @@ public class EdtGrillePanel extends Panel
         c.gridwidth = 1;
         c.weightx = 0.5;
         c.weighty= 0.1; 
-        cb = new JComboBox(((user.ListeGroupes().getAll().toArray()))); 
+        cb = new JComboBox<Object>(((user.ListeGroupes().getAll().toArray()))); 
         cb.setEditable(true);
         this.add(cb,c);
     }
@@ -265,13 +247,13 @@ public class EdtGrillePanel extends Panel
         c.gridwidth = 1;
         c.weightx = 0.5;
         c.weighty= 0.1; 
-        cb = new JComboBox(((user.ListePromotion().getAll().toArray()))); 
+        cb = new JComboBox<Object>(((user.ListePromotion().getAll().toArray()))); 
         cb.setEditable(true);
         this.add(cb,c);
     }
         
         
-    @SuppressWarnings({"deprecation", "empty-statement"})
+    @SuppressWarnings({"deprecation"})
     
 	public void display_courses(JTable table)
     {
@@ -328,29 +310,24 @@ public class EdtGrillePanel extends Panel
         }
     }
         
-        public String getNomEns(String enseignant)
-        {
-            final String espace =" ";
-            String mots[]=enseignant.split(espace);
-            String NomEns = null;
+    public String getNomEns(String enseignant)
+    {
+        final String espace =" ";
+        String mots[]=enseignant.split(espace);
+        String NomEns = null;
+        
+           // System.out.println(mots[i]);
+            System.out.println("mot0 ===="+mots[0]);
+            String zut = null;
+            zut = "[Enseignant";
+            if(mots[0].equals(zut))
+            {
+                NomEns = mots[1]+ " " +mots[2];
+                System.out.println("ici ==== "+NomEns);
+            }
+            else
+                NomEns = mots[2]+ " " +mots[3];
             
-               // System.out.println(mots[i]);
-                System.out.println("mot0 ===="+mots[0]);
-                String zut = null;
-                zut = "[Enseignant";
-                if(mots[0].equals(zut))
-                {
-                    NomEns = mots[1]+ " " +mots[2];
-                    System.out.println("ici ==== "+NomEns);
-                }
-                else
-                    NomEns = mots[2]+ " " +mots[3];
-                
-                return  NomEns;
-        }
+            return  NomEns;
+    }
 }
-    
-    
- 
-    
-
