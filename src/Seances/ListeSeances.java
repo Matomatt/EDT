@@ -25,6 +25,7 @@ public interface ListeSeances {
 	public List<Seance> getByUtilisateurAtWeek(Utilisateur utilisateur, int week);
 	public Map<String, Double> getNombreHeureParCours(Utilisateur utilisateur);
 	public Map<String, Double> getNombreHeureEffectueeParCours(Utilisateur utilisateur);
+	public Map<List<String>, List<String>> getRecap(Utilisateur utilisateur, Date debut, Date fin);
 	public boolean addSeance(Seance seance);
 	public void update(Seance seance);
 	public void delete(Seance seance);
@@ -33,5 +34,6 @@ public interface ListeSeances {
 	public boolean groupeLibre(Groupe groupe, Time heureDebut, Time heureFin, Date date);
 	public boolean utilisateurLibre(Utilisateur utilisateur, Time heureDebut, Time heureFin, Date date);
 	public boolean seancePossible(Seance seance);
+	
 	
 }

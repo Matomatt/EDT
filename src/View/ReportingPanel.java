@@ -6,6 +6,8 @@
 package View;
 
 import java.awt.GridBagConstraints;
+
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import Controllers.Controller;
@@ -47,6 +49,8 @@ public class ReportingPanel extends Panel
 		
 		//tabbedPanes.add("Nombre d'heure total par cours dans l'année", new PieChartPanel("Nombre d'heure total par cours dans l'année", user.ListeSeances().getNombreHeureParCours(user.getUtilisateurConnecte())));
 
+		tabbedPanes.add("Récapitulatif des cours", new JScrollPane(new RecapPanel(user, controller)));
+				
 		String[] labels = {"Total", "Effectuées"};
 		tabbedPanes.add("Heures de cours dans l'année", new BarChartPanel("Heures de cours dans l'année", "", 
 				user.ListeSeances().getNombreHeureParCours(user.getUtilisateurConnecte()), user.ListeSeances().getNombreHeureEffectueeParCours(user.getUtilisateurConnecte()), labels));
@@ -63,7 +67,7 @@ public class ReportingPanel extends Panel
 			for (Donnee site : user.ListeSite().getAll())
 				tabbedPanesXYGraph.add(site.toString(), new XYAreaChartPanel("Moyenne d'occupation des salles pour " + site, "Dates", "Nombre d'heures", user.ListeSalles().getMoyenneOccupationPourSite(site)));
 			
-			tabbedPanes.add("Capacité des salles", tabbedPanesXYGraph);
+			tabbedPanes.add("Occupation des salles", tabbedPanesXYGraph);
 		}
 		
 		this.add(tabbedPanes, c);

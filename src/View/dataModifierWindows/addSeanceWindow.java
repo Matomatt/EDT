@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
+import com.toedter.calendar.JDateChooser;
+
 import Controllers.dataModifierWindowsControllers.dataModifierController;
 import Donnees.Donnee;
 import Groupes.Groupe;
@@ -34,7 +36,7 @@ public class addSeanceWindow extends JFrame
 	User user = null;
 	dataModifierController controller = null;
 	
-	private JFormattedTextField dateTextField = new JFormattedTextField(new SimpleDateFormat("yyyy-mm-dd"));
+	private JDateChooser dateChooser = new JDateChooser();
     private JFormattedTextField heureDebutTextField = new JFormattedTextField();
     private JFormattedTextField heureFinTextField = new JFormattedTextField();
     private JEditableComboBoxList groupesComboBoxList = null;
@@ -73,11 +75,13 @@ public class addSeanceWindow extends JFrame
 		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		String[] componentsNames = {"Date", "Heure de début", "Heure de fin", "Etat", "Cours", "Type du cours", "Groupes", "Enseignants", "Salles"};
+		String[] componentsNames = {"Date", "Heure de début (hh:mm)", "Heure de fin (hh:mm)", "Etat", "Cours", "Type du cours", "Groupes", "Enseignants", "Salles"};
 		for (String name : componentsNames) {
 			this.add(new JLabel(name), constraints);
 			constraints.gridy+=1;
 		}
+		
+		dateChooser.setDate(new java.util.Date());
 		
 		heureDebutTextField.setFormatterFactory(new DefaultFormatterFactory(new DateFormatter(new SimpleDateFormat("HH':'mm"))));
 		heureFinTextField.setFormatterFactory(new DefaultFormatterFactory(new DateFormatter(new SimpleDateFormat("HH':'mm"))));
@@ -92,7 +96,7 @@ public class addSeanceWindow extends JFrame
 		constraints.insets = new Insets(5, 0, 5, 0);
 		constraints.gridx = 1;
 		constraints.gridy = 0;
-		this.add(dateTextField, constraints);
+		this.add(dateChooser, constraints);
 		constraints.gridy = 1;
 		this.add(heureDebutTextField, constraints);
 		constraints.gridy = 2;
@@ -120,11 +124,11 @@ public class addSeanceWindow extends JFrame
 	public User getUser() { return user; }
 	
 	public int getSemaine() throws NumberFormatException, ParseException {
-		return Integer.parseInt( new SimpleDateFormat("w").format(new SimpleDateFormat("yyyy-MM-dd").parse(dateTextField.getText())) );
+		return Integer.parseInt( new SimpleDateFormat("w").format(dateChooser.getDate()));
 	}
 
 	public Date getDate() {
-		return Date.valueOf(dateTextField.getText());
+		return new Date(dateChooser.getDate().getTime());
 	}
 
 	public Time getHeureDebut() {
@@ -183,7 +187,7 @@ public class addSeanceWindow extends JFrame
 	}
 
 	public void fillFields(Seance seance) {
-		dateTextField.setText(seance.getDate().toString());
+		dateChooser.setDate(seance.getDate());
 	    heureDebutTextField.setText(seance.getDebut().toString());
 	    heureFinTextField.setText(seance.getFin().toString());
 	    coursComboBox.setSelectedItem(seance.getCours());

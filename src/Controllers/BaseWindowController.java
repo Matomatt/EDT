@@ -22,16 +22,26 @@ import View.ModifAdminPanel;
 import View.ReportingPanel;
 import View.SallesLibresPanel;
 
+
+/**
+ * Controlleur de la fenêtre principale. Gère le changement de page et le bouton Login
+ */
 public class BaseWindowController implements ActionListener {
 	
 	BaseWindow baseWindow = null;
 	JPanel mainWindowPanel = null;
-	
+	/**
+	 * Fonction contenu dans tous les controlleurs leur indiquant la vue qu'ils controllent
+	 * @param baseWindow
+	 */
 	public void setControlledView(BaseWindow baseWindow) {
 		this.baseWindow = baseWindow;
 		LaunchLoginPage();
 	}
 	
+	/**
+	 * Affiche la page de connexion
+	 */
 	private void LaunchLoginPage() 
 	{
 		LoginPanelController controller = new LoginPanelController(this);
@@ -39,6 +49,9 @@ public class BaseWindowController implements ActionListener {
 		SwitchPage(mainWindowPanel, false);
 	}
 	
+	/**
+	 * Recupère l'action effectuée par les composants de la vue et agit en fonction
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -49,7 +62,7 @@ public class BaseWindowController implements ActionListener {
 			if (!baseWindow.getPages().containsKey(((Button)e.getSource()).getText()))
 	    	{
 				Button bt = (Button) e.getSource();
-    			System.out.println(bt.getName());
+    			//System.out.println(bt.getName());
     			Controller controller = null;
     			switch (bt.getName()) 
     			{
@@ -88,6 +101,11 @@ public class BaseWindowController implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Change de page (remplace la page actuelle par la nouvelle indiquée)
+	 * @param newPage
+	 * @param remove
+	 */
 	public void SwitchPage(JPanel newPage, boolean remove)
 	{
 		if (remove)
@@ -112,6 +130,14 @@ public class BaseWindowController implements ActionListener {
 		baseWindow.repaint();
 	}
 	
+	/**
+	 * Initialise le User qui va être utilisé par tout le programme
+	 * @see User
+	 * @see ConnectionViaUser
+	 * @param login
+	 * @param password
+	 * @return si connecté avec succès
+	 */
 	public boolean Connect(String login, String password) 
 	{
 		User user = null;

@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ import Salles.Salle;
 import Utilisateurs.ListeUtilisateurs;
 import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
+import Utilisateurs.User.UserType;
 
 public class ListeSeancesImpl implements ListeSeances {
 	
@@ -42,8 +45,6 @@ public class ListeSeancesImpl implements ListeSeances {
 	
 	private List<Seance> ExecuteQuery(String query)
 	{
-		long milli = new java.util.Date().getTime();
-		
 		List<Seance> list = new ArrayList<Seance>();
 		
 		ResultSet result;
@@ -89,8 +90,6 @@ public class ListeSeancesImpl implements ListeSeances {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println((new java.util.Date().getTime()-milli) + "ms pour charger les salles libres");
 		
 		return list;
 	}
@@ -169,38 +168,28 @@ public class ListeSeancesImpl implements ListeSeances {
 	private Map<String, Double> getNombreHeure(Utilisateur utilisateur, String whereQuery)
 	{
 		Map<String, Double> map = new LinkedHashMap<String, Double>();
-		String query = "Select cours.Nom as nomCours, TIMESTAMPDIFF(minute, CAST(Heure_Debut as Datetime), CAST(Heure_Fin as Datetime)) as duree From seance,cours Where ";
+		String query = "Select cours.Nom as nomCours, SUM(TIMESTAMPDIFF(minute, CAST(Heure_Debut as Datetime), CAST(Heure_Fin as Datetime)))/60 as duree From seance,cours Where ";
 		
 		if (utilisateur.getType() == User.UserType.Etudiant)
 			query += "seance.ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur = "+utilisateur.getID()+") ) AND ";
 		else if (utilisateur.getType() == User.UserType.Enseignant)
 			query += "seance.ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant = "+utilisateur.getID()+") AND ";
 		
-		query += "cours.ID = seance.ID_Cours" + whereQuery + " ORDER BY cours.Nom ASC";
+		query += "cours.ID = seance.ID_Cours" + whereQuery + " GROUP BY cours.Nom ORDER BY cours.Nom";
 		
-		ResultSet result;
-		try {
-			result = connection.createStatement().executeQuery(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return map;
-		}
 		
 		try {
+			ResultSet result = connection.createStatement().executeQuery(query);
+			
 			while(result.next())
-			{
-				String nomCours = result.getString("nomCours");
-				if (map.containsKey(nomCours))
-					map.put(nomCours, ((Double) map.get(nomCours)).doubleValue() + result.getDouble("duree")/60.0);
-				else
-					map.put(nomCours, result.getDouble("duree")/60.0);
-			}
+				map.put(result.getString("nomCours"), result.getDouble("duree"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		return map;
 	}
+	
 	@Override
 	public Map<String, Double> getNombreHeureParCours(Utilisateur utilisateur) 
 	{
@@ -210,6 +199,66 @@ public class ListeSeancesImpl implements ListeSeances {
 	@Override
 	public Map<String, Double> getNombreHeureEffectueeParCours(Utilisateur utilisateur) {
 		return getNombreHeure(utilisateur, " AND seance.Date < '"+new Date(new java.util.Date().getTime())+"'");
+	}
+	
+	@Override
+	public Map<List<String>, List<String>> getRecap(Utilisateur utilisateur, Date debut, Date fin) 
+	{
+		Map<List<String>, List<String>> map = new LinkedHashMap<List<String>, List<String>>();
+		
+		String query = "Select cours.Nom as nomCours, cours.ID as ID_Cours, SUM(TIMESTAMPDIFF(minute, CAST(Heure_Debut as Datetime), CAST(Heure_Fin as Datetime)))/60 as duree, COUNT(seance.ID) as nb";
+		
+		if (utilisateur.getType() == User.UserType.Etudiant)
+			query += " From seance,cours Where seance.ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur = "+utilisateur.getID()+") ) AND "
+					+ "cours.ID = seance.ID_Cours" + " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' GROUP BY cours.Nom ORDER BY cours.Nom";
+		else if (utilisateur.getType() == User.UserType.Enseignant)
+			query += ",groupe.Nom as nomGroupe, promotion.Nom as nomPromo, groupe.ID as ID_Groupe, promotion.ID as ID_Promo "
+					+ "From seance, cours, seance_groupes, groupe, promotion "
+					+ "Where seance.ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant = "+utilisateur.getID()+") AND "
+					+ "cours.ID = seance.ID_Cours AND seance_groupes.ID_Seance=seance.ID AND seance_groupes.ID_Groupe=groupe.ID AND groupe.ID_Promotion=promotion.ID" 
+					+ " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' GROUP BY cours.Nom, groupe.ID ORDER BY cours.Nom, promotion.Nom, groupe.Nom";
+		else
+			query += ",groupe.Nom as nomGroupe, promotion.Nom as nomPromo, groupe.ID as ID_Groupe, promotion.ID as ID_Promo "
+					+ "From seance, cours, seance_groupes, groupe, promotion Where cours.ID = seance.ID_Cours "
+					+ "AND seance_groupes.ID_Seance=seance.ID AND seance_groupes.ID_Groupe=groupe.ID AND groupe.ID_Promotion=promotion.ID" 
+					+ " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' GROUP BY cours.Nom, groupe.ID ORDER BY cours.Nom, promotion.Nom, groupe.Nom";
+		
+		try {
+			ResultSet result = connection.createStatement().executeQuery(query);
+			
+			while(result.next())
+			{
+				List<String> detailsList = new LinkedList<String>();
+				
+				String queryDetails = "Select Date, Heure_Debut, Heure_Fin, TIMESTAMPDIFF(minute, CAST(Heure_Debut as Datetime), CAST(Heure_Fin as Datetime))/60 as duree FROM seance";
+				
+				if (utilisateur.getType() == User.UserType.Etudiant)
+					queryDetails += " Where seance.ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur = "+utilisateur.getID()+") ) AND "
+								+ "ID_Cours="+result.getLong("ID_Cours") + " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' ORDER BY Date ASC, Heure_Debut ASC";
+				else if (utilisateur.getType() == User.UserType.Enseignant)
+					queryDetails += ",seance_groupes, groupe, promotion Where seance.ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant = "+utilisateur.getID()+") AND "
+								+ "seance_groupes.ID_Seance=seance.ID AND seance_groupes.ID_Groupe=groupe.ID and groupe.ID_Promotion=promotion.ID AND "
+								+ "ID_Cours=" + result.getLong("ID_Cours") + " AND groupe.ID=" + result.getLong("ID_Groupe") + " AND promotion.ID=" + result.getLong("ID_Promo")
+								+ " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' ORDER BY Date ASC, Heure_Debut ASC";
+				else
+					queryDetails += ",seance_groupes, groupe, promotion Where seance_groupes.ID_Seance=seance.ID AND seance_groupes.ID_Groupe=groupe.ID and groupe.ID_Promotion=promotion.ID AND "
+								+ "ID_Cours=" + result.getLong("ID_Cours") + " AND groupe.ID=" + result.getLong("ID_Groupe") + " AND promotion.ID=" + result.getLong("ID_Promo")
+								+ " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' ORDER BY Date ASC, Heure_Debut ASC";
+				
+				ResultSet resultDetails = connection.createStatement().executeQuery(queryDetails);
+				
+				while(resultDetails.next())
+					detailsList.add(resultDetails.getString("Date") + " De " +  resultDetails.getString("Heure_Debut") + " à " +  resultDetails.getString("Heure_Fin") + " ("+resultDetails.getDouble("duree")+"h)");
+				
+				if (detailsList.size()>0)
+					map.put(new LinkedList<String>(Arrays.asList(new String[] {result.getString("nomCours") + (utilisateur.getType()==UserType.Etudiant?"":" "+result.getString("nomGroupe")+" "+result.getString("nomPromo")), 
+							detailsList.get(0) , detailsList.get(detailsList.size()-1), Double.toString(result.getDouble("duree")), result.getString("nb")})), detailsList);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return map;
 	}
 	
 	@Override

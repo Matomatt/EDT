@@ -5,12 +5,12 @@ import java.awt.event.ActionListener;
 
 import View.Panel;
 
+/**
+ * 
+ */
 public class Controller implements ActionListener 
 {
 	protected Panel panel = null;
-	
-	public Controller() {
-	}
 	
 	public void setControlledView(Panel panel) {
 		this.panel = panel;
