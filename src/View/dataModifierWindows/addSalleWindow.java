@@ -14,8 +14,20 @@ import Salles.Salle;
 import UI_Elements.Button;
 import Utilisateurs.User;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JFrame et qui ajoute une salle à la fenêtre
+ */
 public class addSalleWindow extends JFrame
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        * user : utilisateur
+        * controller : contrôleur des actions sur la fenêtre
+        * nomTextField : de type JTextField
+        * capaciteSpinner : type JSpinner
+        * siteComboBox : type JComboBox de type Object
+        */
 	private static final long serialVersionUID = -6636132992670415922L;
 	
 	User user = null;
@@ -25,6 +37,11 @@ public class addSalleWindow extends JFrame
 	private JSpinner capaciteSpinner = new JSpinner();
 	private JComboBox<Object> siteComboBox = null;
 
+        /**
+         * Constructeur
+         * @param user
+         * @param controller 
+         */
 	public addSalleWindow(User user, dataModifierController controller) {
 		this.user = user;
 		this.controller = controller;
@@ -43,6 +60,9 @@ public class addSalleWindow extends JFrame
 		this.validate();
 	}
 	
+        /**
+        * Méthode qui initialise le contenu de la fenêtre d'ajout d'une salle     
+        */
 	private void initComponents()
 	{
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -76,18 +96,34 @@ public class addSalleWindow extends JFrame
 		this.add(new Button("btAdd", "Add", controller), constraints);
 	}
 	
+        /**
+         * Méthode qui récupère le numéro de la salle
+         * @return nomTextField.getText()
+         */
 	public String getNom() {
 		return nomTextField.getText();
 	}
 	
+        /**
+         * Méthode qui récupère la capacité de la salle
+         * @return Integer.parseInt(capaciteSpinner.getValue().toString())
+         */
 	public int getCapacite() {
 		return Integer.parseInt(capaciteSpinner.getValue().toString());
 	}
 	
+        /**
+         * Méthode qui récupère le site où se trouve la salle
+         * @return siteComboBox.getSelectedItem()
+         */
 	public Donnee getSite() {
 		return (Donnee) siteComboBox.getSelectedItem();
 	}
 
+        /**
+         * Méthode qui complète les zones de texte qui correspondents aux informations sur les salles
+         * @param salle 
+         */
 	public void fillFields(Salle salle) {
 		nomTextField.setText(salle.getNom());
 		capaciteSpinner.setValue(salle.getCapacite());
