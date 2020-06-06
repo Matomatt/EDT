@@ -18,25 +18,34 @@ import View.DiagramPanels.BarChartPanel;
 import View.DiagramPanels.PieChartPanel;
 import View.DiagramPanels.XYAreaChartPanel;
 
-
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de Panel et qui créer la fenêtre de reporting : les stats de l'utilisateur sous forme de graphe
+ */
 public class ReportingPanel extends Panel
 {
+    /**
+    * serialVersionUID : clé de hachage de la classe
+    * tabbedPane : création d'une JTabbedPane
+    */
 	private static final long serialVersionUID = -3479156065256517426L;
 	
 	JTabbedPane tabbedPanes = new JTabbedPane();
 
-	/**
-	 * Créer la fenêtre de reporting : les stats de l'utilisateur sous forme de graph
-	 * 
-	 * @param user
-	 * @param controller
-	 */
+    /**
+    * Constructeur
+    * @param user
+    * @param controller
+    */
     public ReportingPanel(User user, Controller controller) {
     	super(user, controller);
     	
         initComponents();
     }
     
+    /**
+    * Méthode qui initialise le contenu de la fenêtre reporting     
+    */
     private void initComponents() 
     {
     	GridBagConstraints c = new GridBagConstraints();
