@@ -29,8 +29,26 @@ import UI_Elements.JEditableComboBoxList;
 import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JFrame et qui ajoute une séance à la fenêtre
+ */
 public class addSeanceWindow extends JFrame
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        * user : utilisateur
+        * controller : contrôleur des actions sur la fenêtre
+        * heureDebutTextField : de type JFormattedTextField
+        * heureFinTextField : de type JFormattedTextField
+        * groupesComboBoxList : de type JEditableComboBoxList
+        * enseignantsComboBoxList : de type JEditableComboBoxList
+        * sallesComboBoxList : de type JEditableComboBoxList
+        * etats = {"En cours de validation", "Validée", "Annulée"} : tableau de String
+        * etatComboBox : de type JComboBox de type String
+        * coursComboBox : de type JComboBox de type Object
+        * typeDeCoursComboBox : de type JComboBox de type Object
+        */
 	private static final long serialVersionUID = 4318587476356190117L;
 	
 	User user = null;
@@ -47,6 +65,11 @@ public class addSeanceWindow extends JFrame
     private JComboBox<Object> coursComboBox = null;
     private JComboBox<Object> typeDeCoursComboBox = null;
     
+        /**
+         * Constructeur
+         * @param user
+         * @param controller 
+         */
 	public addSeanceWindow(User user, dataModifierController controller) 
 	{
 		this.user = user;
@@ -66,6 +89,9 @@ public class addSeanceWindow extends JFrame
 		this.validate();
 	}
 	
+        /**
+        * Méthode qui initialise le contenu de la fenêtre d'ajout d'une séance    
+        */
 	private void initComponents()
 	{
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -121,44 +147,90 @@ public class addSeanceWindow extends JFrame
 		this.add(new Button("btAdd", "Add", controller), constraints);
 	}
 
+        /**
+         * Méthode qui récupère l'utilisateur connecté
+         * @return user
+         */
 	public User getUser() { return user; }
 	
+        /**
+         * Méthode qui récupère le numéro de la semaine
+         * @return Integer.parseInt( new SimpleDateFormat("w").format(dateChooser.getDate()))
+         * @throws NumberFormatException
+         * @throws ParseException 
+         */
 	public int getSemaine() throws NumberFormatException, ParseException {
 		return Integer.parseInt( new SimpleDateFormat("w").format(dateChooser.getDate()));
 	}
 
+        /**
+         * Méthode qui récupère la date
+         * @return new Date(dateChooser.getDate().getTime())
+         */
 	public Date getDate() {
 		return new Date(dateChooser.getDate().getTime());
 	}
 
+        /**
+         * Méthode qui récupère l'heure de début
+         * @return Time.valueOf(heureDebutTextField.getText()+(heureDebutTextField.getText().length()<6?":00":""))
+         */
 	public Time getHeureDebut() {
 		System.out.println(heureDebutTextField.getText());
 		return Time.valueOf(heureDebutTextField.getText()+(heureDebutTextField.getText().length()<6?":00":""));
 	}
 	
+        /**
+         * Méthode qui récupère l'heure de fin 
+         * @return Time.valueOf(heureFinTextField.getText()+(heureFinTextField.getText().length()<6?":00":""))
+         */
 	public Time getHeureFin() {
 		return Time.valueOf(heureFinTextField.getText()+(heureFinTextField.getText().length()<6?":00":""));
 	}
 
+        /**
+         * Méthode qui récupère l'état de la séance
+         * @return etatComboBox.getSelectedIndex()+1
+         */
 	public int getEtat() {
 		return etatComboBox.getSelectedIndex()+1;
 	}
 
+        /**
+         * Méthode qui récupère le cours
+         * @return coursComboBox.getSelectedItem()
+         */
 	public Donnee getCours() {
 		return (Donnee) coursComboBox.getSelectedItem();
 	}
+        
+        /**
+         * Méthode qui récupère le type de cours
+         * @return typeDeCoursComboBox.getSelectedItem()
+         */
 	public Donnee getTypeDeCours() {
 		return (Donnee) typeDeCoursComboBox.getSelectedItem();
 	}
 
+        /**
+         * Méthode qui récupère les groupes concernés
+         * @return groupesComboBoxList.getSelectedItems().stream().map(x -> (Groupe)x).collect(Collectors.toList())
+         */
 	public List<Groupe> getGroupes() {
 		return groupesComboBoxList.getSelectedItems().stream().map(x -> (Groupe)x).collect(Collectors.toList());
 	}
 	
+        /**
+         * Méthode qui récupère l'enseignant
+         * @return enseignantsComboBoxList.getSelectedItems().stream().map(x -> (Utilisateur)x).collect(Collectors.toList())
+         */
 	public List<Utilisateur> getEnseignants() {
 		return enseignantsComboBoxList.getSelectedItems().stream().map(x -> (Utilisateur)x).collect(Collectors.toList());
 	}
 	
+        /**
+         * Méthode qui change la liste des enseignats pour la séance
+         */
 	public void ChangeListEnseignant()
 	{
 		if (enseignantsComboBoxList != null)
@@ -182,10 +254,18 @@ public class addSeanceWindow extends JFrame
 		validate();
 	}
 	
+        /**
+         * Méthode qui récupère la salle 
+         * @return sallesComboBoxList.getSelectedItems().stream().map(x -> (Salle)x).collect(Collectors.toList())
+         */
 	public List<Salle> getSalles() {
 		return sallesComboBoxList.getSelectedItems().stream().map(x -> (Salle)x).collect(Collectors.toList());
 	}
 
+        /**
+         * Méthode qui complète les zones de texte correpondant aux informations sur la séance
+         * @param seance 
+         */
 	public void fillFields(Seance seance) {
 		dateChooser.setDate(seance.getDate());
 	    heureDebutTextField.setText(seance.getDebut().toString());
