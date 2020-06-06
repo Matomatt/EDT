@@ -11,10 +11,22 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JPanel et qui créer les diagrammes en cercle
+ */
 public class PieChartPanel extends JPanel 
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        */
 	private static final long serialVersionUID = -2314083011553281730L;
 
+        /**
+         * Constructeur
+         * @param title
+         * @param map 
+         */
 	public PieChartPanel(String title, Map<String, Double> map) 
 	{
 		DefaultPieDataset dataset = new DefaultPieDataset();

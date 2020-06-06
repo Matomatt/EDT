@@ -34,8 +34,21 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de Panel et qui créer la fenêtre de l'emploi du temps sous forme de grille 
+ */
 public class EdtGrillePanel extends Panel 
 {
+    /**
+    * serialVersionUID : clé de hachage de la classe
+    * scroll : scoll type JScrollPane
+    * cb : JComboBox de type objet qui récupère les différentes données internes au combo box
+    * table : table type JTable
+    * liste : JComboBox de type String
+    * columns : tableau de String avec les jours de la semaine
+    * data : tableau double de String avec les horaires de la journée
+    */
 	private static final long serialVersionUID = -4510731458552817257L;
 	
     JScrollPane scroll = null;
@@ -55,12 +68,20 @@ public class EdtGrillePanel extends Panel
     {"17:15 - 18:45", "", "", "", "", "", ""},
     {"19:00 - 20:30", "", "", "", "", "", ""}};
     
+    /**
+    * Constructeur     
+    * @param _user
+    * @param controller
+    */
 	public EdtGrillePanel(User _user, Controller controller) {
 		super(_user, controller);
 
         initComponents();
     }
 
+    /**
+    * Méthode qui initialise le contenu de la fenêtre de l'emploi du temps sous forme de liste     
+    */    
     private void initComponents()
     {
     	String[] options = new String[] {"Mon EDT", "Enseignant","Classe", "Salle", "Promo"};
@@ -150,11 +171,17 @@ public class EdtGrillePanel extends Panel
        
     }
     
+    /**
+    * Appel de la méthode revalidate     
+    */
     public void repaintAll()
     {
       this.revalidate();
     }
     
+    /**
+    * Appel de la méthode remove et resetTable    
+    */
     @Override
     public void removeAll()
     {
@@ -163,13 +190,19 @@ public class EdtGrillePanel extends Panel
         resetTable();
     }
     
+    /**
+    * Méthode qui met le tableau à vide, c'est-à-dire que les cours sont remplacés par des blancs 
+    */
     public void resetTable(){
        for(int i = 0; i<table.getRowCount(); i++)
                for(int j = 0; j<table.getColumnCount(); j++)
                    table.setValueAt("", i, j); 
     }
 
-    public void sallesAddToComboBox()
+    /**
+    * Méthode qui ajoute des salles dans la JComboBox
+    */
+	public void sallesAddToComboBox()
     {
         cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray());
         this.add(cb, get2ndCBconstraint());
@@ -177,6 +210,9 @@ public class EdtGrillePanel extends Panel
         cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getBySalleAtWeek((Salle)cb.getSelectedItem(), getSemaine())); }});
     }
     
+	/**
+    * Méthode qui ajoute des enseignants dans la JComboBox
+    */
     public void nomsAddToComboBox()
     {
         cb = new JComboBox<Object>(((user.ListeUtilisateurs().getEnseignants().toArray())));
@@ -185,6 +221,9 @@ public class EdtGrillePanel extends Panel
         cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByUtilisateurAtWeek((Utilisateur)cb.getSelectedItem(), getSemaine())); }});
     }
     
+    /**
+     * Méthode qui ajoute des groupes dans la JComboBox
+     */
     public void classesAddToComboBox()
     {
         cb = new JComboBox<Object>(((user.ListeGroupes().getAll().toArray())));
@@ -193,7 +232,10 @@ public class EdtGrillePanel extends Panel
         
         cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByGroupeAtWeek((Groupe)cb.getSelectedItem(), getSemaine())); }});
     }
-        
+    
+    /**
+     * Méthode qui ajoute des promos dans la JComboBox
+     */
     public void promosAddToComboBox()
     {
         cb = new JComboBox<Object>(((user.ListePromotion().getAll().toArray())));
@@ -215,6 +257,10 @@ public class EdtGrillePanel extends Panel
          return c;
     }
     
+    /**
+    * Méthode qui lis séances et les inscrit dans la JTable   
+    * @param seance_cours
+    */
 	public void display_courses(List<Seance> seance_cours)
     {
 		resetTable();
@@ -269,7 +315,12 @@ public class EdtGrillePanel extends Panel
             default: return -1;
         }
 	}
-        
+       
+	/**
+    * Méthode qui récupère les noms des enseignants     
+    * @param enseignants
+    * @return NomEns, le nom de l'enseignant
+    */
     public String getNomEns(List<Utilisateur> enseignants)
     {
         String NomEns = "";

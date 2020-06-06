@@ -18,13 +18,27 @@ import UI_Elements.Button;
 import UI_Elements.JSpoiler;
 import Utilisateurs.User;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de Panel et qui créér la fenêtre récapitulative des cours suivant les dates choisies
+ */
 public class RecapPanel extends Panel 
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        * firstDateChooser : création du type JDateChooser
+        * lastDateChooser : création du type JDateChooser
+        */
 	private static final long serialVersionUID = 827841717817668131L;
 	
 	JDateChooser firstDateChooser = new JDateChooser();
 	JDateChooser lastDateChooser = new JDateChooser();
-
+        
+        /**
+        * Constructeur     
+        * @param user
+        * @param controller
+        */
 	public RecapPanel(User user, Controller controller) {
 		super(user, controller);
 		
@@ -34,6 +48,9 @@ public class RecapPanel extends Panel
 		initComponents();
 	}
 
+        /**
+        * Méthode qui initialise le contenu de la fenêtre RecapPanel     
+        */
 	private void initComponents() 
 	{
 		Button refreshButton = new Button("btRefresh", "Refresh", controller);
@@ -85,6 +102,9 @@ public class RecapPanel extends Panel
 		}
 	}
 	
+        /**
+        * Méthode qui rafraichit la fenêtre avec les nouvelles données     
+        */
 	public void refreshTable()
 	{
 		removeAll();

@@ -19,9 +19,21 @@ import Utilitaires.path;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JFrame et qui créer la fenêtre principale 
+ */
 public class BaseWindow extends JFrame 
 {
+    /**
+    * serialVersionUID : clé de hachage de la classe
+    * mainWindow : fenêtre principale
+    * user : utilisateur
+    * controller : contrôleur des actions sur la fenêtre
+    * pages : création map
+    * button1, button2, button3, button4, button11 : boutons
+    * c : création d'un GridBagConstraints 
+    */
 	private static final long serialVersionUID = 3528066671950303397L;
 	
 	JPanel mainWindow;
@@ -33,6 +45,10 @@ public class BaseWindow extends JFrame
 
 	GridBagConstraints c = new GridBagConstraints();
 
+    /**
+    * Constructeur     
+    * @param controller
+    */
 	public BaseWindow(BaseWindowController controller)
 	{
 		this.setLayout(new GridBagLayout());
@@ -52,6 +68,9 @@ public class BaseWindow extends JFrame
 		this.pack();
 	}
 	
+        /**
+        * Méthode qui ajoute les boutons correspondants au menu     
+        */
 	public void addComponentsToPane() 
 	{
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -94,15 +113,26 @@ public class BaseWindow extends JFrame
 		this.validate();
 		this.repaint();
     }
-	
+	/**
+        * Méthode qui récupère toutes les pages
+        * @return pages
+        */
 	public Map<String, JPanel> getPages() {
 		return pages;
 	}
 
+        /**
+        * Méthode qui récupère l'utilisateur
+        * @return user
+        */
 	public User getUser() {
 		return user;
 	}
 	
+        /**
+        * Méthode qui modifie l'utilisateur connecté
+        * @param user, l'utilisateur connecté
+        */
 	public void setUser(User user) {
 		this.user = user;
 	}

@@ -33,18 +33,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
- * @author Léonie
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de Panel et qui créer la fenêtre de l'emploi du temps sous forme de liste 
  */
 public class EDT_ListePanel extends Panel
 {    
+	/**
+    * serialVersionUID : clé de hachage de la classe
+    * cb : combo box de type objet qui récupère les différentes données internes au combo box
+    */
 	private static final long serialVersionUID = 3736956335101565252L;
 	JComboBox<String> liste = null;
 	JComboBox<Object> cb = null;
 	JTable tableau = null;
-
 	JLabel semaine = new JLabel(new SimpleDateFormat("w").format(new java.util.Date()));
-
+	
+	/**
+	 * Constructeur     
+	 * @param _user
+	 * @param controller
+	 */
 	public EDT_ListePanel(User _user, Controller controller) 
 	{
 		super(_user, controller);		
@@ -52,6 +60,9 @@ public class EDT_ListePanel extends Panel
 		initComponents();//code de la page
 	}
 
+	/**
+    * Méthode qui initialise le contenu de la fenêtre de l'emploi du temps sous forme de liste     
+    */
 	private void initComponents() 
 	{
 		String[] options = new String[] {"Mon EDT", "Enseignant","Classe", "Salle", "Promo"};
@@ -147,6 +158,9 @@ public class EDT_ListePanel extends Panel
 				tableau.setValueAt("", i, j); 
 	}
 
+	/**
+    * Méthode qui ajoute des salles dans la JComboBox
+    */
 	public void sallesAddToComboBox()
 	{
 		cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray());
@@ -155,6 +169,9 @@ public class EDT_ListePanel extends Panel
 		cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getBySalleAtWeek((Salle)cb.getSelectedItem(), getSemaine())); }});
 	}
 
+	/**
+    * Méthode qui ajoute des enseignants dans la JComboBox
+    */
 	public void nomsAddToComboBox()
 	{
 		cb = new JComboBox<Object>(((user.ListeUtilisateurs().getEnseignants().toArray())));
@@ -163,6 +180,9 @@ public class EDT_ListePanel extends Panel
 		cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByUtilisateurAtWeek((Utilisateur)cb.getSelectedItem(), getSemaine())); }});
 	}
 
+	/**
+    * Méthode qui ajoute des groupes dans la JComboBox
+    */
 	public void classesAddToComboBox()
 	{
 		cb = new JComboBox<Object>(((user.ListeGroupes().getAll().toArray())));
@@ -172,6 +192,9 @@ public class EDT_ListePanel extends Panel
 		cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByGroupeAtWeek((Groupe)cb.getSelectedItem(), getSemaine())); }});
 	}
 
+	/**
+    * Méthode qui ajoute des promos dans la JComboBox
+    */
 	public void promosAddToComboBox()
 	{
 		cb = new JComboBox<Object>(((user.ListePromotion().getAll().toArray())));
@@ -244,6 +267,11 @@ public class EDT_ListePanel extends Panel
 		return table;
 	}
 
+	/**
+    * Méthode qui récupère les noms des enseignant     
+    * @param enseignants, la liste fournie par la séance
+    * @return NomEns, le nom de l'enseignant
+    */
 	public String getNomEns(List<Utilisateur> enseignants)
 	{
 		String NomEns = "";

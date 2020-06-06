@@ -13,10 +13,23 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JPanel et qui créer les histogrammes 
+ */
 public class BarChartPanel extends JPanel 
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        */
 	private static final long serialVersionUID = -6163532647075047922L;
 	
+        /**
+        * Constructeur 
+        * @param title
+        * @param yLabel
+        * @param map
+        */
 	public BarChartPanel(String title, String yLabel, Map<String, Double> map) 
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -28,6 +41,14 @@ public class BarChartPanel extends JPanel
         makePannel(title, yLabel, dataset);
 	}
 	
+        /**
+        * Constructeur 
+        * @param title
+        * @param yLabel
+        * @param map
+        * @param mapSecondValue
+        * @param labels
+        */
 	public BarChartPanel(String title, String yLabel, Map<String, Double> map, Map<String, Double> mapSecondValue, String[] labels) 
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -43,6 +64,12 @@ public class BarChartPanel extends JPanel
         makePannel(title, yLabel, dataset);
 	}
 	
+        /**
+         * Méthode qui créer la fenêtre où se trouvera l'histogramme
+         * @param title
+         * @param yLabel
+         * @param dataset 
+         */
 	private void makePannel(String title, String yLabel, DefaultCategoryDataset dataset)
 	{
 		JFreeChart chart = ChartFactory.createBarChart(

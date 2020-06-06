@@ -13,8 +13,19 @@ import Groupes.Groupe;
 import UI_Elements.Button;
 import Utilisateurs.User;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JFrame et qui ajoute un groupe à la fenêtre
+ */
 public class addGroupeWindow extends JFrame
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        * user : utilisateur
+        * controller : contrôleur des actions sur la fenêtre
+        * nomTextField : de type JTextField
+        * promotionComboBox : type JComboBox de type Object
+        */
 	private static final long serialVersionUID = -4570892602269961560L;
 	
 	User user = null;
@@ -23,6 +34,11 @@ public class addGroupeWindow extends JFrame
 	private JTextField nomTextField = new JTextField();
 	private JComboBox<Object> promotionComboBox = null;
 
+        /**
+         * Constructeur
+         * @param user
+         * @param controller 
+         */
 	public addGroupeWindow(User user, dataModifierController controller) {
 		this.user = user;
 		this.controller = controller;
@@ -41,6 +57,9 @@ public class addGroupeWindow extends JFrame
 		this.validate();
 	}
 	
+        /**
+        * Méthode qui initialise le contenu de la fenêtre d'ajout d'un groupe    
+        */
 	private void initComponents()
 	{
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -71,14 +90,26 @@ public class addGroupeWindow extends JFrame
 		this.add(new Button("btAdd", "Add", controller), constraints);
 	}
 	
+        /**
+         * Méthode qui récupère le nom renseigné
+         * @return nomTextField.getText()
+         */
 	public String getNom() {
 		return nomTextField.getText();
 	}
 	
+        /**
+         * Méthode qui récupère la promotion renseignée
+         * @return promotionComboBox.getSelectedItem()
+         */
 	public Donnee getPromotion() {
 		return (Donnee) promotionComboBox.getSelectedItem();
 	}
 
+        /**
+         * Méthode qui complète la zone de texte avec le nom du groupe
+         * @param groupe 
+         */
 	public void fillFields(Groupe groupe) {
 		nomTextField.setText(groupe.getName());
 		promotionComboBox.setSelectedItem(groupe.getPromotion());
