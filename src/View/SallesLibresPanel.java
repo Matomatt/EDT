@@ -21,15 +21,22 @@ import Controllers.Controller;
 import Salles.Salle;
 import Utilisateurs.User;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de Panel et qui créer la fenêtre avec toutes les salles de libre
+ */
 public class SallesLibresPanel extends Panel
 {
+    /**
+    * serialVersionUID : clé de hachage de la classe
+    */
 	private static final long serialVersionUID = -4030708239535614196L;
 	
-	/***
-	 * 
-	 * @param user
-	 * @param controller
-	 */
+    /**
+    * Constructeur 
+    * @param user
+    * @param controller
+    */
     public SallesLibresPanel(User user, Controller controller) 
     {
     	super(user, controller);
@@ -37,6 +44,9 @@ public class SallesLibresPanel extends Panel
         initComponents();
     }
 
+    /**
+    * Méthode qui initialise le contenu de la fenêtre des salles libres     
+    */
     private void initComponents() 
     {
     	
