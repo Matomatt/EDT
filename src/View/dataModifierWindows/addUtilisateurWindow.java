@@ -19,8 +19,23 @@ import Utilisateurs.User;
 import Utilisateurs.User.UserType;
 import Utilisateurs.Utilisateur;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JFrame et qui ajoute un utilisateur à la fenêtre
+ */
 public class addUtilisateurWindow extends JFrame
 {
+    /**
+        * serialVersionUID : clé de hachage de la classe
+        * user : utilisateur
+        * controller : contrôleur des actions sur la fenêtre
+        * userTypeComboBox : de type JComboBox de type UserType
+        * emailTextField : de type JTextField
+        * nomTextField : de type JTextField
+        * prenomTextField : de type JTextField
+        * groupeComboBox : de type JComboBox de type Object
+        * coursComboBoxList : de type JEditableComboBoxList
+        */
 	private static final long serialVersionUID = 4318587476356190117L;
 	
 	User user = null;
@@ -33,6 +48,11 @@ public class addUtilisateurWindow extends JFrame
     private JComboBox<Object> groupeComboBox;
     private JEditableComboBoxList coursComboBoxList;
     
+        /**
+         * Constructeur
+         * @param user
+         * @param controller 
+         */
 	public addUtilisateurWindow(User user, dataModifierController controller) 
 	{
 		this.user = user;
@@ -52,6 +72,9 @@ public class addUtilisateurWindow extends JFrame
 		this.validate();
 	}
 	
+        /**
+        * Méthode qui initialise le contenu de la fenêtre d'ajout d'une utilisateur    
+        */
 	private void initComponents()
 	{
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -98,35 +121,66 @@ public class addUtilisateurWindow extends JFrame
 		this.add(new Button("btAdd", "Add", controller), constraints);
 	}
 	
+        /**
+         * Méthode qui rend visible ou invisible une JComboBox
+         */
 	public void ToggleJComboBoxLists() {
 		groupeComboBox.setVisible((userTypeComboBox.getSelectedItem() == UserType.Etudiant));
 		coursComboBoxList.setVisible(!(userTypeComboBox.getSelectedItem() == UserType.Etudiant));
 	}	
 	
+        /**
+         * Méthode qui récupère l'email de l'utilisateur
+         * @return emailTextField.getText()
+         */
 	public String getEmail() {
 		return emailTextField.getText();
 	}
-
+        
+        /**
+         * Méthode qui récupère le nom de l'utilisateur
+         * @return nomTextField.getText()
+         */
 	public String getNom() {
 		return nomTextField.getText();
 	}
 
+        /**
+         * Méthode qui récupère le prénom de l'utilisateur
+         * @return prenomTextField.getText()
+         */
 	public String getPrenom() {
 		return prenomTextField.getText();
 	}
 
+        /**
+         * Méthode qui récupère le type de l'utilisateur
+         * @return userTypeComboBox.getSelectedItem()
+         */
 	public UserType getUserType() {
 		return (UserType) userTypeComboBox.getSelectedItem();
 	}
 	
+        /**
+         * Méthode qui récupère les cours
+         * @return coursComboBoxList.getSelectedItems().stream().map(x -> (Donnee)x).collect(Collectors.toList())
+         */
 	public List<Donnee> getCours() {
 		return coursComboBoxList.getSelectedItems().stream().map(x -> (Donnee)x).collect(Collectors.toList());
 	}
 
+        /**
+         * Méthode qui récupère le groupe
+         * @return groupeComboBox.getSelectedItem()
+         */
 	public Groupe getGroupe() {
 		return (Groupe) groupeComboBox.getSelectedItem();
 	}
 	
+        /**
+         * Méthode qui remplis les zones de texte avec les informations relatives à l'utilisateur
+         * @param utilisateur 
+         */
 	public void fillFields(Utilisateur utilisateur)
 	{
 		userTypeComboBox.setSelectedItem(utilisateur.getType());
