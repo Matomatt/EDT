@@ -18,12 +18,25 @@ import UI_Elements.JScrollListe;
 import Utilisateurs.User;
 import Utilisateurs.User.UserType;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de Panel et qui créer la fenêtre de modification de l'administrateur 
+ */
 public class ModifAdminPanel extends Panel
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        * tabbedPanes : création d'une JTabbedPane
+        */
 	private static final long serialVersionUID = 3376270138742171143L;
 	
 	JTabbedPane tabbedPanes = new JTabbedPane();
 	
+        /**
+        * Constructeur     
+        * @param user
+        * @param controller
+        */
 	public ModifAdminPanel(User user, Controller controller) 
 	{
 		super(user, controller);
@@ -31,6 +44,9 @@ public class ModifAdminPanel extends Panel
         initComponents();
 	}
 
+        /**
+        * Méthode qui initialise le contenu de la fenêtre de l'emploi du temps sous forme de liste     
+        */
 	private void initComponents() 
     {
 		tabbedPanes.setBackground(new java.awt.Color(255, 255, 255));
@@ -111,6 +127,10 @@ public class ModifAdminPanel extends Panel
         validate();
     }
 	
+        /**
+        * Méthode qui récupère la fanêtre tabbedPanes
+        * @return tabbedPanes
+        */
 	public JTabbedPane getTabbedPanes() { return tabbedPanes; }
 }
 
