@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,6 +41,7 @@ public class EdtGrillePanel extends Panel
         JScrollPane scroll = null;
         JComboBox<Object> cb = null;
         JTable table = null;
+        JComboBox<String> liste = null;
     
     private final String[] columns = { "", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 
@@ -107,7 +109,8 @@ public class EdtGrillePanel extends Panel
         c.weighty = 1.0;
         c.gridx = 0;
         c.gridy = 2;
-        
+                String [] objListe = new String [] {"Mon edt", "Nom","Classe", "Salle", "Promo"};
+        liste = new JComboBox<String>(objListe);
         table = new JTable(data,columns);
         
         int lines = 5;
@@ -121,15 +124,11 @@ public class EdtGrillePanel extends Panel
             table.getColumnModel().getColumn(i).setCellRenderer(render);
             table.getColumnModel().getColumn(0).setCellRenderer(cr);
         }
-        
-        
 
            // user.ListeSeances().getBySalleAtWeek(NOMSALLE, Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date())));
             //user.ListeSeances().getByGroupeAtWeek(groupe, Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date())));
             //user.ListeSeances().getByPromoAtWeek(promo, Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date())));
-            
-        
-        display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )));
+        display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()))));
         
         
         
@@ -145,8 +144,7 @@ public class EdtGrillePanel extends Panel
         
         
         
-        String [] objListe = new String [] {"Nom","Classe", "Salle", "Promo"};
-        JComboBox<String> liste = new JComboBox<String>(objListe);
+
         
         c.gridy = 1;
         c.gridx = 0;
@@ -159,7 +157,6 @@ public class EdtGrillePanel extends Panel
         this.add(liste,c);
  
         
-        nomsAddToComboBox(c);
         
        
         
@@ -171,12 +168,15 @@ public class EdtGrillePanel extends Panel
 				removeAll();
 				switch (liste.getSelectedItem().toString()) 
 				{
+                                        case "Mon edt": 
+                                            display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )));
+                                        break;
 					case "Salle": sallesAddToComboBox(c); 
                                             display_courses(user.ListeSeances().getBySalleAtWeek((Salle) cb.getSelectedItem(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()))));
                                         break;
 					
 					case "Nom": nomsAddToComboBox(c); 
-                                        
+                                            display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.ListeUtilisateurs().getByID(user.ListeUtilisateurs().getEnseignants().get(cb.getSelectedIndex()).getID()), 24));
                                         break;
 					
 					case "Classe": classesAddToComboBox(c); 
@@ -184,6 +184,9 @@ public class EdtGrillePanel extends Panel
                                         break;
 					
 					case "Promo": promosAddToComboBox(c); 
+                                            display_courses(user.ListeSeances().getByPromoAtWeek(user.ListePromotion().GetByID(user.ListePromotion().getAll().get(cb.getSelectedIndex()).getID()), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )));
+                                                    
+                                                    ;
                                             
                                         break;
 							
@@ -204,6 +207,7 @@ public class EdtGrillePanel extends Panel
         @Override
     public void removeAll()
     {
+        if(cb !=null)
         this.remove(cb);
         resetTable();
     }
@@ -218,36 +222,7 @@ public class EdtGrillePanel extends Panel
     {
         
     }
-    public void tableAdd(GridBagConstraints c)
-    {
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        c.gridx = 0;
-        c.gridy = 2;
-        int lines = 5;
-        table.setRowHeight(table.getRowHeight() * lines);
-        
-        TextAreaRenderer render =  new TextAreaRenderer();
-        ColorRenderer cr =new ColorRenderer();
-        // We use our cell renderer for the third column
-        for(int i = 0; i<7; i++)
-        {
-            table.getColumnModel().getColumn(i).setCellRenderer(render);
-            table.getColumnModel().getColumn(0).setCellRenderer(cr);
-        }
-        table.getTableHeader().setBackground(new java.awt.Color(255, 255, 255));
-        scroll = new JScrollPane(table);
-        
-        c.gridy = 2;
-        c.gridwidth = 3;
-        scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        scroll.setBackground(Color.white);
-        this.add(scroll,c);
-         
 
-    }
-    
     public void sallesAddToComboBox(GridBagConstraints c)
     {
         cb = null;
@@ -286,13 +261,14 @@ public class EdtGrillePanel extends Panel
         cb = new JComboBox<Object>(((user.ListeUtilisateurs().getEnseignants().toArray()))); 
         cb.setEditable(true);
         this.add(cb,c);
-        
+        System.out.println("gogogo");
         
           cb.addActionListener(new ActionListener() {     
          @Override
          public void actionPerformed(ActionEvent ae) 
          {       
-            System.out.println("nom SELEC ==" + cb.getSelectedItem());
+            resetTable();
+            display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.ListeUtilisateurs().getByID(user.ListeUtilisateurs().getEnseignants().get(cb.getSelectedIndex()).getID()), 24));
             
          }
             });
@@ -339,6 +315,7 @@ public class EdtGrillePanel extends Panel
          public void actionPerformed(ActionEvent ae) 
          {       
             System.out.println("promos SELEC ==" + cb.getSelectedItem());
+            display_courses(user.ListeSeances().getByPromoAtWeek(user.ListePromotion().GetByID(user.ListePromotion().getAll().get(cb.getSelectedIndex()).getID()), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )));
             
          }
             });
@@ -380,8 +357,20 @@ public class EdtGrillePanel extends Panel
 
             getNomEns(s.getEnseignants().toString());
             String NomEns = getNomEns(s.getEnseignants().toString());;
+            switch(liste.getSelectedItem().toString())
+            {
+                case "Salle" :
+                case "Nom" : 
+                case "Classe" :
+                case "Promo" :
+                    info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() +"\n" + s.getGroupes()+  "\n" +s.getType().toString() ;
+                break; 
+                
+                default:
+                    info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
+                    break;
+            }
             
-            info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
             table.getModel().setValueAt(info, caseHeure, nb-1);
         }
     }
