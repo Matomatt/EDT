@@ -29,6 +29,9 @@ import View.dataModifierWindows.addSalleWindow;
 import View.dataModifierWindows.addSeanceWindow;
 import View.dataModifierWindows.addUtilisateurWindow;
 
+/**
+ * Controlleur de la page modification des admins et referants
+ */
 public class ModifAdminPanelController extends Controller
 {
 	@Override

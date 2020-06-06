@@ -20,6 +20,7 @@ import Donnees.Donnee;
 import Donnees.ListeDonnees;
 import Seances.Seance;
 import Utilitaires.TimeComparison;
+import Utilitaires.calc;
 
 public class ListeSallesImpl implements ListeSalles
 {
@@ -92,7 +93,6 @@ public class ListeSallesImpl implements ListeSalles
 				
 				Time heureDebut = new Time(0);
 				Time heureFin = new Time(0);
-				float h;
 				
 				List<SalleBeingUsed> salles = new ArrayList<SalleBeingUsed>();
 				
@@ -107,14 +107,12 @@ public class ListeSallesImpl implements ListeSalles
 				for (int j = 0; j < nbCreneauxEnUneJournee; j++)
 				{
 					//Heure début
-					h = j*1.75f+8.5f;
-					try { heureDebut = new Time(new SimpleDateFormat("HH:mm").parse((int)h+":"+(int)((h-(int)h)*60)).getTime()); } catch (ParseException e) { e.printStackTrace(); }
+					try { heureDebut = new Time(new SimpleDateFormat("HH:mm").parse(calc.heureParse(j*1.75f+8.5f)).getTime()); } catch (ParseException e) { e.printStackTrace(); }
 					
 					//Heure fin
-					h += 1.5f;
-					try { heureFin = new Time(new SimpleDateFormat("HH:mm").parse((int)h+":"+(int)((h-(int)h)*60)).getTime()); } catch (ParseException e) { e.printStackTrace(); }
+					try { heureFin = new Time(new SimpleDateFormat("HH:mm").parse(calc.heureParse(j*1.75f+10f)).getTime()); } catch (ParseException e) { e.printStackTrace(); }
 
-					if (h > 14 && day == 7) break;
+					if (j*1.75f+10f > 14 && day == 7) break;
 					
 					if (TimeComparison.Compare(heureFin, nowTime) || day != startingDay)
 					{

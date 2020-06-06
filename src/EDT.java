@@ -5,11 +5,18 @@ import Salles.Salle;
 import Seances.Seance;
 import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
+import Utilitaires.ImageManager;
+import Utilitaires.path;
 import View.BaseWindow;
+
+import java.io.IOException;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  * Classe permettant de lancer le programme
@@ -23,6 +30,10 @@ public class EDT {
 	 */
 	public static void main(String args[])
 	{
+		try { ImageManager.LoadImage(path.getImagePath("login.png")); } catch (IOException e) 
+		
+		{ JOptionPane.showMessageDialog(new JFrame(), "Assurez d'avoir le dossier contenant les images dans le meme repertoire que le .jar"); }
+		
 		BaseWindowController controller = new BaseWindowController();
         new BaseWindow(controller);
 	}

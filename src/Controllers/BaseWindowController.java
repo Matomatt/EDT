@@ -24,12 +24,13 @@ import View.SallesLibresPanel;
 
 
 /**
- * Controlleur de la fenêtre principale. Gère le changement de page et le bouton Login
+ * Controlleur de la fenêtre principale. Gère le changement de page et la connection
  */
 public class BaseWindowController implements ActionListener {
 	
 	BaseWindow baseWindow = null;
 	JPanel mainWindowPanel = null;
+	
 	/**
 	 * Fonction contenu dans tous les controlleurs leur indiquant la vue qu'ils controllent
 	 * @param baseWindow

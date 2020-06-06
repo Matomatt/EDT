@@ -220,18 +220,18 @@ public class ListeSeancesImpl implements ListeSeances {
 		
 		if (utilisateur.getType() == User.UserType.Etudiant)
 			query += " From seance,cours Where seance.ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur = "+utilisateur.getID()+") ) AND "
-					+ "cours.ID = seance.ID_Cours" + " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' GROUP BY cours.Nom ORDER BY cours.Nom";
+					+ "cours.ID = seance.ID_Cours" + " AND Date>='"+ debut + "'" + "AND Date<='"+ fin + "' GROUP BY cours.Nom ORDER BY cours.Nom";
 		else if (utilisateur.getType() == User.UserType.Enseignant)
 			query += ",groupe.Nom as nomGroupe, promotion.Nom as nomPromo, groupe.ID as ID_Groupe, promotion.ID as ID_Promo "
 					+ "From seance, cours, seance_groupes, groupe, promotion "
 					+ "Where seance.ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant = "+utilisateur.getID()+") AND "
 					+ "cours.ID = seance.ID_Cours AND seance_groupes.ID_Seance=seance.ID AND seance_groupes.ID_Groupe=groupe.ID AND groupe.ID_Promotion=promotion.ID" 
-					+ " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' GROUP BY cours.Nom, groupe.ID ORDER BY cours.Nom, promotion.Nom, groupe.Nom";
+					+ " AND Date>='"+ debut + "'" + "AND Date<='"+ fin + "' GROUP BY cours.Nom, groupe.ID ORDER BY cours.Nom, promotion.Nom, groupe.Nom";
 		else
 			query += ",groupe.Nom as nomGroupe, promotion.Nom as nomPromo, groupe.ID as ID_Groupe, promotion.ID as ID_Promo "
 					+ "From seance, cours, seance_groupes, groupe, promotion Where cours.ID = seance.ID_Cours "
 					+ "AND seance_groupes.ID_Seance=seance.ID AND seance_groupes.ID_Groupe=groupe.ID AND groupe.ID_Promotion=promotion.ID" 
-					+ " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' GROUP BY cours.Nom, groupe.ID ORDER BY cours.Nom, promotion.Nom, groupe.Nom";
+					+ " AND Date>='"+ debut + "'" + "AND Date<='"+ fin + "' GROUP BY cours.Nom, groupe.ID ORDER BY cours.Nom, promotion.Nom, groupe.Nom";
 		
 		try {
 			ResultSet result = connection.createStatement().executeQuery(query);
@@ -244,16 +244,16 @@ public class ListeSeancesImpl implements ListeSeances {
 				
 				if (utilisateur.getType() == User.UserType.Etudiant)
 					queryDetails += " Where seance.ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur = "+utilisateur.getID()+") ) AND "
-								+ "ID_Cours="+result.getLong("ID_Cours") + " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' ORDER BY Date ASC, Heure_Debut ASC";
+								+ "ID_Cours="+result.getLong("ID_Cours") + " AND Date>='"+ debut + "'" + "AND Date<='"+ fin + "' ORDER BY Date ASC, Heure_Debut ASC";
 				else if (utilisateur.getType() == User.UserType.Enseignant)
 					queryDetails += ",seance_groupes, groupe, promotion Where seance.ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant = "+utilisateur.getID()+") AND "
 								+ "seance_groupes.ID_Seance=seance.ID AND seance_groupes.ID_Groupe=groupe.ID and groupe.ID_Promotion=promotion.ID AND "
 								+ "ID_Cours=" + result.getLong("ID_Cours") + " AND groupe.ID=" + result.getLong("ID_Groupe") + " AND promotion.ID=" + result.getLong("ID_Promo")
-								+ " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' ORDER BY Date ASC, Heure_Debut ASC";
+								+ " AND Date>='"+ debut + "'" + "AND Date<='"+ fin + "' ORDER BY Date ASC, Heure_Debut ASC";
 				else
 					queryDetails += ",seance_groupes, groupe, promotion Where seance_groupes.ID_Seance=seance.ID AND seance_groupes.ID_Groupe=groupe.ID and groupe.ID_Promotion=promotion.ID AND "
 								+ "ID_Cours=" + result.getLong("ID_Cours") + " AND groupe.ID=" + result.getLong("ID_Groupe") + " AND promotion.ID=" + result.getLong("ID_Promo")
-								+ " AND Date>'"+ debut + "'" + "AND Date<'"+ fin + "' ORDER BY Date ASC, Heure_Debut ASC";
+								+ " AND Date>='"+ debut + "'" + "AND Date<='"+ fin + "' ORDER BY Date ASC, Heure_Debut ASC";
 				
 				ResultSet resultDetails = connection.createStatement().executeQuery(queryDetails);
 				

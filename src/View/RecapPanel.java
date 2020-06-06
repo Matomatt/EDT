@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,11 +28,8 @@ public class RecapPanel extends Panel
 	public RecapPanel(User user, Controller controller) {
 		super(user, controller);
 		
-		java.util.Date today = new java.util.Date();
-		try { today = new SimpleDateFormat("yyyy-MM-dd").parse("2019-09-01"); } catch (ParseException e) { e.printStackTrace(); }
-		firstDateChooser.setDate(today);
-		try { today = new SimpleDateFormat("yyyy-MM-dd").parse("2020-06-30"); } catch (ParseException e) { e.printStackTrace(); }
-		lastDateChooser.setDate(today);
+		firstDateChooser.setDate(new java.util.Date());
+		lastDateChooser.setDate(new java.util.Date(new java.util.Date().getTime()+3600000*24*7));
 		
 		initComponents();
 	}
@@ -46,9 +41,9 @@ public class RecapPanel extends Panel
 		
 		GridBagConstraints c = new GridBagConstraints();
     	
-    	c.fill = GridBagConstraints.BOTH;
+    	c.fill = GridBagConstraints.HORIZONTAL;
+    	c.insets = new Insets(5, 0, 10, 5);
 		c.weightx = 1.0;
-		c.weighty = 1.0;
 		c.gridx = 0;
 		c.gridy = 0;
 		
@@ -60,7 +55,9 @@ public class RecapPanel extends Panel
 		c.gridx = 2;
 		this.add(refreshButton, c);
 		
+		c.fill = GridBagConstraints.BOTH;
 		c.insets = new Insets(0, 17, 0, 0);
+		c.weighty = 1.0;
 		c.gridx = 0;
 		c.gridy = 1;
 		c.gridwidth = 3;

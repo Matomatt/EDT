@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class BaseWindow extends JFrame 
 {
 	private static final long serialVersionUID = 3528066671950303397L;
@@ -31,7 +30,7 @@ public class BaseWindow extends JFrame
 	Map<String, JPanel> pages = new HashMap<String, JPanel>();
 
 	Button  button1, button2, button3, button4, button11 = null;
-        
+
 	GridBagConstraints c = new GridBagConstraints();
 
 	public BaseWindow(BaseWindowController controller)
