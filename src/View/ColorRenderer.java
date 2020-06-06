@@ -10,17 +10,29 @@ import java.awt.Component;
  
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-/**
- *
- * @author Célia BOCHER
- */
- 
 
- 
+
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de DefaultTableCellRenderer et qui mets en place la couleur 
+ */
 public class ColorRenderer extends DefaultTableCellRenderer 
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        */
 	private static final long serialVersionUID = 4020747767803253403L; 
  
+    /**
+    * Méthode qui retourne la cellule du tableau     
+    * @param table
+    * @param value
+    * @param isSelected
+    * @param hasFocus
+    * @param row
+    * @param column
+    * @return cell
+    */
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) 
     {
         Component cell = super.getTableCellRendererComponent(table, value,isSelected, hasFocus, row, column);
