@@ -6,6 +6,9 @@ import Donnees.Donnee;
 import Filters.Filter;
 import Seances.Seance;
 
+/**
+ * Interface de la class DAO pour les groupes
+ */
 public interface ListeGroupes {
 	public List<Groupe> getAll();
 	public List<Groupe> getByPromotion(Donnee promotion);

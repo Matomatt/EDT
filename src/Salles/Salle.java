@@ -8,12 +8,25 @@ public class Salle {
 	private int capacite = 0;
 	private Donnee site = null;
 	
+	/**
+	 * Constructeur public
+	 * @param _nom
+	 * @param _capacite
+	 * @param _site
+	 */
 	public Salle(String _nom, int _capacite, Donnee _site) {
 		nom = _nom;
 		capacite = _capacite;
 		site = _site;
 	}
 	
+	/**
+	 * Constructeur dédié a l'implémentation DAO
+	 * @param _ID
+	 * @param _nom
+	 * @param _capacite
+	 * @param _site
+	 */
 	Salle(int _ID, String _nom, int _capacite, Donnee _site) {
 		ID = _ID;
 		nom = _nom;
@@ -33,6 +46,9 @@ public class Salle {
 		return nom + " (" + capacite + "p, " + site + ")";
 	}
 
+	/**
+	 * Check si tous les attributs (sauf l'id) sont égaux
+	 */
 	@Override
 	public boolean equals(Object obj) 
 	{
@@ -44,6 +60,10 @@ public class Salle {
 		return (nom.contentEquals(salle.getNom()) && capacite == salle.getCapacite() && site.equals(salle.getSite()));
 	}
 
+	/**
+	 * Copie les attributs de la salle indiquée
+	 * @param salle
+	 */
 	public void copy(Salle salle) {
 		nom = salle.getNom();
 		capacite = salle.getCapacite();

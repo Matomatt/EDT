@@ -22,18 +22,30 @@ import Seances.Seance;
 import Utilitaires.TimeComparison;
 import Utilitaires.calc;
 
+/**
+ * Se connecte a la bdd pour gérer les salles
+ */
 public class ListeSallesImpl implements ListeSalles
 {
 	private static final int nbCreneauxEnUneJournee = 7;
 	Connection connection = null;
 	ListeDonnees sites = null;
 	
-	
+	/**
+	 * Constructeur, recupère l'interface qui accède aux sites
+	 * @param conn
+	 * @param _sites
+	 */
 	public ListeSallesImpl(Connection conn, ListeDonnees _sites) {
 		connection = conn;
 		sites = _sites;
 	}
 	
+	/**
+	 * Execute la query indiquée et renvoie la List avec toutes les salles trouvées
+	 * @param query
+	 * @return
+	 */
 	private List<Salle> ExecuteQuery(String query)
 	{
 		List<Salle> list = new ArrayList<Salle>();
@@ -66,6 +78,9 @@ public class ListeSallesImpl implements ListeSalles
 		return ExecuteQuery("Select * From salle Where ID IN (Select ID_Salle From seance_salles Where ID_Seance="+ID+")");
 	}
 	
+	/**
+	 * Get les salles libres ordered by les creneaux horaires et les jours
+	 */
 	@Override
 	public LinkedHashMap<String, LinkedHashMap<Time[], List<Salle>>> getSallesLibresAtWeekStartingFrom(int week, java.util.Date date) 
 	{

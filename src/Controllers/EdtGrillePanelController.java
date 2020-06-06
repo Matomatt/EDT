@@ -22,8 +22,9 @@ public class EdtGrillePanelController extends Controller {
 		
 		switch (pan.getListeSelectedItem().toString()) 
 		{
-            case "Mon edt": pan.display_courses(panel.getUser().ListeSeances().getByUtilisateurAtWeek(panel.getUser().getUtilisateurConnecte(), pan.getSemaine()));
+            case "Mon EDT": pan.display_courses(panel.getUser().ListeSeances().getByUtilisateurAtWeek(panel.getUser().getUtilisateurConnecte(), pan.getSemaine()));
                     break;
+                    
 			case "Salle": pan.sallesAddToComboBox(); 
 			pan.display_courses(panel.getUser().ListeSeances().getBySalleAtWeek((Salle) pan.getSelectedItem(), pan.getSemaine()));
                         break;

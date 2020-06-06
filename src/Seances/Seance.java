@@ -24,6 +24,20 @@ public class Seance {
 	private List<Utilisateur> enseignants = new ArrayList<Utilisateur>();
 	private List<Salle> salles = new ArrayList<Salle>();
 	
+	/**
+	 * Constructeur dédié a l'implémentation DAO
+	 * @param _ID
+	 * @param _semaine
+	 * @param _date
+	 * @param _debut
+	 * @param _fin
+	 * @param _etat
+	 * @param _cours
+	 * @param _type
+	 * @param _groupes
+	 * @param _enseignants
+	 * @param _salles
+	 */
 	Seance(int _ID, int _semaine, Date _date, Time _debut, Time _fin, int _etat, Donnee _cours, Donnee _type, List<Groupe> _groupes, List<Utilisateur> _enseignants, List<Salle> _salles)
 	{
 		ID = _ID;
@@ -39,6 +53,16 @@ public class Seance {
 		salles = _salles;
 	}
 	
+	/**
+	 * Constructeur public sans groupe, enseignant, salle
+	 * @param _semaine
+	 * @param _date
+	 * @param _debut
+	 * @param _fin
+	 * @param _etat
+	 * @param _cours
+	 * @param _type
+	 */
 	public Seance(int _semaine, Date _date, Time _debut, Time _fin, int _etat, Donnee _cours, Donnee _type)
 	{
 		ID = 0;
@@ -51,6 +75,19 @@ public class Seance {
 		type =_type;
 	}
 	
+	/**
+	 * Constructeur public 1 seul groupe, enseignant, salle
+	 * @param _semaine
+	 * @param _date
+	 * @param _debut
+	 * @param _fin
+	 * @param _etat
+	 * @param _cours
+	 * @param _type
+	 * @param groupe
+	 * @param enseignant
+	 * @param salle
+	 */
 	public Seance(int _semaine, Date _date, Time _debut, Time _fin, int _etat, Donnee _cours, Donnee _type, Groupe groupe, Utilisateur enseignant, Salle salle)
 	{
 		ID = 0;
@@ -67,6 +104,19 @@ public class Seance {
 		salles.add(salle);
 	}
 
+	/**
+	 * Constructeur public
+	 * @param _semaine
+	 * @param _date
+	 * @param _debut
+	 * @param _fin
+	 * @param _etat
+	 * @param _cours
+	 * @param _type
+	 * @param _groupes
+	 * @param _enseignants
+	 * @param _salles
+	 */
 	public Seance(int _semaine, Date _date, Time _debut, Time _fin, int _etat, Donnee _cours, Donnee _type, List<Groupe> _groupes, List<Utilisateur> _enseignants, List<Salle> _salles) 
 	{
 		ID = 0;
@@ -99,6 +149,10 @@ public class Seance {
 	void setCours(Donnee cours) { this.cours = cours; }
 	void setType(Donnee type) { this.type = type; }
 	
+	/**
+	 * Copie les attributs de la séance indiquée
+	 * @param seance
+	 */
 	public void copy(Seance seance)
 	{
 		semaine = seance.getSemaine();
@@ -129,5 +183,9 @@ public class Seance {
 			toReturnString+=salle+" ";
 		}
 		return toReturnString;
+	}
+
+	public void setSemaine(int parseInt) {
+		semaine = parseInt;
 	}
 }

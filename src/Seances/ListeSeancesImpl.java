@@ -24,6 +24,9 @@ import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
 import Utilisateurs.User.UserType;
 
+/**
+ * Se connecte a la bdd pour gérer les séances
+ */
 public class ListeSeancesImpl implements ListeSeances {
 	
 	private Connection connection = null;
@@ -33,6 +36,15 @@ public class ListeSeancesImpl implements ListeSeances {
 	private ListeUtilisateurs utilisateurs = null;
 	private ListeSalles salles = null;
 	
+	/**
+	 * Constructeur, recupère l'interface qui accède aux cours, type de cours, groupes, utilisateurs et salles
+	 * @param conn
+	 * @param _cours
+	 * @param _type_cours
+	 * @param _groupes
+	 * @param _utilisateurs
+	 * @param _salles
+	 */
 	public ListeSeancesImpl(Connection conn, ListeDonnees _cours, ListeDonnees _type_cours, ListeGroupes _groupes, ListeUtilisateurs _utilisateurs, ListeSalles _salles)
 	{
 		connection = conn;
@@ -43,6 +55,11 @@ public class ListeSeancesImpl implements ListeSeances {
 		salles = _salles;
 	}
 	
+	/**
+	 * Execute la query indiquée et renvoie la List avec toutes les séances trouvées les cours, groupes tout ça sont récupérés automatiquement
+	 * @param query
+	 * @return
+	 */
 	private List<Seance> ExecuteQuery(String query)
 	{
 		List<Seance> list = new ArrayList<Seance>();
@@ -174,7 +191,12 @@ public class ListeSeancesImpl implements ListeSeances {
 			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+week+"'");
 	}
 	
-	
+	/**
+	 * Get le nombre d'heure par cours avec les conditions indiquées
+	 * @param utilisateur
+	 * @param whereQuery
+	 * @return
+	 */
 	private Map<String, Double> getNombreHeure(Utilisateur utilisateur, String whereQuery)
 	{
 		Map<String, Double> map = new LinkedHashMap<String, Double>();
@@ -211,6 +233,9 @@ public class ListeSeancesImpl implements ListeSeances {
 		return getNombreHeure(utilisateur, " AND seance.Date < '"+new Date(new java.util.Date().getTime())+"'");
 	}
 	
+	/**
+	 * Get toutes les infos pour le recap en seulement 2 query !
+	 */
 	@Override
 	public Map<List<String>, List<String>> getRecap(Utilisateur utilisateur, Date debut, Date fin) 
 	{

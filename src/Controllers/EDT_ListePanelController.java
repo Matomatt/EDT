@@ -13,6 +13,9 @@ import View.EDT_ListePanel;
  */
 public class EDT_ListePanelController extends Controller {
 	
+	/**
+	 * Recharge l'edt en fonction de la selection 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{

@@ -19,6 +19,15 @@ public class Utilisateur {
 	private int numeroEtudiant = 0;
 	private Groupe groupeSiEtudiant = null;
 	
+	/**
+	 * Initialise les attributs de l'utilisateur avec les infos indiquées
+	 * @param _ID
+	 * @param _email
+	 * @param _password
+	 * @param _nom
+	 * @param _prenom
+	 * @param _type
+	 */
 	private void Init(int _ID, String _email, String _password, String _nom, String _prenom, int _type)
 	{
 		ID = _ID;
@@ -36,10 +45,29 @@ public class Utilisateur {
 		}
 	}
 	
+	/**
+	 * Constructeur dédié a l'implémentation DAO (admin et referant)
+	 * @param _ID
+	 * @param _email
+	 * @param _password
+	 * @param _nom
+	 * @param _prenom
+	 * @param _type
+	 */
 	Utilisateur(int _ID, String _email, String _password, String _nom, String _prenom, int _type) {
 		Init(_ID, _email, _password, _nom, _prenom, _type);
 	}
 	
+	/**
+	 * Constructeur dédié a l'implémentation DAO (enseignant)
+	 * @param _ID
+	 * @param _email
+	 * @param _password
+	 * @param _nom
+	 * @param _prenom
+	 * @param _type
+	 * @param cours
+	 */
 	Utilisateur(int _ID, String _email, String _password, String _nom, String _prenom, int _type, List<Donnee> cours) {
 		Init(_ID, _email, _password, _nom, _prenom, _type);
 		
@@ -47,6 +75,17 @@ public class Utilisateur {
 			coursDonnesSiEnseignant = cours;
 	}
 	
+	/**
+	 * Constructeur dédié a l'implémentation DAO (etudiant)
+	 * @param _ID
+	 * @param _email
+	 * @param _password
+	 * @param _nom
+	 * @param _prenom
+	 * @param _type
+	 * @param groupe
+	 * @param numero
+	 */
 	Utilisateur(int _ID, String _email, String _password, String _nom, String _prenom, int _type, Groupe groupe, int numero) {
 		Init(_ID, _email, _password, _nom, _prenom, _type);
 		
@@ -58,10 +97,27 @@ public class Utilisateur {
 			
 	}
 	
+	/**
+	 * Constructeur public (admin et referant)
+	 * @param _email
+	 * @param _password
+	 * @param _nom
+	 * @param _prenom
+	 * @param _type
+	 */
 	public Utilisateur(String _email, String _password, String _nom, String _prenom, int _type) {
 		Init(0, _email, _password, _nom, _prenom, _type);
 	}
 	
+	/**
+	 * Constructeur public (enseignant)
+	 * @param _email
+	 * @param _password
+	 * @param _nom
+	 * @param _prenom
+	 * @param _type
+	 * @param cours
+	 */
 	public Utilisateur(String _email, String _password, String _nom, String _prenom, int _type, List<Donnee> cours) {
 		Init(0, _email, _password, _nom, _prenom, _type);
 		
@@ -69,6 +125,16 @@ public class Utilisateur {
 			coursDonnesSiEnseignant = cours;
 	}
 	
+	/**
+	 * Constructeur public (etudiant)
+	 * @param _email
+	 * @param _password
+	 * @param _nom
+	 * @param _prenom
+	 * @param _type
+	 * @param groupe
+	 * @param numero
+	 */
 	public Utilisateur(String _email, String _password, String _nom, String _prenom, int _type, Groupe groupe, int numero) {
 		Init(0, _email, _password, _nom, _prenom, _type);
 		
@@ -108,6 +174,9 @@ public class Utilisateur {
 		return  toReturn;
 	}
 	
+	/**
+	 * Check si tous les attributs (sauf l'id) sont égaux
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		try { if (((Utilisateur) obj) == null) return false; }
@@ -129,6 +198,10 @@ public class Utilisateur {
 				nom.contentEquals(utilisateur.getNom()) && prenom.contentEquals(utilisateur.getPrenom()) && numeroEtudiant == utilisateur.getNumeroEtudiant());
 	}
 
+	/**
+	 * Copie les attributs de l'utilisateur indiqué
+	 * @param utilisateur
+	 */
 	public void copy(Utilisateur utilisateur) {
 		email = utilisateur.getEmail();
 		password = utilisateur.getPassword();

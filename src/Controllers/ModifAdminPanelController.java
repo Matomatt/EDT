@@ -34,6 +34,9 @@ import View.dataModifierWindows.addUtilisateurWindow;
  */
 public class ModifAdminPanelController extends Controller
 {
+	/**
+	 * Gère les boutons ajouter / supprimer / modifier
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -82,6 +85,10 @@ public class ModifAdminPanelController extends Controller
 		}
 	}
 	
+	/**
+	 * Supprime l'objet indiqué de la liste et de la bbd
+	 * @param o
+	 */
 	private void Supprimer(Object o)
 	{
 		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).Delete(o);
@@ -104,11 +111,19 @@ public class ModifAdminPanelController extends Controller
 			
 	}
 	
+	/**
+	 * renvoie le panel dans la bonne class
+	 * @return
+	 */
 	private ModifAdminPanel Panel()
 	{
 		return (ModifAdminPanel) panel;
 	}
 
+	/**
+	 * Ajoute la seance dans la liste et la bdd
+	 * @param seance
+	 */
 	public void addSeance(Seance seance) 
 	{
 		Panel().getUser().ListeSeances().addSeance(seance);
@@ -116,6 +131,10 @@ public class ModifAdminPanelController extends Controller
 			((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).addObject(seance);
 	}
 
+	/**
+	 * Ajoute l'utilisateur dans la liste et la bdd
+	 * @param utilisateur
+	 */
 	public void addUtilisateur(Utilisateur utilisateur) 
 	{
 		if (utilisateur.getType() == UserType.Etudiant)
@@ -137,6 +156,11 @@ public class ModifAdminPanelController extends Controller
 		}
 	}
 
+	/**
+	 * Ajoute la donnée dans la liste et la bdd correspondant au type indiqué
+	 * @param donnee
+	 * @param type
+	 */
 	public void addDonnee(Donnee donnee, String type)
 	{
 		JScrollListe selectedList = (JScrollListe) Panel().getTabbedPanes().getSelectedComponent();
@@ -151,6 +175,10 @@ public class ModifAdminPanelController extends Controller
 		}
 	}
 
+	/**
+	 * Ajoute la salle dans la liste et la bdd
+	 * @param salle
+	 */
 	public void addSalle(Salle salle) 
 	{
 		JScrollListe selectedList = (JScrollListe) Panel().getTabbedPanes().getSelectedComponent();
@@ -162,6 +190,10 @@ public class ModifAdminPanelController extends Controller
 		}
 	}
 	
+	/**
+	 * Ajoute le groupe dans la liste et la bdd
+	 * @param groupe
+	 */
 	public void addGroupe(Groupe groupe) 
 	{
 		JScrollListe selectedList = (JScrollListe) Panel().getTabbedPanes().getSelectedComponent();
@@ -173,12 +205,20 @@ public class ModifAdminPanelController extends Controller
 		}
 	}
 
+	/**
+	 * Update la seance dans la liste et la bdd
+	 * @param seance
+	 */
 	public void updateSeance(Seance seance) {
 		panel.getUser().ListeSeances().update(seance);
 		((JScrollListe) Panel().getTabbedPanes().getSelectedComponent()).validateCustom();
 		panel.validate();
 	}
 	
+	/**
+	 * Update l'utilisateur dans la liste et la bdd
+	 * @param utilisateur
+	 */
 	public void updateUtilisateur(Utilisateur utilisateur) 
 	{
 		panel.getUser().ListeUtilisateurs().update(utilisateur);
@@ -190,6 +230,11 @@ public class ModifAdminPanelController extends Controller
 		panel.validate();
 	}
 
+	/**
+	 * Update la donnee dans la liste et la bdd indiqué par la string type
+	 * @param donnee
+	 * @param type
+	 */
 	public void updateDonnee(Donnee donnee, String type) {
 		JScrollListe selectedList = (JScrollListe) Panel().getTabbedPanes().getSelectedComponent();
 		
@@ -205,6 +250,10 @@ public class ModifAdminPanelController extends Controller
 		panel.validate();
 	}
 
+	/**
+	 * Update la salle dans la liste et la bdd
+	 * @param salle
+	 */
 	public void updateSalle(Salle salle) 
 	{
 		panel.getUser().ListeSalles().update(salle);
@@ -213,6 +262,10 @@ public class ModifAdminPanelController extends Controller
 		panel.validate();
 	}
 	
+	/**
+	 * Update le groupe dans la liste et la bdd
+	 * @param groupe
+	 */
 	public void updateGroupe(Groupe groupe) 
 	{
 		panel.getUser().ListeGroupes().Update(groupe);

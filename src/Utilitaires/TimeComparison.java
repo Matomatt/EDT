@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Compare 2 temps et renvoie true si le temps 1 est plus petit que le temps 2
+ */
 public class TimeComparison {
 	public static boolean Compare(Time time1, Time time2) 
 	{

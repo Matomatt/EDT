@@ -5,6 +5,9 @@ import Groupes.ListeGroupes;
 import Salles.ListeSalles;
 import Seances.ListeSeances;
 
+/**
+ * Interface donnant accès a toutes les interfaces DAO ainsi qu'a l'utilisateur connecté
+ */
 public interface User {
 	public enum UserType { Etudiant, Enseignant, Referent_pedagogique, Admin, none; 
 		public String toString()

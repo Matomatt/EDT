@@ -7,6 +7,9 @@ import View.RecapPanel;
 
 public class ReportingPanelController extends Controller {
 	
+	/**
+	 * Refresh le panneau reporting avec le nouvel interval de temps
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);

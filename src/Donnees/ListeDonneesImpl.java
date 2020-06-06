@@ -10,15 +10,29 @@ import java.util.List;
 import Filters.Filter;
 import Filters.Filter.Filters;
 
+/**
+ * Se connecte a la bdd pour gérer les promo, cours, sites, type_cours
+ * @See ListeDonnees
+ */
 public class ListeDonneesImpl implements ListeDonnees {
 	Connection connection = null;
 	String tableName = "";
 	
+	/**
+	 * Constructeur, recupère le nom de la table contenant les données dans la bdd
+	 * @param conn
+	 * @param _tableName
+	 */
 	public ListeDonneesImpl(Connection conn, String _tableName) {
 		connection = conn;
 		tableName = _tableName;
 	}
 	
+	/**
+	 * Execute la query indiquée et renvoie la List avec toutes les données trouvées
+	 * @param query
+	 * @return
+	 */
 	public List<Donnee> ExecuteQuery(String query)
 	{
 		List<Donnee> list = new ArrayList<Donnee>();

@@ -13,12 +13,21 @@ import Groupes.ListeGroupes;
 import Seances.Seance;
 import Utilisateurs.User.UserType;
 
+/**
+ * Se connecte a la bdd pour gérer les utilisateurs
+ */
 public class ListeUtilisateursImpl implements ListeUtilisateurs {
 	Connection connection = null;
 	
 	ListeDonnees cours = null;
 	ListeGroupes groupes = null;
 	
+	/**
+	 * Constructeur, recupère les interfaces qui accède aux cours et groupes
+	 * @param conn
+	 * @param _cours
+	 * @param _groupes
+	 */
 	public ListeUtilisateursImpl(Connection conn, ListeDonnees _cours, ListeGroupes _groupes)
 	{
 		connection = conn;
@@ -26,6 +35,11 @@ public class ListeUtilisateursImpl implements ListeUtilisateurs {
 		groupes = _groupes;
 	}
 	
+	/**
+	 * Execute la query indiquée et renvoie la List avec toutes les utilisateurs trouvées
+	 * @param query
+	 * @return
+	 */
 	private List<Utilisateur> ExecuteQuery(String query)
 	{
 		List<Utilisateur> list = new ArrayList<Utilisateur>();

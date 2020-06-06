@@ -9,6 +9,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Récupéré du projet Snoopy https://github.com/Matomatt/POOPY
+ * @author Ruben Didier
+ * @author Matthieu gaucher
+ */
 public class ImageManager {
 	public static BufferedImage LoadImage(String filePath) throws IOException
 	{

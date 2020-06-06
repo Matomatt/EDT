@@ -27,7 +27,7 @@ public class JSpoiler extends JPanel implements ActionListener
 		this.setBackground(Color.white);
         
 		GridBagConstraints c = new GridBagConstraints();
-    	c.insets = new Insets(0, 3, 3, 3);
+    	c.insets = new Insets(0, 3, 0, 3);
 		c.gridx = 0;
 		c.gridy = 0;
 		

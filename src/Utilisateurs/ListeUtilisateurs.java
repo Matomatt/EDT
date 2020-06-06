@@ -5,6 +5,9 @@ import java.util.List;
 import Donnees.Donnee;
 import Seances.Seance;
 
+/**
+ * Interface de la class DAO pour les utilisateurs
+ */
 public interface ListeUtilisateurs {
 	public List<Utilisateur> getAll();
 	public Utilisateur getByID(int ID);

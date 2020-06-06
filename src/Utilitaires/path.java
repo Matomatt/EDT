@@ -3,6 +3,9 @@ package Utilitaires;
 import java.io.File;
 import java.net.URLDecoder;
 
+/**
+ * Récupère le path de la ou est le .jar (donc en théorie le dossier Images aussi)
+ */
 public class path {
 	
 	private static final String imagesFolderPath = "/Images";

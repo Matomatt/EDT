@@ -8,6 +8,11 @@ public class Donnee {
 	 * PACKAGE RESTRICTED METHOD
 	 */
 	
+	/**
+	 * Constructeur dédié a l'implémentation DAO
+	 * @param _ID
+	 * @param val
+	 */
 	Donnee(int _ID, String val) {
 		setValue(val);
 		ID = _ID;
@@ -20,6 +25,10 @@ public class Donnee {
 	 * PUBLIC METHODS
 	 */
 	
+	/**
+	 * Constructeur public
+	 * @param val
+	 */
 	public Donnee(String val) {
 		value = val;
 	}
@@ -32,6 +41,9 @@ public class Donnee {
 	@Override
 	public String toString() { return value; }
 	
+	/**
+	 * Check si tous les attributs (sauf l'id) sont égaux
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		try { if (((Donnee) obj) == null) return false; }
@@ -42,6 +54,10 @@ public class Donnee {
 		return (value.contentEquals(donnee.getValue()));
 	}
 
+	/**
+	 * Copie les attributs de la donnée indiquée
+	 * @param donnee
+	 */
 	public void copy(Donnee donnee) {
 		value = donnee.getValue();
 	}

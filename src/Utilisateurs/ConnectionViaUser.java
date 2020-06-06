@@ -17,6 +17,9 @@ import Seances.ListeSeancesImpl;
 import Utilitaires.ConnectionErrorException;
 import Utilitaires.UserNotFoundException;
 
+/**
+ * Se connecte a la bdd avec identifiant et mdp puis initialise toutes les interfaces dao
+ */
 public class ConnectionViaUser implements User {
 
 	private String url = "jdbc:mysql://localhost:3306/edt?autoReconnect=true&useSSL=false";
@@ -59,12 +62,9 @@ public class ConnectionViaUser implements User {
 		try {
 			String s = (String)JOptionPane.showInputDialog(new JFrame(), "Entrez le nom de la bdd", "BDD", JOptionPane.PLAIN_MESSAGE, null,  null, "edt");
 
-			//If a string was returned, say so.
 			if ((s != null) && (s.length() > 0)) {
 			    url = "jdbc:mysql://localhost:3306/"+s+"?autoReconnect=true&useSSL=false";
 			}
-			
-			//System.out.println(url);
 			
 			connection = DriverManager.getConnection(url, user, passwd);
 			System.out.println("Connected to the database (user not verified yet)...");
@@ -138,10 +138,4 @@ public class ConnectionViaUser implements User {
 		
 		return true;
 	}
-	
-	/********
-	 * PACKAGE RESTRICTED METHODS
-	 */
-	
-	
 }

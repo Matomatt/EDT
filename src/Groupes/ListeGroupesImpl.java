@@ -13,17 +13,30 @@ import Filters.Filter;
 import Filters.Filter.Filters;
 import Seances.Seance;
 
+/**
+ * Se connecte a la bdd pour gérer les groupes
+ */
 public class ListeGroupesImpl implements ListeGroupes {
 	
 	private Connection connection = null;
 	private ListeDonnees promotions = null;
 	
+	/**
+	 * Constructeur, recupère l'interface qui accède aux promotions
+	 * @param conn
+	 * @param _promotions
+	 */
 	public ListeGroupesImpl(Connection conn, ListeDonnees _promotions)
 	{
 		connection = conn;
 		promotions = _promotions;
 	}
 	
+	/**
+	 * Execute la query indiquée et renvoie la List avec toutes les groupe trouvées
+	 * @param query
+	 * @return
+	 */
 	private List<Groupe> ExecuteQuery(String query)
 	{
 		List<Groupe> list = new ArrayList<Groupe>();

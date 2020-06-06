@@ -10,6 +10,9 @@ import java.util.LinkedHashMap;
 
 import Seances.Seance;
 
+/**
+ * Interface de la class DAO pour les salles
+ */
 public interface ListeSalles {
 	public List<Salle> getAll();
 	public List<Salle> getBySeance(Seance seance);

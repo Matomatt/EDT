@@ -16,6 +16,9 @@ public abstract class dataModifierController implements ActionListener {
 		this.panelController = panelController;
 	}
 
+	/**
+	 * Apelle la fonction add ou modifiy du controller qui en herite quand le bouton add est appuyé. Permets d'ajouter ou de modifier l'element
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{

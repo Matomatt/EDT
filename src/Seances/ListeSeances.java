@@ -10,6 +10,9 @@ import Groupes.Groupe;
 import Salles.Salle;
 import Utilisateurs.Utilisateur;
 
+/**
+ * Interface de la class DAO pour les séances
+ */
 public interface ListeSeances {
 	public List<Seance> getAll();
 	public List<Seance> getBySalle(Salle salle);

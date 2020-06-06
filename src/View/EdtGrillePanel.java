@@ -1,11 +1,6 @@
 //source de là où j'ai trouvé la barre pour les semaines
 //https://www.developpez.net/forums/d1503732/java/interfaces-graphiques-java/debuter/faire-planning-jtable/
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View;
 
 import Seances.Seance;
@@ -168,7 +163,6 @@ public class EdtGrillePanel extends Panel
         this.add(liste,c);
 
     	liste.addActionListener(controller);
-       
     }
     
     /**
@@ -195,7 +189,7 @@ public class EdtGrillePanel extends Panel
     */
     public void resetTable(){
        for(int i = 0; i<table.getRowCount(); i++)
-               for(int j = 0; j<table.getColumnCount(); j++)
+               for(int j = 1; j<table.getColumnCount(); j++)
                    table.setValueAt("", i, j); 
     }
 
@@ -277,11 +271,11 @@ public class EdtGrillePanel extends Panel
                 case "Enseignant" : 
                 case "Classe" :
                 case "Promo" :
-                    info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() +"\n" + s.getGroupes() +  "\n" +s.getType().toString() ;
+                    info = s.getDate() +" : "+ s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() +"\n" + s.getGroupes() +  "\n" +s.getType().toString() ;
                 break; 
                 
                 default:
-                    info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
+                    info = s.getDate() +" : "+ s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
                     break;
             }
             
@@ -315,7 +309,7 @@ public class EdtGrillePanel extends Panel
             default: return -1;
         }
 	}
-       
+
 	/**
     * Méthode qui récupère les noms des enseignants     
     * @param enseignants
