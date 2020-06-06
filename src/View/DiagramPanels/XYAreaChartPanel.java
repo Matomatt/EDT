@@ -12,10 +12,24 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JPanel et qui créer la zone pour les statiqtiques
+ */
 public class XYAreaChartPanel extends JPanel 
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        */
 	private static final long serialVersionUID = 5622443209287307211L;
 
+        /**
+         * Constructeur
+         * @param title
+         * @param xLabel
+         * @param yLabel
+         * @param map 
+         */
 	public XYAreaChartPanel(String title, String xLabel, String yLabel, Map<String, Double> map) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		
