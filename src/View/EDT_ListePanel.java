@@ -27,14 +27,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
- * @author Léonie
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de Panel et qui créer la fenêtre de l'emploi du temps sous forme de liste 
  */
 public class EDT_ListePanel extends Panel
-{    
+{   
+    /**
+    * serialVersionUID : clé de hachage de la classe
+    * cb : combo box de type objet qui récupère les différentes données internes au combo box
+    */
     private static final long serialVersionUID = 3736956335101565252L;
     JComboBox<Object> cb = null;
  
+    /**
+    * Constructeur     
+    * @param _user
+    * @param controller
+    */
     public EDT_ListePanel(User _user, Controller controller) 
     {
     	super(_user, controller);		
@@ -42,6 +51,9 @@ public class EDT_ListePanel extends Panel
         initComponents();//code de la page
     }
     
+    /**
+    * Méthode qui initialise le contenu de la fenêtre de l'emploi du temps sous forme de liste     
+    */
     private void initComponents() 
     {
         GridBagConstraints c = new GridBagConstraints();
@@ -50,7 +62,7 @@ public class EDT_ListePanel extends Panel
         JPanel pan = new JPanel();
         
 	for(int i=1; i<=52; i++) 
-    {         
+        {         
 	    JLabel label = new JLabel(String.valueOf(i));
 	    
 	    label.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
@@ -93,36 +105,36 @@ public class EDT_ListePanel extends Panel
         JPanel panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
        
-       //on récupère une liste avec toutes les séances qui se passe pendant une journée.
-       List<Seance> liste = user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) ));//user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()));
-       //on récupère la taille pour savoir le nombre de cours en une journée et pouvoir ensuite passer au jour d'après.
-       int taille = liste.size();
-       taille=taille+6;
-       //création d'un tableau qui affichera sous forme de liste
-       //ligne : cours (taille)
-       //colonne : les détails (entêtes) 
-       Object[][] table = new Object[taille][7];
+        //on récupère une liste avec toutes les séances qui se passe pendant une journée.
+        List<Seance> liste = user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) ));//user.ListeSeances().getByUtilisateurAtDate(user.ListeUtilisateurs().getByID(1709), new Date(new java.util.Date().getTime()));
+        //on récupère la taille pour savoir le nombre de cours en une journée et pouvoir ensuite passer au jour d'après.
+        int taille = liste.size();
+        taille=taille+6;
+        //création d'un tableau qui affichera sous forme de liste
+        //ligne : cours (taille)
+        //colonne : les détails (entêtes) 
+        Object[][] table = new Object[taille][7];
         
-       int i =0;
+        int i =0;
        
-       Date sauvDate=new Date(2001-01-01);
+        Date sauvDate=new Date(2001-01-01);
         
-       Date dateEnCours;
+        Date dateEnCours;
         
-       for(Seance s : user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )))
-       {
-           dateEnCours=s.getDate();
+        for(Seance s : user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )))
+        {
+            dateEnCours=s.getDate();
            
-           if(dateEnCours.compareTo(sauvDate)!=0)
-           {
-               table[i][0]=dateEnCours;
-               for(int j=1; j<7;++j)
-               {
-                   table[i][j]="";
-               }
-               sauvDate=dateEnCours;
-               i++;
-           }
+            if(dateEnCours.compareTo(sauvDate)!=0)
+            {
+                table[i][0]=dateEnCours;
+                for(int j=1; j<7;++j)
+                {
+                    table[i][j]="";
+                }
+                sauvDate=dateEnCours;
+                i++;
+            }
            
             table[i][0]=s.getDebut();
             table[i][1]=s.getFin();
@@ -134,10 +146,10 @@ public class EDT_ListePanel extends Panel
             i++;
         }
        
-       String[] entetes={"Heure Début", "Heure Fin", "Cours", "Enseignant", "Groupe", "Salle", "Type de Cours"};
+        String[] entetes={"Heure Début", "Heure Fin", "Cours", "Enseignant", "Groupe", "Salle", "Type de Cours"};
        
-       JTable tableau= new JTable(table, entetes);
-       JScrollPane scroll = new JScrollPane(tableau);
+        JTable tableau= new JTable(table, entetes);
+        JScrollPane scroll = new JScrollPane(tableau);
        
         c.gridx = 0;
         c.gridy = 3;
@@ -194,11 +206,17 @@ public class EDT_ListePanel extends Panel
         });
     }
     
+    /**
+    * Appel de la méthode revalidate     
+    */
     public void repaintAll()
     {
       this.revalidate();
     }
     
+    /**
+    * Appel de la méthode remove     
+    */
     public void removeAll()
     {
         this.remove(cb);
@@ -209,6 +227,10 @@ public class EDT_ListePanel extends Panel
         
     }
     
+    /**
+    * Méthode qui ajoute des salles dans la JComboBox 
+    * @param c
+    */
     public void sallesAdd(GridBagConstraints c)
     {
         cb = null;
@@ -222,6 +244,10 @@ public class EDT_ListePanel extends Panel
         this.add(cb,c);        
     }
     
+    /**
+    * Méthode qui ajoute des noms d'enseignants dans la JComboBox
+    * @param c
+    */
     public void nomsAdd(GridBagConstraints c)
     {
         cb = null;
@@ -244,6 +270,10 @@ public class EDT_ListePanel extends Panel
         });
     }
     
+    /**
+    * Méthode qui ajoute des groupes à la JComboBox     
+    * @param c
+    */
     public void classesAdd(GridBagConstraints c)
     {   
         cb = null;
@@ -256,7 +286,11 @@ public class EDT_ListePanel extends Panel
         cb.setEditable(true);
         this.add(cb,c);
     }
-        
+    
+    /**
+    * Méthode qui ajoute la promotion à la JComboBox     
+    * @param c
+    */
     public void promosAdd(GridBagConstraints c)
     {
         cb = null;
@@ -270,6 +304,11 @@ public class EDT_ListePanel extends Panel
         this.add(cb,c);
     }
     
+    /**
+    * Méthode qui récupère le nom de l'enseignant     
+    * @param enseignant
+    * @return NomEns, le nom de l'enseignant
+    */
     public String getNomEns(String enseignant)
     {
         final String espace =" ";
