@@ -19,10 +19,20 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JPanel et qui créer les courbes
+ */
 public class LineChartPanel extends JPanel 
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        */
 	private static final long serialVersionUID = 4956711291276204735L;
 
+        /**
+         * Constructeur
+         */
 	public LineChartPanel() 
 	{
 		XYDataset dataset = createDataset();
@@ -37,6 +47,10 @@ public class LineChartPanel extends JPanel
         validate();
     }
 
+        /**
+         * Méthode qui créér les données pour les courbes
+         * @return dataset, les données
+         */
     private XYDataset createDataset() {
 
         XYSeries series = new XYSeries("2016");
@@ -53,6 +67,11 @@ public class LineChartPanel extends JPanel
         return dataset;
     }
 
+    /**
+     * Méthode qui créer la charte pour les courbes
+     * @param dataset
+     * @return chart
+     */
     private JFreeChart createChart(XYDataset dataset) {
 
         JFreeChart chart = ChartFactory.createXYLineChart(
