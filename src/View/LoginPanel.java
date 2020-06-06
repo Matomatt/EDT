@@ -23,8 +23,21 @@ import Controllers.LoginPanelController;
 import Utilitaires.ImageManager;
 import Utilitaires.path;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JPanel et qui créer la fenêtre de connexion 
+ */
 public class LoginPanel extends JPanel {
     
+    /**
+    * serialVersionUID : clé de hachage de la classe
+    * controller : contrôleur des actions sur la fenêtre
+    * background : type JLabel, arrière plan de la fenêtre de connexion
+    * champ_email : type JTextField, champ pour entrer l'email de l'utilisateur
+    * champ_mdp : type JPasswordField, champ pour entrer le mot de passe de l'utilisateur
+    * jButton1 : type JButton, bouton de connexion
+    * jLabel2 et jLabel3 : type JLabel, étiquettes
+    */
 	private static final long serialVersionUID = -7196042227727118997L;
 	
 	LoginPanelController controller = null;
@@ -36,6 +49,10 @@ public class LoginPanel extends JPanel {
     private JLabel jLabel2;
     private JLabel jLabel3;
     
+    /**
+    * Constructeur     
+    * @param controller
+    */
     public LoginPanel(LoginPanelController controller)
     {
     	controller.setControlledView(this);
@@ -57,6 +74,9 @@ public class LoginPanel extends JPanel {
         validate();
     }
 
+    /**
+    * Méthode qui initialise le contenu de la fenêtre connexion     
+    */
     private void initComponents() 
     {
         jLabel2 = new JLabel();
@@ -127,12 +147,26 @@ public class LoginPanel extends JPanel {
 		champ_mdp.setText("IBwJZh}^JF");
     }
 
+        /**
+        * Méthode qui récupère l'email renseigné     
+        * @return champ_email.getText(), l'email
+        */
 	public String getEmail() {
 		return champ_email.getText();
 	}
+        
+        /**
+        * Méthode qui récupère le mot de passe renseigné     
+        * @return new String(champ_mdp.getPassword()), le mot de passe
+        */
 	public String getPassword() {
 		return new String(champ_mdp.getPassword());
 	}
+        
+        /**
+        * Méthode qui récupère l'arrière plan de la fenêtre de connexion    
+        * @return background
+        */
 	public JLabel getBackgroundPanel() {
 		return background;
 	}
