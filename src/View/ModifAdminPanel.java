@@ -45,7 +45,7 @@ public class ModifAdminPanel extends Panel
 	}
 
         /**
-        * Méthode qui initialise le contenu de la fenêtre de l'emploi du temps sous forme de liste     
+        * Méthode qui initialise le contenu de la fenêtre de modifier     
         */
 	private void initComponents() 
     {
