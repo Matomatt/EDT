@@ -13,8 +13,19 @@ import Donnees.Donnee;
 import UI_Elements.Button;
 import Utilisateurs.User;
 
+/**
+ * @author BOCHER, CADOT et GAUTIER 
+ * classe qui hérite de JFrame et qui ajoute des données à la fenêtre
+ */
 public class addDonneeWindow extends JFrame
 {
+        /**
+        * serialVersionUID : clé de hachage de la classe
+        * user : utilisateur
+        * controller : contrôleur des actions sur la fenêtre
+        * type : de type String
+        * nomTextField : de type JTextField
+        */
 	private static final long serialVersionUID = -1858197361063216417L;
 	
 	User user = null;
@@ -23,6 +34,12 @@ public class addDonneeWindow extends JFrame
 	
 	private JTextField nomTextField = new JTextField();
 
+        /**
+         * Constructeur
+         * @param user
+         * @param controller
+         * @param type 
+         */
 	public addDonneeWindow(User user, dataModifierController controller, String type) {
 		this.user = user;
 		this.controller = controller;
@@ -61,9 +78,22 @@ public class addDonneeWindow extends JFrame
 		this.validate();
 	}
 
+        /**
+         * Méthode qui récupère le type de donnée
+         * @return type
+         */
 	public String getTypeDonnee() { return type; }
+        
+        /**
+         * Méthode qui récupère le texte renseigné
+         * @return nomTextField.getText()
+         */
 	public String getValue() { return nomTextField.getText(); }
 
+        /**
+         * Méthode qui rempli les zones de texte
+         * @param donnee 
+         */
 	public void fillFields(Donnee donnee) {
 		nomTextField.setText(donnee.getValue());
 	}
