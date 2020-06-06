@@ -123,6 +123,11 @@ public class ListeSeancesImpl implements ListeSeances {
 	public List<Seance> getByPromoAtDate(Donnee promotion, Date date) {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+")) AND Date='"+date+"'");
 	}
+        
+        @Override
+	public List<Seance> getByPromoAtWeek(Donnee promotion, int semaine) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+")) AND Semaine='"+semaine+"'");
+	}
 	
 	@Override
 	public List<Seance> getByGroupe(Groupe groupe) {
@@ -132,6 +137,11 @@ public class ListeSeancesImpl implements ListeSeances {
 	@Override
 	public List<Seance> getByGroupeAtDate(Groupe groupe, Date date) {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe="+groupe.getID()+") AND Date='"+date+"'");
+	}
+        
+        @Override
+	public List<Seance> getByGroupeAtWeek(Groupe groupe,  int semaine) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe="+groupe.getID()+") AND Semaine='"+semaine+"'");
 	}
 	
 	@Override

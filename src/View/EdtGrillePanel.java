@@ -24,11 +24,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import Controllers.Controller;
+import Groupes.Groupe;
 import Salles.Salle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -36,7 +38,10 @@ import javax.swing.JPanel;
 public class EdtGrillePanel extends Panel 
 {
 	private static final long serialVersionUID = -4510731458552817257L;
+        JScrollPane scroll = null;
         JComboBox<Object> cb = null;
+        JTable table = null;
+        JComboBox<String> liste = null;
     
     private final String[] columns = { "", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
 
@@ -104,8 +109,9 @@ public class EdtGrillePanel extends Panel
         c.weighty = 1.0;
         c.gridx = 0;
         c.gridy = 2;
-        
-        JTable table = new JTable(data,columns);
+                String [] objListe = new String [] {"Mon edt", "Nom","Classe", "Salle", "Promo"};
+        liste = new JComboBox<String>(objListe);
+        table = new JTable(data,columns);
         
         int lines = 5;
         table.setRowHeight(table.getRowHeight() * lines);
@@ -118,10 +124,17 @@ public class EdtGrillePanel extends Panel
             table.getColumnModel().getColumn(i).setCellRenderer(render);
             table.getColumnModel().getColumn(0).setCellRenderer(cr);
         }
-        display_courses(table);
+
+           // user.ListeSeances().getBySalleAtWeek(NOMSALLE, Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date())));
+            //user.ListeSeances().getByGroupeAtWeek(groupe, Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date())));
+            //user.ListeSeances().getByPromoAtWeek(promo, Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date())));
+        display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()))));
+        
+        
+        
         
         table.getTableHeader().setBackground(new java.awt.Color(255, 255, 255));
-        JScrollPane scroll = new JScrollPane(table);
+        scroll = new JScrollPane(table);
         
         c.gridy = 2;
         c.gridwidth = 3;
@@ -131,8 +144,7 @@ public class EdtGrillePanel extends Panel
         
         
         
-        String [] objListe = new String [] {"Nom","Classe", "Salle", "Promo"};
-        JComboBox<String> liste = new JComboBox<String>(objListe);
+
         
         c.gridy = 1;
         c.gridx = 0;
@@ -145,7 +157,8 @@ public class EdtGrillePanel extends Panel
         this.add(liste,c);
  
         
-        nomsAdd(c);
+        
+       
         
     	liste.addActionListener(new ActionListener() {     
 			@Override
@@ -155,19 +168,35 @@ public class EdtGrillePanel extends Panel
 				removeAll();
 				switch (liste.getSelectedItem().toString()) 
 				{
-					case "Salle": sallesAdd(c); break;
+                                        case "Mon edt": 
+                                            display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )));
+                                        break;
+					case "Salle": sallesAddToComboBox(c); 
+                                            display_courses(user.ListeSeances().getBySalleAtWeek((Salle) cb.getSelectedItem(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()))));
+                                        break;
 					
-					case "Nom": nomsAdd(c); break;
+					case "Nom": nomsAddToComboBox(c); 
+                                            display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.ListeUtilisateurs().getByID(user.ListeUtilisateurs().getEnseignants().get(cb.getSelectedIndex()).getID()), 24));
+                                        break;
 					
-					case "Classe": classesAdd(c); break;
+					case "Classe": classesAddToComboBox(c); 
+                                            display_courses(user.ListeSeances().getByGroupeAtWeek((Groupe) cb.getSelectedItem(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()))));
+                                        break;
 					
-					case "Promo": promosAdd(c); break;
+					case "Promo": promosAddToComboBox(c); 
+                                            display_courses(user.ListeSeances().getByPromoAtWeek(user.ListePromotion().GetByID(user.ListePromotion().getAll().get(cb.getSelectedIndex()).getID()), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )));
+                                                    
+                                                    ;
+                                            
+                                        break;
 							
 					default: break;
 				}
 				repaintAll();
 			}
     	});
+        
+       
     }
     
     public void repaintAll()
@@ -175,17 +204,26 @@ public class EdtGrillePanel extends Panel
       this.revalidate();
     }
     
+        @Override
     public void removeAll()
     {
+        if(cb !=null)
         this.remove(cb);
+        resetTable();
+    }
+    
+    public void resetTable(){
+       for(int i = 0; i<table.getRowCount(); i++)
+               for(int j = 0; j<table.getColumnCount(); j++)
+                   table.setValueAt("", i, j); 
     }
     
     public void edtsalles(Salle s)
     {
         
     }
-    
-    public void sallesAdd(GridBagConstraints c)
+
+    public void sallesAddToComboBox(GridBagConstraints c)
     {
         cb = null;
         c.gridx = 1;
@@ -197,12 +235,22 @@ public class EdtGrillePanel extends Panel
         cb.setEditable(true);
         this.add(cb,c);
         
+                          cb.addActionListener(new ActionListener() {     
+         @Override
+         public void actionPerformed(ActionEvent ae) 
+         {   
+             resetTable();
+            display_courses(user.ListeSeances().getBySalleAtWeek((Salle) cb.getSelectedItem(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()))));
+            
+         }
+            });
+        
        // edtsalles(s);
          
 
     }
     
-    public void nomsAdd(GridBagConstraints c)
+    public void nomsAddToComboBox(GridBagConstraints c)
     {
         cb = null;
         c.gridx = 1;
@@ -213,19 +261,21 @@ public class EdtGrillePanel extends Panel
         cb = new JComboBox<Object>(((user.ListeUtilisateurs().getEnseignants().toArray()))); 
         cb.setEditable(true);
         this.add(cb,c);
-        
+        System.out.println("gogogo");
         
           cb.addActionListener(new ActionListener() {     
          @Override
          public void actionPerformed(ActionEvent ae) 
          {       
-            System.out.println("SALLE SELEC ==" + cb.getSelectedItem());
+            resetTable();
+            display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.ListeUtilisateurs().getByID(user.ListeUtilisateurs().getEnseignants().get(cb.getSelectedIndex()).getID()), 24));
+            
          }
             });
 
     }
     
-    public void classesAdd(GridBagConstraints c)
+    public void classesAddToComboBox(GridBagConstraints c)
     {
         
         cb = null;
@@ -237,9 +287,18 @@ public class EdtGrillePanel extends Panel
         cb = new JComboBox<Object>(((user.ListeGroupes().getAll().toArray()))); 
         cb.setEditable(true);
         this.add(cb,c);
+                  cb.addActionListener(new ActionListener() {     
+         @Override
+         public void actionPerformed(ActionEvent ae) 
+         {       
+            System.out.println("classe SELEC ==" + cb.getSelectedItem());
+            
+         }
+            });
+        
     }
         
-    public void promosAdd(GridBagConstraints c)
+    public void promosAddToComboBox(GridBagConstraints c)
     {
         cb = null;
         c.gridx = 1;
@@ -250,17 +309,23 @@ public class EdtGrillePanel extends Panel
         cb = new JComboBox<Object>(((user.ListePromotion().getAll().toArray()))); 
         cb.setEditable(true);
         this.add(cb,c);
+        
+                          cb.addActionListener(new ActionListener() {     
+         @Override
+         public void actionPerformed(ActionEvent ae) 
+         {       
+            System.out.println("promos SELEC ==" + cb.getSelectedItem());
+            display_courses(user.ListeSeances().getByPromoAtWeek(user.ListePromotion().GetByID(user.ListePromotion().getAll().get(cb.getSelectedIndex()).getID()), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )));
+            
+         }
+            });
     }
         
         
     @SuppressWarnings({"deprecation"})
     
-	public void display_courses(JTable table)
+	public void display_courses(List<Seance> seance_cours)
     {
-        String pattern = "dd-MM-yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        Date date = null;
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
         int nb;
         int caseHeure;
         String info;
@@ -268,20 +333,8 @@ public class EdtGrillePanel extends Panel
         DateFormat heureformat = new SimpleDateFormat("HH.mm.ss");
         Calendar calendar = Calendar.getInstance();
         
-        for(Seance s : user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), Integer.parseInt( new SimpleDateFormat("w").format(new java.util.Date()) )))
-        {
-            s.getDate();
-
-            String strDate = dateFormat.format(s.getDate()); 
-            try {
-				date = simpleDateFormat.parse(strDate);
-			} catch (ParseException e) {
-				date = new Date();
-				e.printStackTrace();
-			}
-            System.out.println( date);
-            System.out.println("strdate :" + strDate);
-            System.out.println("day of the week is  : "+date.getDay());
+        for(Seance s : seance_cours)
+        {   
             
 	        calendar.setTime(s.getDate());
 	        nb = calendar.get(Calendar.DAY_OF_WEEK);
@@ -304,8 +357,20 @@ public class EdtGrillePanel extends Panel
 
             getNomEns(s.getEnseignants().toString());
             String NomEns = getNomEns(s.getEnseignants().toString());;
+            switch(liste.getSelectedItem().toString())
+            {
+                case "Salle" :
+                case "Nom" : 
+                case "Classe" :
+                case "Promo" :
+                    info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() +"\n" + s.getGroupes()+  "\n" +s.getType().toString() ;
+                break; 
+                
+                default:
+                    info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
+                    break;
+            }
             
-            info = s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
             table.getModel().setValueAt(info, caseHeure, nb-1);
         }
     }
