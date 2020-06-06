@@ -13,7 +13,7 @@ import java.util.Random;
 
 /**
  * Classe permettant de lancer le programme
- *
+ * @author BOCHER, CADOT et GAUTIER 
  */
 public class EDT {
 
