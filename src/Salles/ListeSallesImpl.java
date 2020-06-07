@@ -118,7 +118,6 @@ public class ListeSallesImpl implements ListeSalles
 				while(result.next())
 					salles.add( new SalleBeingUsed(new Salle(result.getInt("ID"), result.getString("Nom"), result.getInt("Capacite"), sites.GetByID(result.getInt("ID_Site"))), result.getTime("Heure_Debut"), result.getTime("Heure_Fin")));
 				
-				
 				for (int j = 0; j < nbCreneauxEnUneJournee; j++)
 				{
 					//Heure début

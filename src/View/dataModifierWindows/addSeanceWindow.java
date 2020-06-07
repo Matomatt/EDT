@@ -35,20 +35,20 @@ import Utilisateurs.Utilisateur;
  */
 public class addSeanceWindow extends JFrame
 {
-        /**
-        * serialVersionUID : clé de hachage de la classe
-        * user : utilisateur
-        * controller : contrôleur des actions sur la fenêtre
-        * heureDebutTextField : de type JFormattedTextField
-        * heureFinTextField : de type JFormattedTextField
-        * groupesComboBoxList : de type JEditableComboBoxList
-        * enseignantsComboBoxList : de type JEditableComboBoxList
-        * sallesComboBoxList : de type JEditableComboBoxList
-        * etats = {"En cours de validation", "Validée", "Annulée"} : tableau de String
-        * etatComboBox : de type JComboBox de type String
-        * coursComboBox : de type JComboBox de type Object
-        * typeDeCoursComboBox : de type JComboBox de type Object
-        */
+    /**
+    * serialVersionUID : clé de hachage de la classe
+    * user : utilisateur
+    * controller : contrôleur des actions sur la fenêtre
+    * heureDebutTextField : de type JFormattedTextField
+    * heureFinTextField : de type JFormattedTextField
+    * groupesComboBoxList : de type JEditableComboBoxList
+    * enseignantsComboBoxList : de type JEditableComboBoxList
+    * sallesComboBoxList : de type JEditableComboBoxList
+    * etats = {"En cours de validation", "Validée", "Annulée"} : tableau de String
+    * etatComboBox : de type JComboBox de type String
+    * coursComboBox : de type JComboBox de type Object
+    * typeDeCoursComboBox : de type JComboBox de type Object
+    */
 	private static final long serialVersionUID = 4318587476356190117L;
 	
 	User user = null;
@@ -64,12 +64,12 @@ public class addSeanceWindow extends JFrame
     private JComboBox<String> etatComboBox = new JComboBox<String>(etats);
     private JComboBox<Object> coursComboBox = null;
     private JComboBox<Object> typeDeCoursComboBox = null;
-    
-        /**
-         * Constructeur
-         * @param user
-         * @param controller 
-         */
+
+    /**
+     * Constructeur
+     * @param user
+     * @param controller 
+     */
 	public addSeanceWindow(User user, dataModifierController controller) 
 	{
 		this.user = user;
