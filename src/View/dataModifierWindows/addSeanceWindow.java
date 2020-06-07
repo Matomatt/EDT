@@ -165,7 +165,7 @@ public class addSeanceWindow extends JFrame
 
         /**
          * Méthode qui récupère la date
-         * @return new Date(dateChooser.getDate().getTime())
+         * @return la date de la seance
          */
 	public Date getDate() {
 		return new Date(dateChooser.getDate().getTime());
@@ -173,7 +173,7 @@ public class addSeanceWindow extends JFrame
 
         /**
          * Méthode qui récupère l'heure de début
-         * @return Time.valueOf(heureDebutTextField.getText()+(heureDebutTextField.getText().length()<6?":00":""))
+         * @return heure de debut
          */
 	public Time getHeureDebut() {
 		System.out.println(heureDebutTextField.getText());
@@ -182,7 +182,7 @@ public class addSeanceWindow extends JFrame
 	
         /**
          * Méthode qui récupère l'heure de fin 
-         * @return Time.valueOf(heureFinTextField.getText()+(heureFinTextField.getText().length()<6?":00":""))
+         * @return heure de fin
          */
 	public Time getHeureFin() {
 		return Time.valueOf(heureFinTextField.getText()+(heureFinTextField.getText().length()<6?":00":""));
@@ -190,7 +190,7 @@ public class addSeanceWindow extends JFrame
 
         /**
          * Méthode qui récupère l'état de la séance
-         * @return etatComboBox.getSelectedIndex()+1
+         * @return etat de la séance
          */
 	public int getEtat() {
 		return etatComboBox.getSelectedIndex()+1;
@@ -198,7 +198,7 @@ public class addSeanceWindow extends JFrame
 
         /**
          * Méthode qui récupère le cours
-         * @return coursComboBox.getSelectedItem()
+         * @return le cours correspondant a la seance
          */
 	public Donnee getCours() {
 		return (Donnee) coursComboBox.getSelectedItem();
@@ -206,7 +206,7 @@ public class addSeanceWindow extends JFrame
         
         /**
          * Méthode qui récupère le type de cours
-         * @return typeDeCoursComboBox.getSelectedItem()
+         * @return le type de cours de la seance
          */
 	public Donnee getTypeDeCours() {
 		return (Donnee) typeDeCoursComboBox.getSelectedItem();
@@ -214,7 +214,7 @@ public class addSeanceWindow extends JFrame
 
         /**
          * Méthode qui récupère les groupes concernés
-         * @return groupesComboBoxList.getSelectedItems().stream().map(x -> (Groupe)x).collect(Collectors.toList())
+         * @return la liste des groupes participant a la seance
          */
 	public List<Groupe> getGroupes() {
 		return groupesComboBoxList.getSelectedItems().stream().map(x -> (Groupe)x).collect(Collectors.toList());
@@ -222,14 +222,14 @@ public class addSeanceWindow extends JFrame
 	
         /**
          * Méthode qui récupère l'enseignant
-         * @return enseignantsComboBoxList.getSelectedItems().stream().map(x -> (Utilisateur)x).collect(Collectors.toList())
+         * @return la liste des enseignants participant a la seance
          */
 	public List<Utilisateur> getEnseignants() {
 		return enseignantsComboBoxList.getSelectedItems().stream().map(x -> (Utilisateur)x).collect(Collectors.toList());
 	}
 	
         /**
-         * Méthode qui change la liste des enseignats pour la séance
+         * Méthode qui change la liste des enseignants en fonction du cours
          */
 	public void ChangeListEnseignant()
 	{
@@ -256,7 +256,7 @@ public class addSeanceWindow extends JFrame
 	
         /**
          * Méthode qui récupère la salle 
-         * @return sallesComboBoxList.getSelectedItems().stream().map(x -> (Salle)x).collect(Collectors.toList())
+         * @return la liste des salles de la seance
          */
 	public List<Salle> getSalles() {
 		return sallesComboBoxList.getSelectedItems().stream().map(x -> (Salle)x).collect(Collectors.toList());

@@ -46,7 +46,7 @@ public class ListeUtilisateursImpl implements ListeUtilisateurs {
 		
 		ResultSet result;
 		try {
-			result = connection.createStatement().executeQuery(query);
+			result = connection.createStatement().executeQuery(query + " ORDER BY Nom ASC, Prenom ASC");
 			
 			while(result.next())
 			{

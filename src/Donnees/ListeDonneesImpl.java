@@ -12,7 +12,6 @@ import Filters.Filter.Filters;
 
 /**
  * Se connecte a la bdd pour gérer les promo, cours, sites, type_cours
- * @See ListeDonnees
  */
 public class ListeDonneesImpl implements ListeDonnees {
 	Connection connection = null;

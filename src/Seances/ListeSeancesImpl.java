@@ -132,6 +132,16 @@ public class ListeSeancesImpl implements ListeSeances {
 	}
 	
 	@Override
+	public List<Seance> getBySalleAtWeek(Utilisateur utilisateur, Salle salle, int semaine) {
+		if (utilisateur.getType() == UserType.Etudiant)
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_salles Where ID_Salle="+salle.getID()+") AND ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe FROM etudiant WHERE ID_Utilisateur = "+utilisateur.getID()+")) AND Semaine='"+semaine+"'");
+		else if (utilisateur.getType() == UserType.Enseignant || utilisateur.getType() == UserType.Referent_pedagogique)
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_salles Where ID_Salle="+salle.getID()+") AND ID IN (Select ID_Seance FROM seance_enseignants WHERE ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+semaine+"'");
+
+		return getBySalleAtWeek(salle, semaine);
+	}
+	
+	@Override
 	public List<Seance> getByPromo(Donnee promotion) {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+"))");
 	}
@@ -141,9 +151,17 @@ public class ListeSeancesImpl implements ListeSeances {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+")) AND Date='"+date+"'");
 	}
         
-        @Override
+    @Override
 	public List<Seance> getByPromoAtWeek(Donnee promotion, int semaine) {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+")) AND Semaine='"+semaine+"'");
+	}
+    
+    /**
+     * Uniquement pour un enseignant qui veut voir ses cours avec tel promo
+     */
+	@Override
+	public List<Seance> getByPromoAtWeek(Utilisateur utilisateur, Donnee promotion, int semaine) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID From groupe Where ID_Promotion="+promotion.getID()+")) AND ID IN (Select ID_Seance FROM seance_enseignants WHERE ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+semaine+"'");
 	}
 	
 	@Override
@@ -159,6 +177,16 @@ public class ListeSeancesImpl implements ListeSeances {
         @Override
 	public List<Seance> getByGroupeAtWeek(Groupe groupe,  int semaine) {
 		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe="+groupe.getID()+") AND Semaine='"+semaine+"'");
+	}
+        
+    @Override
+	public List<Seance> getByGroupeAtWeek(Utilisateur utilisateur, Groupe groupe, int semaine) {
+    	if (utilisateur.getType() == UserType.Etudiant)
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe="+groupe.getID()+") AND ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe FROM etudiant WHERE ID_Utilisateur = "+utilisateur.getID()+")) AND Semaine='"+semaine+"'");
+		else if (utilisateur.getType() == UserType.Enseignant || utilisateur.getType() == UserType.Referent_pedagogique)
+			return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe="+groupe.getID()+") AND ID IN (Select ID_Seance FROM seance_enseignants WHERE ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+semaine+"'");
+
+		return getByGroupeAtWeek(groupe, semaine);
 	}
 	
 	@Override
@@ -192,6 +220,14 @@ public class ListeSeancesImpl implements ListeSeances {
 	}
 	
 	/**
+	 * Cette fonction est forcément que pour un etudiant qui cherche pour un prof
+	 */
+	@Override
+	public List<Seance> getByUtilisateurAtWeek(Utilisateur utilisateurConnecte, Utilisateur utilisateur, int semaine) {
+		return ExecuteQuery("Select * From seance Where ID IN (Select ID_Seance From seance_groupes Where ID_Groupe IN (Select ID_Groupe From etudiant Where ID_Utilisateur="+utilisateurConnecte.getID()+")) AND ID IN (Select ID_Seance FROM seance_enseignants WHERE ID_Enseignant="+utilisateur.getID()+") AND Semaine='"+semaine+"'");
+	}
+	
+	/**
 	 * Get le nombre d'heure par cours avec les conditions indiquées
 	 * @param utilisateur
 	 * @param whereQuery
@@ -207,7 +243,7 @@ public class ListeSeancesImpl implements ListeSeances {
 		else if (utilisateur.getType() == User.UserType.Enseignant)
 			query += "seance.ID IN (Select ID_Seance From seance_enseignants Where ID_Enseignant = "+utilisateur.getID()+") AND ";
 		
-		query += "cours.ID = seance.ID_Cours" + whereQuery + " GROUP BY cours.Nom ORDER BY cours.Nom";
+		query += "cours.ID = seance.ID_Cours" + whereQuery + " GROUP BY cours.ID ORDER BY cours.Nom";
 		
 		
 		try {
@@ -256,7 +292,7 @@ public class ListeSeancesImpl implements ListeSeances {
 			query += ",groupe.Nom as nomGroupe, promotion.Nom as nomPromo, groupe.ID as ID_Groupe, promotion.ID as ID_Promo "
 					+ "From seance, cours, seance_groupes, groupe, promotion Where cours.ID = seance.ID_Cours "
 					+ "AND seance_groupes.ID_Seance=seance.ID AND seance_groupes.ID_Groupe=groupe.ID AND groupe.ID_Promotion=promotion.ID" 
-					+ " AND Date>='"+ debut + "'" + "AND Date<='"+ fin + "' GROUP BY cours.Nom, groupe.ID ORDER BY cours.Nom, promotion.Nom, groupe.Nom";
+					+ " AND Date>='"+ debut + "'" + "AND Date<='"+ fin + "' GROUP BY cours.ID, groupe.ID ORDER BY cours.Nom, promotion.Nom, groupe.Nom";
 		
 		try {
 			ResultSet result = connection.createStatement().executeQuery(query);
@@ -438,5 +474,5 @@ public class ListeSeancesImpl implements ListeSeances {
 				return false;
 		}
 		return true;
-	}	
+	}
 }

@@ -14,7 +14,7 @@ public class Controller implements ActionListener
 	
 	/**
 	 * Fonction contenu dans tous les controlleurs leur indiquant la vue qu'ils controllent
-	 * @param Panel
+	 * @param panel
 	 */
 	public void setControlledView(Panel panel) {
 		this.panel = panel;

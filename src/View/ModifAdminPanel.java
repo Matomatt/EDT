@@ -111,9 +111,12 @@ public class ModifAdminPanel extends Panel
         toolBar.setRollover(false);
         toolBar.setFloatable(false);
         toolBar.setBackground(new java.awt.Color(255, 255, 255));
-        toolBar.add(bAjouter);
-        toolBar.add(bSupprimer);
-        toolBar.add(bModifier);
+        if (user.getUserType() == UserType.Admin)
+        {
+        	 toolBar.add(bAjouter);
+	        toolBar.add(bSupprimer);
+	        toolBar.add(bModifier);
+        }
         toolBar.add(textField);
         toolBar.add(chosenWeek);
 
@@ -122,7 +125,9 @@ public class ModifAdminPanel extends Panel
 		c.weighty = 0.0;
 		c.gridx = 0;
 		c.gridy = 0;
-        this.add(toolBar, c);
+		
+		
+		this.add(toolBar, c);
 
         validate();
     }

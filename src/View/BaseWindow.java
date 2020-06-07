@@ -27,10 +27,10 @@ public class BaseWindow extends JFrame
 {
     /**
     * serialVersionUID : clé de hachage de la classe
-    * mainWindow : fenêtre principale
-    * user : utilisateur
+    * mainWindow : fenêtre active
+    * user : utilisateur connecté
     * controller : contrôleur des actions sur la fenêtre
-    * pages : création map
+    * pages : différentes pages du programmes qu'on ne charge qu'une fois
     * button1, button2, button3, button4, button11 : boutons
     * c : création d'un GridBagConstraints 
     */
@@ -68,9 +68,9 @@ public class BaseWindow extends JFrame
 		this.pack();
 	}
 	
-        /**
-        * Méthode qui ajoute les boutons correspondants au menu     
-        */
+    /**
+    * Méthode qui ajoute les boutons correspondants au menu     
+    */
 	public void addComponentsToPane() 
 	{
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -96,7 +96,7 @@ public class BaseWindow extends JFrame
 		c.gridx = 3;
 		this.add(button4, c);
 		
-		if (user.getUserType() == UserType.Admin)
+		if (user.getUserType() == UserType.Admin || user.getUserType()== UserType.Referent_pedagogique)
 		{
 			button3 = new Button("btModifier", "Modifier", controller);
 			c.gridx = 4;
@@ -113,26 +113,27 @@ public class BaseWindow extends JFrame
 		this.validate();
 		this.repaint();
     }
+	
 	/**
-        * Méthode qui récupère toutes les pages
-        * @return pages
-        */
+    * Méthode qui récupère toutes les pages
+    * @return pages
+    */
 	public Map<String, JPanel> getPages() {
 		return pages;
 	}
 
-        /**
-        * Méthode qui récupère l'utilisateur
-        * @return user
-        */
+    /**
+    * Méthode qui récupère l'utilisateur
+    * @return user
+    */
 	public User getUser() {
 		return user;
 	}
 	
-        /**
-        * Méthode qui modifie l'utilisateur connecté
-        * @param user, l'utilisateur connecté
-        */
+    /**
+    * Méthode qui modifie l'utilisateur connecté
+    * @param user, l'utilisateur connecté
+    */
 	public void setUser(User user) {
 		this.user = user;
 	}

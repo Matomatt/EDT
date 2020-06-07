@@ -10,6 +10,7 @@ import java.sql.Date;
 import Seances.Seance;
 import Utilisateurs.User;
 import Utilisateurs.Utilisateur;
+import Utilisateurs.User.UserType;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -69,8 +70,8 @@ public class EDT_ListePanel extends Panel
 		
 		switch (user.getUserType())
 		{
-			case Etudiant:
-			case Enseignant: options = new String[] {"Mon EDT", "Salle"};
+			case Etudiant: options = new String[] {"Mon EDT", "Salle", "Enseignant"}; break;
+			case Enseignant: options = new String[] {"Mon EDT", "Salle", "Classe", "Promo"};
 			default: break;
 		}
 		
@@ -162,46 +163,58 @@ public class EDT_ListePanel extends Panel
     * Méthode qui ajoute des salles dans la JComboBox
     */
 	public void sallesAddToComboBox()
-	{
-		cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray());
-		this.add(cb, get2ndCBconstraint());
-
-		cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getBySalleAtWeek((Salle)cb.getSelectedItem(), getSemaine())); }});
-	}
-
+    {
+        cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray());
+        this.add(cb, get2ndCBconstraint());
+     
+        if (user.getUserType() == UserType.Enseignant || user.getUserType() == UserType.Etudiant)
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getBySalleAtWeek(user.getUtilisateurConnecte(), (Salle)cb.getSelectedItem(), getSemaine())); }});
+        else
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getBySalleAtWeek((Salle)cb.getSelectedItem(), getSemaine())); }});
+    }
+    
 	/**
     * Méthode qui ajoute des enseignants dans la JComboBox
     */
-	public void nomsAddToComboBox()
-	{
-		cb = new JComboBox<Object>(((user.ListeUtilisateurs().getEnseignants().toArray())));
-		this.add(cb, get2ndCBconstraint());
-
-		cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByUtilisateurAtWeek((Utilisateur)cb.getSelectedItem(), getSemaine())); }});
-	}
-
-	/**
-    * Méthode qui ajoute des groupes dans la JComboBox
-    */
-	public void classesAddToComboBox()
-	{
-		cb = new JComboBox<Object>(((user.ListeGroupes().getAll().toArray())));
-
-		this.add(cb, get2ndCBconstraint());
-
-		cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByGroupeAtWeek((Groupe)cb.getSelectedItem(), getSemaine())); }});
-	}
-
-	/**
-    * Méthode qui ajoute des promos dans la JComboBox
-    */
-	public void promosAddToComboBox()
-	{
-		cb = new JComboBox<Object>(((user.ListePromotion().getAll().toArray())));
-		this.add(cb, get2ndCBconstraint());
-
-		cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByPromoAtWeek((Donnee)cb.getSelectedItem(), getSemaine())); }});
-	}
+    public void nomsAddToComboBox()
+    {
+        cb = new JComboBox<Object>(((user.ListeUtilisateurs().getEnseignants().toArray())));
+        this.add(cb, get2ndCBconstraint());
+        
+        if (user.getUserType() == UserType.Enseignant || user.getUserType() == UserType.Etudiant)
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), (Utilisateur)cb.getSelectedItem(), getSemaine())); }});
+        else
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByUtilisateurAtWeek((Utilisateur)cb.getSelectedItem(), getSemaine())); }});
+    }
+    
+    /**
+     * Méthode qui ajoute des groupes dans la JComboBox
+     */
+    public void classesAddToComboBox()
+    {
+        cb = new JComboBox<Object>(((user.ListeGroupes().getAll().toArray())));
+        
+        this.add(cb, get2ndCBconstraint());
+        
+        if (user.getUserType() == UserType.Enseignant || user.getUserType() == UserType.Etudiant)
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByGroupeAtWeek(user.getUtilisateurConnecte(), (Groupe)cb.getSelectedItem(), getSemaine())); }});
+        else
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByGroupeAtWeek((Groupe)cb.getSelectedItem(), getSemaine())); }});
+    }
+    
+    /**
+     * Méthode qui ajoute des promos dans la JComboBox
+     */
+    public void promosAddToComboBox()
+    {
+        cb = new JComboBox<Object>(((user.ListePromotion().getAll().toArray())));
+        this.add(cb, get2ndCBconstraint());
+        
+        if (user.getUserType() == UserType.Enseignant || user.getUserType() == UserType.Etudiant)
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByPromoAtWeek(user.getUtilisateurConnecte(), (Donnee)cb.getSelectedItem(), getSemaine())); }});
+        else
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByPromoAtWeek((Donnee)cb.getSelectedItem(), getSemaine())); }});
+    }
 
 	private GridBagConstraints get2ndCBconstraint()
 	{

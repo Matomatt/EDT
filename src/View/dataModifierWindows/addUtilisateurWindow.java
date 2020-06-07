@@ -163,7 +163,7 @@ public class addUtilisateurWindow extends JFrame
 	
         /**
          * Méthode qui récupère les cours
-         * @return coursComboBoxList.getSelectedItems().stream().map(x -> (Donnee)x).collect(Collectors.toList())
+         * @return le cours choisi
          */
 	public List<Donnee> getCours() {
 		return coursComboBoxList.getSelectedItems().stream().map(x -> (Donnee)x).collect(Collectors.toList());

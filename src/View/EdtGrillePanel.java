@@ -5,11 +5,13 @@ package View;
 
 import Seances.Seance;
 import Utilisateurs.User;
+import Utilisateurs.User.UserType;
 import Utilisateurs.Utilisateur;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -25,6 +27,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Time;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -79,12 +83,12 @@ public class EdtGrillePanel extends Panel
     */    
     private void initComponents()
     {
-    	String[] options = new String[] {"Mon EDT", "Enseignant","Classe", "Salle", "Promo"};
+    	String[] options = {"Mon EDT", "Enseignant","Classe", "Salle", "Promo"};
 		
 		switch (user.getUserType())
 		{
-			case Etudiant:
-			case Enseignant: options = new String[] {"Mon EDT", "Salle"};
+			case Etudiant: options = new String[] {"Mon EDT", "Salle", "Enseignant"}; break;
+			case Enseignant: options = new String[] {"Mon EDT", "Salle", "Classe", "Promo"};
 			default: break;
 		}
 		
@@ -200,8 +204,11 @@ public class EdtGrillePanel extends Panel
     {
         cb = new JComboBox<Object>(((user.ListeSalles()).getAll()).toArray());
         this.add(cb, get2ndCBconstraint());
-        
-        cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getBySalleAtWeek((Salle)cb.getSelectedItem(), getSemaine())); }});
+     
+        if (user.getUserType() == UserType.Enseignant || user.getUserType() == UserType.Etudiant)
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getBySalleAtWeek(user.getUtilisateurConnecte(), (Salle)cb.getSelectedItem(), getSemaine())); }});
+        else
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getBySalleAtWeek((Salle)cb.getSelectedItem(), getSemaine())); }});
     }
     
 	/**
@@ -212,7 +219,10 @@ public class EdtGrillePanel extends Panel
         cb = new JComboBox<Object>(((user.ListeUtilisateurs().getEnseignants().toArray())));
         this.add(cb, get2ndCBconstraint());
         
-        cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByUtilisateurAtWeek((Utilisateur)cb.getSelectedItem(), getSemaine())); }});
+        if (user.getUserType() == UserType.Enseignant || user.getUserType() == UserType.Etudiant)
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByUtilisateurAtWeek(user.getUtilisateurConnecte(), (Utilisateur)cb.getSelectedItem(), getSemaine())); }});
+        else
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByUtilisateurAtWeek((Utilisateur)cb.getSelectedItem(), getSemaine())); }});
     }
     
     /**
@@ -224,7 +234,10 @@ public class EdtGrillePanel extends Panel
         
         this.add(cb, get2ndCBconstraint());
         
-        cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByGroupeAtWeek((Groupe)cb.getSelectedItem(), getSemaine())); }});
+        if (user.getUserType() == UserType.Enseignant || user.getUserType() == UserType.Etudiant)
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByGroupeAtWeek(user.getUtilisateurConnecte(), (Groupe)cb.getSelectedItem(), getSemaine())); }});
+        else
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByGroupeAtWeek((Groupe)cb.getSelectedItem(), getSemaine())); }});
     }
     
     /**
@@ -235,7 +248,10 @@ public class EdtGrillePanel extends Panel
         cb = new JComboBox<Object>(((user.ListePromotion().getAll().toArray())));
         this.add(cb, get2ndCBconstraint());
         
-        cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByPromoAtWeek((Donnee)cb.getSelectedItem(), getSemaine())); }});
+        if (user.getUserType() == UserType.Enseignant || user.getUserType() == UserType.Etudiant)
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByPromoAtWeek(user.getUtilisateurConnecte(), (Donnee)cb.getSelectedItem(), getSemaine())); }});
+        else
+        	cb.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) { display_courses(user.ListeSeances().getByPromoAtWeek((Donnee)cb.getSelectedItem(), getSemaine())); }});
     }
     
     private GridBagConstraints get2ndCBconstraint()
@@ -262,6 +278,8 @@ public class EdtGrillePanel extends Panel
         String info;
         Calendar calendar = Calendar.getInstance();
         
+        List<Seance> memeHoraireList = new ArrayList<Seance>();
+        
         for(Seance s : seance_cours)
         { 
             String NomEns = getNomEns(s.getEnseignants());;
@@ -281,8 +299,18 @@ public class EdtGrillePanel extends Panel
             
             calendar.setTime(s.getDate());
             
+            if (!(memeHoraireList = memeHoraireList.stream().filter(x -> x.getDebut().equals(s.getDebut()) && x.getFin().equals(s.getFin())).collect(Collectors.toList())).isEmpty())
+        	{
+            	info = s.getDate() + " : " + s.getCours().toString() + " " + s.getSalles().toString() +" " + s.getGroupes() + "\n";;
+        		for (Seance seance : memeHoraireList) {
+        			info += seance.getCours().toString() + " " + seance.getSalles().toString() +" " + seance.getGroupes() + "\n";
+				}
+        	}
+            
             for (int i = getCaseHeure(s.getDebut()); i < getCaseHeure(s.getFin()); i++)
-				table.getModel().setValueAt(info, i, calendar.get(Calendar.DAY_OF_WEEK)-1);
+            	table.getModel().setValueAt(info, i, calendar.get(Calendar.DAY_OF_WEEK)-1);
+			
+            memeHoraireList.add(s);
         }
     }
 	
