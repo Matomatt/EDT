@@ -2,6 +2,7 @@ package Controllers.dataModifierWindowsControllers;
 
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
+import java.util.Calendar;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -32,6 +33,10 @@ public class modifySeanceWindowController extends dataModifierController
 
 	@Override
 	protected void modify() {
+		Calendar calendar = Calendar.getInstance();
+        calendar.setTime(window.getDate());
+        if (calendar.get(Calendar.DAY_OF_WEEK) == 1)
+        	return;
 		Seance seance = null;
 		try {
 			seance = new Seance(window.getSemaine(), window.getDate(), window.getHeureDebut(), window.getHeureFin(), window.getEtat(), window.getCours(), 

@@ -160,7 +160,7 @@ public class Utilisateur {
 	
 	@Override
 	public String toString() {
-		String toReturn = type + " " + prenom + " " + nom + " (" + email + ")";
+		String toReturn = type + " " + nom + " " + prenom + " (" + email + ")";
 		if (type == User.UserType.Enseignant)
 		{
 			toReturn+="[";

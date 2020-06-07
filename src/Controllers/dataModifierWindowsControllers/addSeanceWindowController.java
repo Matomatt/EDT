@@ -2,6 +2,7 @@ package Controllers.dataModifierWindowsControllers;
 
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
+import java.util.Calendar;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -57,6 +58,10 @@ public class addSeanceWindowController extends dataModifierController
 				error += salle.toString() + " pas libre sur cette période.\n";
 			capacite+=salle.getCapacite();
 		}
+		Calendar calendar = Calendar.getInstance();
+        calendar.setTime(seance.getDate());
+        if (calendar.get(Calendar.DAY_OF_WEEK) == 1)
+        	error += "Pas de cours le dimanche !";
 		
 		if (capacite < nbEleve)
 			JOptionPane.showMessageDialog(window, "Attention il n'y a pas assez de place pour tous les étudiants.");

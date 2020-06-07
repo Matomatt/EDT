@@ -250,27 +250,30 @@ public class EDT_ListePanel extends Panel
 
 		for(Seance s : listeSeances)
 		{
-			dateEnCours=s.getDate();
-
-			if(dateEnCours.compareTo(sauvDate)!=0)
-			{
-				table[i][0]= new SimpleDateFormat("EEEE").format(dateEnCours).substring(0, 1).toUpperCase() + new SimpleDateFormat("EEEE").format(dateEnCours).substring(1);
-				for(int j=1; j<7;++j)
+			if (s.getEtat() == 2)
+        	{
+				dateEnCours=s.getDate();
+	
+				if(dateEnCours.compareTo(sauvDate)!=0)
 				{
-					table[i][j]="";
+					table[i][0]= new SimpleDateFormat("EEEE").format(dateEnCours).substring(0, 1).toUpperCase() + new SimpleDateFormat("EEEE").format(dateEnCours).substring(1);
+					for(int j=1; j<7;++j)
+					{
+						table[i][j]="";
+					}
+					sauvDate=dateEnCours;
+					i++;
 				}
-				sauvDate=dateEnCours;
+	
+				table[i][0]=s.getDebut();
+				table[i][1]=s.getFin();
+				table[i][2]=s.getCours();
+				table[i][3]= getNomEns(s.getEnseignants());
+				table[i][4]=s.getGroupes();
+				table[i][5]=s.getSalles();
+				table[i][6]=s.getType();
 				i++;
-			}
-
-			table[i][0]=s.getDebut();
-			table[i][1]=s.getFin();
-			table[i][2]=s.getCours();
-			table[i][3]= getNomEns(s.getEnseignants());
-			table[i][4]=s.getGroupes();
-			table[i][5]=s.getSalles();
-			table[i][6]=s.getType();
-			i++;
+        	}
 		}
 		
 		if(tableau != null)
@@ -285,7 +288,7 @@ public class EDT_ListePanel extends Panel
     * @param enseignants, la liste fournie par la séance
     * @return NomEns, le nom de l'enseignant
     */
-	public String getNomEns(List<Utilisateur> enseignants)
+	private String getNomEns(List<Utilisateur> enseignants)
 	{
 		String NomEns = "";
 		boolean first = true;

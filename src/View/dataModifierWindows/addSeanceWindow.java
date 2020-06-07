@@ -176,8 +176,10 @@ public class addSeanceWindow extends JFrame
          * @return heure de debut
          */
 	public Time getHeureDebut() {
-		System.out.println(heureDebutTextField.getText());
-		return Time.valueOf(heureDebutTextField.getText()+(heureDebutTextField.getText().length()<6?":00":""));
+		Time time = null;
+		try { time = Time.valueOf(heureDebutTextField.getText()+(heureDebutTextField.getText().length()<6?":00":"")); }
+		catch (Exception e) { time = Time.valueOf("08:30:00"); }
+		return time;
 	}
 	
         /**
@@ -185,7 +187,10 @@ public class addSeanceWindow extends JFrame
          * @return heure de fin
          */
 	public Time getHeureFin() {
-		return Time.valueOf(heureFinTextField.getText()+(heureFinTextField.getText().length()<6?":00":""));
+		Time time = null;
+		try { time = Time.valueOf(heureFinTextField.getText()+(heureFinTextField.getText().length()<6?":00":"")); }
+		catch (Exception e) { time = Time.valueOf("20:30:00"); }
+		return time;
 	}
 
         /**

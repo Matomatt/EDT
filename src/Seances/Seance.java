@@ -167,10 +167,9 @@ public class Seance {
 		salles = seance.getSalles();
 	}
 	
-
 	@Override
 	public String toString() {
-		String toReturnString = semaine + ", " + date + ", " + debut + ", " + fin + ", " + etat + ", " + cours + ", " + type + " avec ";
+		String toReturnString = semaine + ", " + date + ", " + debut + ", " + fin + ", " + (new String[] {"En cours de validation", "Validée", "Annulée"})[etat-1] + ", " + cours + ", " + type + " avec ";
 		for (Groupe groupe : groupes) {
 			toReturnString+=groupe+" ";
 		}
@@ -183,9 +182,5 @@ public class Seance {
 			toReturnString+=salle+" ";
 		}
 		return toReturnString;
-	}
-
-	public void setSemaine(int parseInt) {
-		semaine = parseInt;
 	}
 }

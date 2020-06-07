@@ -282,35 +282,38 @@ public class EdtGrillePanel extends Panel
         
         for(Seance s : seance_cours)
         { 
-            String NomEns = getNomEns(s.getEnseignants());;
-            switch(liste.getSelectedItem().toString())
-            {
-                case "Salle" :
-                case "Enseignant" : 
-                case "Classe" :
-                case "Promo" :
-                    info = s.getDate() +" : "+ s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() +"\n" + s.getGroupes() +  "\n" +s.getType().toString() ;
-                break; 
-                
-                default:
-                    info = s.getDate() +" : "+ s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + "\n" +s.getType().toString() ;
-                    break;
-            }
-            
-            calendar.setTime(s.getDate());
-            
-            if (!(memeHoraireList = memeHoraireList.stream().filter(x -> x.getDebut().equals(s.getDebut()) && x.getFin().equals(s.getFin())).collect(Collectors.toList())).isEmpty())
+        	if (s.getEtat() == 2)
         	{
-            	info = s.getDate() + " : " + s.getCours().toString() + " " + s.getSalles().toString() +" " + s.getGroupes() + "\n";;
-        		for (Seance seance : memeHoraireList) {
-        			info += seance.getCours().toString() + " " + seance.getSalles().toString() +" " + seance.getGroupes() + "\n";
-				}
+        		String NomEns = getNomEns(s.getEnseignants());;
+	            switch(liste.getSelectedItem().toString())
+	            {
+	                case "Salle" :
+	                case "Enseignant" : 
+	                case "Classe" :
+	                case "Promo" :
+	                    info = s.getDate() +" : "+ s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() +"\n" + s.getGroupes() +  "\n" +s.getType().toString() ;
+	                break; 
+	                
+	                default:
+	                    info = s.getDate() +" : "+ s.getCours().toString() + "\n"+ NomEns+"\n" + s.getSalles().toString() + (user.getUserType() == UserType.Etudiant?"":"\n" + s.getGroupes()) + "\n" +s.getType().toString() ;
+	                    break;
+	            }
+	            
+	            calendar.setTime(s.getDate());
+	            
+	            if (!(memeHoraireList = memeHoraireList.stream().filter(x -> x.getDebut().equals(s.getDebut()) && x.getFin().equals(s.getFin()) && x.getDate().equals(s.getDate())).collect(Collectors.toList())).isEmpty())
+	        	{
+	            	info = s.getDate() + " : " + s.getCours().toString() + " " + s.getSalles().toString() +" " + s.getGroupes() + "\n";;
+	        		for (Seance seance : memeHoraireList) {
+	        			info += seance.getCours().toString() + " " + seance.getSalles().toString() +" " + seance.getGroupes() + "\n";
+					}
+	        	}
+	            
+	            for (int i = getCaseHeure(s.getDebut()); i < getCaseHeure(s.getFin()); i++)
+	            	table.getModel().setValueAt(info, i, calendar.get(Calendar.DAY_OF_WEEK)-1);
+				
+	            memeHoraireList.add(s);
         	}
-            
-            for (int i = getCaseHeure(s.getDebut()); i < getCaseHeure(s.getFin()); i++)
-            	table.getModel().setValueAt(info, i, calendar.get(Calendar.DAY_OF_WEEK)-1);
-			
-            memeHoraireList.add(s);
         }
     }
 	
